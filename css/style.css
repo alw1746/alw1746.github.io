@@ -1,0 +1,42 @@
+td {
+	text-align: left;
+	vertical-align: top;
+	font-family:Tahoma;
+	font-size:14px;
+	color:#705234;
+}
+
+form
+{
+	margin:0px;
+}
+
+a {
+	font-family:Tahoma;
+	font-size:10pt;
+	text-decoration: none;
+	font-weight: bold;
+	color:#596F80;
+}
+
+A:Hover  {
+	color : #596F80;
+	text-decoration : underline;
+}
+.f1 {font-family: Tahoma; font-size: 10pt; font-weight: normal; color: #000000}
+.f4 {font-family: Tahoma; font-size: 8pt; font-weight: normal; color: #000000}
+.f5 {font-family: Tahoma; font-size: 10pt; font-weight: bold; color: #5A6F80}
+.f6 {font-family: Tahoma; font-size: 18pt; font-weight: bold; color: #5A6F80}
+.f7 {font-family: Tahoma; font-size: 14px; font-weight: normal; color: #705234}
+
+H1 {
+	color: #596F80;
+	font-weight: bold;
+	font-size : 16px;
+}
+
+.indented
+   {
+   padding-left: 60pt;
+   padding-right: 50pt;
+   }
