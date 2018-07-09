@@ -1,0 +1,157 @@
+<html>
+<STYLE TYPE="text/css">
+.text1 { color:maroon;font-weight:bold;font-size:140%;font-family:sans-serif;}
+.text2 { color:black;font-weight:bold;font-size:95%;font-family:courier;}
+.text3 { color:maroon;font-weight:1000;font-size:120%;font-family:sans-serif;}
+.text4 { color:black;font-weight:bold;font-size:95%;font-family:sans-serif;}
+font.f1 { color:maroon;font-weight:bold;font-size:120%;font-family:sans-serif;}
+.indented
+   {
+   padding-left: 100pt;
+   padding-right:100pt;
+   }
+-->
+</STYLE>
+
+<body bgcolor=white class=text4>
+
+<center><h3 class=text1>
+Tutorial 1<br>
+Install and configure MS Visual C# 2010 Express<br>
+</h3></center>
+<div class="indented">
+
+Download and install <a href=http://www.microsoft.com/visualstudio/en-us/products/2010-editions/express>
+Microsoft Visual Visual C# 2010 Express</a>.
+<br><br>
+Follow the usual steps and accept prompt defaults.
+<br><br>
+After install, start Microsoft Visual Visual C# 2010 Express.
+<ul>
+<li>Untick 2 options at bottom left corner.
+
+<li>Tools -> Settings -> tick Expert Settings
+
+<li>Tools -> Options -> Show all settings
+
+<li>Tools -> Environment<br>
+  Startup -> load last loaded solution
+  
+<li>Tools -> Text Editor -> C#<br>
+  tick line numbers
+  
+<li>Click Toolbox, drag and position over center of pane selector in Solution Explorer.
+<br>View -> Properties Window
+<br>View -> Output
+<br>View -> Error List
+
+<li>Remove unecessary buttons from Standard Toolbar
+<br>View -> Toolbars -> Debug
+</ul>
+
+Add 2 documentation URLs to your browser favourites:
+<br><br>
+<a href=http://msdn.microsoft.com/en-us/library/kx37x362.aspx>Visual C#</a>
+<br><br>
+<img src=ExplorerVC.PNG>
+<br><br><br>
+<a href=http://msdn.microsoft.com/en-us/library/gg145045.aspx>.NET Framework Class Library</a>
+<br><br>
+<img src=ExplorerNF.PNG>
+<br><br>
+<font class=f1>Create Hello World Windows Application</font>
+<br><br>
+New Project -> Windows Forms Application
+<br><br>
+Name: HelloWorld
+<br><br>
+<img src=NewWindows.PNG border=0>
+<br><br>
+<img src=HelloWorld.PNG border=0>
+<br>
+Click Toolbox.
+<br><br>
+<img src=ToolBox.PNG border=0>
+<br><br>
+<img src=TextBoxControl.PNG border=0>
+<br><br>
+Under Common Controls, drag-n-drop TextBox onto Form1.
+<br><br>
+In the Properties tab for textBox1,
+<ul>
+<li>set Multiline=True
+<li>set ScrollBars=Vertical
+</ul>
+<img src=Multiline.PNG border=0>
+<br><br>
+<img src=TextBox.PNG border=0>
+<br><br>
+Click on Form1, then F7 to show Form1.cs
+<br><br>
+Add a line to the Form1 constructor:
+<br><br>
+<img src=HelloWorldCode1.PNG border=0>
+<br><br>
+
+F5 to run HelloWorld project.
+<br><br>
+<img src=HelloWorldRun1.PNG border=0>
+<br><br>
+
+Now, we add more controls to the form. Click Toolbox again.
+<br><br>
+
+Under Common Controls, drag-n-drop a single-line TextBox onto Form1
+<br><br>
+
+Drag-n-drop Button onto Form1.
+<ul>
+<li>set Name=ShowMsg
+<li>set Text=Show Message
+<br><br>
+<img src=ShowMsgProp.PNG border=0>
+<br><br>
+<img src=ShowMsgBtn1.PNG border=0>
+<br><br>
+
+<li>Click Events button.<br><br>
+
+  Select the Click event and doubleclick the method field.
+<br><br>
+  <img src=ShowMsg_click.PNG border=0>
+<br><br>
+</ul>
+  
+  The method ShowMsg_Click will be created in Form1.cs.<br>
+  We add some extra code to accept text from textBox2 and append it to textBox1.<br>
+  We also need to detect if an ENTER was used to terminate the text input.
+<br><br>
+  <img src=HelloWorldCode2.PNG border=0>
+<br><br>
+
+F5 to run.<br>
+ Type some text into textBox2 and click Show Message button or press ENTER.
+<br><br>
+<img src=HelloWorldRun2.PNG border=0>
+<br><br>
+<font class=f1>Create Hello File DOS Application</font>
+<br><br>
+New Project -> Console Application
+<br><br>
+Name: HelloFile
+<br><br>
+<img src=NewConsole.PNG border=0>
+<br><br>
+Then we add some code to write an input line 10 times to HelloFile.txt, read the file back and display the
+lines on the console.
+<br><br>
+<img src=HelloFile.PNG border=0>
+<br>
+F5 to run. 
+<br><br>
+<img src=HelloFileRun1.PNG border=0>
+<br><br>
+
+</div>
+</body>
+</html>

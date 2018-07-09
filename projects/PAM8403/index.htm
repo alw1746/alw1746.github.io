@@ -1,0 +1,76 @@
+<html>
+<head>
+<title>
+PAM8403 3W stereo Amplifier
+</title>
+<STYLE TYPE="text/css">
+.text1 { color:maroon;font-weight:bold;font-size:140%;font-family:sans-serif;}
+.text2 { color:black;font-weight:bold;font-size:95%;font-family:courier;}
+.text3 { color:maroon;font-weight:1000;font-size:100%;font-family:sans-serif;}
+.text4 { color:black;font-weight:bold;font-size:95%;font-family:sans-serif;}
+.indented
+   {
+   padding-left: 60pt;
+   padding-right: 50pt;
+   }
+</STYLE>
+<link rel=stylesheet type="text/css" href="../style.css">
+</head>
+
+<body bgcolor=white class=text4>
+
+<center><h3 class=text1>PAM8403 3W Stereo Amplifier</h3></center>
+<div class="indented">
+The PAM8403 is a cheap 3W <a href=https://en.wikipedia.org/wiki/Class-D_amplifier>Class-D audio amplifier</a> chip typically found in USB speakers. Powered by 5V, it offers low distortion,
+and being more efficient than Class-AB design, is well-suited for portable applications. A breakout board is available for
+$1 on ebay. For more details on the chip, see the <a href=pam8403.pdf>PAM8403 datasheet</a>. 
+<br><br>
+The board is a tiny 2cm x 2cm.
+<br><br>
+A comparison with a fatter 10W amplifier board from the 90's.
+<br><br>
+<image src=compare.jpg border=0>
+<br><br>
+Schematic of my circuit. Note the inclusion of a pot to vary the brightness of the power led. The pot was initially used 
+to cover the hole after the volume pot was drilled in the wrong spot by mistake. But upon reflection, why waste a perfectly 
+good pot doing nothing? So the world's first amp with a variable power led was born. Brilliant!
+<br><br>
+<h3 class=text3>Schematic</h3>
+<image src=schematic.png border=1>
+<br><br>
+Top view of the amp in a Jiffy case from Jaycar.
+<br><br>
+<image src=top.jpg border=0>
+<br><br>
+Closeup of the PAM8304 module soldered on a PCB. The module does not use normal 2.54mm pin spacing which is a bit
+annoying. But I found 22AWG solid-core wire fits perfectly into the plastic spacer from a 0.1 inch header, thus effectively a diy header with bendable legs.
+<br><br>
+<image src=pcbtop.jpg border=0>
+<br><br>
+Bottom view of the PCB. I had to glue the 3.5mm line-in socket to the wall of the case, no easy way of mounting it.
+<a href=selleys.png>Selleys All Plastic Fix</a> is the best glue for this.
+<br><br>
+<image src=pcbbot.jpg border=0>
+<br><br>
+Front view of the amplifier.
+<br><br>
+<image src=front.jpg border=0>
+<br><br>
+Back view of the amplifier. By then, I realised the box was upside down and after some teeth-gnashing, flipped it by
+rotating the power switch and knobs. Had to live with an inverted power led.
+<br><br>
+<image src=back.jpg border=0>
+<br><br>
+The finished amplifier driving a pair of 25W 3-way Sony bookshelf speakers. 
+<br><br>
+<image src=amp.jpg border=0>
+<br><br>
+Have a listen to the music and watch the power led being adjusted. How cool is that!
+<br><br>
+<video src="amp.mp4" type="video/mp4" controls="controls"> 
+Your browser does not support the video tag.
+</video>
+<br><br>
+</div>
+</body>
+</html>

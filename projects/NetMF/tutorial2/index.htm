@@ -1,0 +1,132 @@
+<html>
+<STYLE TYPE="text/css">
+.text1 { color:maroon;font-weight:bold;font-size:140%;font-family:sans-serif;}
+.text2 { color:black;font-weight:bold;font-size:110%;font-family:sans-serif;}
+.text3 { color:maroon;font-weight:1000;font-size:120%;font-family:sans-serif;}
+.text4 { color:black;font-weight:bold;font-size:95%;font-family:sans-serif;}
+font.f1 { color:maroon;font-weight:bold;font-size:120%;font-family:sans-serif;}
+.indented
+   {
+   padding-left: 100pt;
+   padding-right:100pt;
+   }
+-->
+</STYLE>
+
+<body bgcolor=white class=text4>
+
+<center><h3 class=text1>
+Tutorial 2<br>
+Using a Bluetooth slave serial adapter<br>
+</h3></center>
+<br>
+<div class="indented">
+
+This project consists of a Bluetooth slave serial adapter attached to COM4 on the Fez Panda II. A simple C# program
+reads 1 byte from the serial port and writes it to the output. In other words, it acts as a wireless loopback.
+<br><br>
+On the laptop, a USB Bluetooth creates a virtual serial port (COM14) when it pairs with the slave adapter. Using putty,
+a terminal session is established to COM14. When characters are typed in putty, they are transmitted by the USB adapter to
+the slave adapter on the Panda II where the C# program echoes the characters back onto putty. 
+<br><br>
+The Bluetooth slave serial adapter was purchased from MIB Instruments (Hong Kong) through ebay.com.au for USD13.00.
+Just search for "Arduino Bluetooth Module Slave Wireless Serial Board".
+<br><br>
+<img src=Schematic.jpg border=0>
+<br><br>
+FEZ Panda II with the Bluetooth slave serial adapter:
+<img src=BluetoothSerial.jpg border=0>
+<br><br>
+USB Bluetooth adapter for the laptop:
+<br><br>
+<img src=USBBluetooth.jpg border=0>
+<br><br>
+The C# program is shown below:
+<br><br>
+<pre>
+/*
+ * Simple comms test for bluetooth slave serial adapter. Bytes received by adapter are
+ * echoed back to to sender. PC requires a USB-Bluetooth adapter which creates a 
+ * virtual COM port when it pairs with a slave adapter. Wiring:
+ * Orange D31 TXD
+ * Purple D33 RXD
+ * Black Gnd
+ * Red 3.3V
+ */
+using System;
+using System.IO.Ports;
+using System.Threading;
+using Microsoft.SPOT;
+using Microsoft.SPOT.Hardware;
+using GHIElectronics.NETMF.Hardware;
+using GHIElectronics.NETMF.FEZ;
+
+namespace BluetoothTest
+{
+    public class Program
+    {
+        static SerialPort UART;
+        static bool isRunning = true;
+
+        public static void Main()
+        {
+            byte[] buffer = new byte[16];
+
+            UART = new SerialPort("COM4", 57600);   //adapter must be set to 56700
+            UART.Open();
+
+            while (isRunning)
+            {
+                    int blen = UART.Read(buffer, 0, 1); //read 1 byte from COM4
+                    UART.Write(buffer, 0, blen);        //write byte to COM4
+            }
+            UART.Close();
+            Debug.Print("COM port closed.");
+        }
+    }
+}
+</pre>
+
+<img src=BTfront.jpg border=0>
+<br><br>
+<img src=BTback.jpg border=0>
+<br><br>
+<span class=text2>Bluetooth Slave AT command set</span>
+<br><br>
+The AT commands below can be used with the module but only with software version Linvor v1.5.
+You must enter commands in Notepad, then cut-paste onto putty session. Normal typing
+does NOT work! If changing baud rate, close putty immediately after change, and reopen with
+new rate. Commands must be in UPCASE, no ENTER required at EOL. 
+<pre>
+ AT+VERSION Returns the software version of the module
+ OKlinvorV1.5
+
+ AT+BAUDx Sets the baud rate of the module
+ The command AT+BAUD8 sets the baud rate to 115200
+ 1 >> 1200
+ 2 >> 2400
+ 3 >> 4800
+ 4 >> 9600 (Default)
+ 5 >> 19200
+ 6 >> 38400
+ 7 >> 57600
+ 8 >> 115200
+ 9 >> 230400
+ OK115200
+ 
+ AT+NAMEOpenPilot Sets the name of the module
+ Any name can be specified up to 20 characters
+ OKsetname
+
+ AT+PINxxxx Sets the pairing password of the device Any 4 digit number can be used, the default
+ pincode is 1234
+ OKsetPIN
+ 
+ AT+PN Sets the parity of the module
+ AT+PN >> No parity check
+ OK None
+</pre>
+<br><br>
+</div>
+</body>
+</html>
