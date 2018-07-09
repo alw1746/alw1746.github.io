@@ -1,0 +1,85 @@
+/*
+setport: C++ program to write a bit pattern to a parallel port to toggle data output lines high(1) or low(0). Presumably you
+have some hardware interfaced to the port that detects the line(s) driven high and do something eg. turn on a relay, light up
+LEDs, etc. This program requires Tinyport 2.0, an NT driver that allows user mode programs to access the parallel port directly.
+This program has been tested under Windows NT 4 only. Tinyport 2.2 claims to support Windows 2000/XP too. For an alternative NT port
+driver, try http://www.embeddedtronics.com/public/Electronics/minidaq/userport/UserPort.zip.
+
+Usage: setport <port_address> <hex_bit_pattern 00-FF>
+eg: setport 378 F8
+Author: Alex Wong, Compaq Australia, 1999.
+
+Requirements:
+  -Windows NT 4
+  -MS Visual C++ 6
+  -Tinyport 2.0
+Install Tinyport
+  -Download Tinyport from:
+   http://ourworld.compuserve.com/homepages/manfred_keul/tinyport.zip
+  -Unzip into C:\Tinyport
+  -Read Tinyport.wri
+  -Copy drivers as per documentation.
+Configure TinyPort
+  -Locate parallel port i/o addresses using Admin Tools/WNT diags). Usually configured at 378-37A.
+  -Control Panel/Devices: disable Parallel, Parport, ParVDM
+  -Reboot
+  -Command prompt
+  -Goto C:\Tinyport
+   TPCONFIG ISA 0 378-37A
+   NET START TINYPORT
+  -Tinyport device driver is now active.
+Build setport
+  -Start VC++
+  -File/New/Projects/WIN32 application
+  -Projectname: setport
+  -Location: C:\Tinyport\setport
+  -Select "A simple WIN32 Application".
+  -Copy tpinface.h and Tinyms.lib to C:\Tinyport\setport
+  -Insert this program into setport.cpp.
+  -Project/Settings/Link. Insert Tinyms.lib into Object/module libraries.
+  -Build StdAfx.cpp first before building setport.cpp.
+Run setport
+  -exe is in c:\tinyport\setport\debug\setport.exe
+  -run setport in Command prompt eg:
+  C:\Tinyport\SETPORT\Debug> setport 378 1
+*/
+
+#include "stdafx.h"
+#include "tpinface.h"
+#include <stdio.h>
+
+int APIENTRY WinMain(HINSTANCE hInstance,
+                     HINSTANCE hPrevInstance,
+                     LPSTR     lpCmdLine,
+                     int       nCmdShow)
+{
+
+DWORD   Res,Pport;
+BYTE    Dataline;
+HANDLE  h;
+char p1[8],p2[8];
+char *pos,*p;
+
+for (p=p1,pos=lpCmdLine; *pos != ' ' && *pos != NULL; pos++)	//1st cmdline arg
+  *p++ = *pos;
+*p='\0';
+
+p=p2;
+if (*pos == ' ') {
+  for (pos++; *pos != NULL; pos++)			//2nd cmdline arg
+    *p++ = *pos;
+}
+*p='\0';
+
+Pport=Dataline=0;
+sscanf(p2,"%x",&Dataline);						//hex to binary
+sscanf(p1,"%x",&Pport);
+if (Pport > 0) {
+  Res = OpenTinyPort (&h);						//open parallel port
+  if (Res == ERROR_SUCCESS) {
+    Res = WriteByte (h, Pport, Dataline);		//write to port
+    CloseTinyPort (h);
+  }
+}
+return 0;
+}

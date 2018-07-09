@@ -1,0 +1,134 @@
+<html>
+<head>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
+
+<body>
+<br>
+<center><h2>Alarm Circuit for PC Parallel Port</h2></center>
+<table cellpadding=0 cellspacing=0 border=0 class=f1 align=center width=80%>
+<tr><td>&nbsp;</td></tr>
+<tr><td>&nbsp;</td></tr>
+<tr><td align=center><img src=alarm.gif border=0></td></tr>
+<tr><td height=30>&nbsp;</td></tr>
+<tr><td class=f1>
+This simple circuit allows network monitoring and management software such as TNG Unicenter or Tivoli running on a Windows NT 4 
+system to trigger a strobe light and buzzer when a high priority event is detected eg. disk full. The circuit interfaces to the PC
+via the parallel printer port.
+<br><br>
+When pin 2 of the printer port is set high(1), BC548 will conduct, allowing current to flow through the relay. The relay then activates
+the strobe lamp and piezo buzzer. When pin 2 is set low(0), BC548 turns off the relay and stops the strobe/buzzer. 1N4148 protects
+the LPT port from accidental reverse polarity. 1N4004 absorbs transient current induced by the relay switching on/off.
+<pre>
+Parts
+-----
+1   1N4148 diode
+1   1N4004 diode
+1   BC548 NPN transistor
+1   9V relay
+1   mini piezo buzzer (3-16V)
+1   blue mini alarm strobe (12V)
+1   9V DC adapter
+1   DB25 male plug
+</pre>
+Pin 2 - 9 = Data 0 - Data 7 (output)<br>
+Pin 18 - 25 = Ground
+<br><br>
+<b>C++ Control Program</b>
+<br><br>
+<a href=setport_cpp.txt>setport</a> is a C++ program that writes a bit pattern to LPT1 to toggle data output lines high(1) or low(0). It
+uses an NT driver Tinyport 2.0(included) which allows user mode programs to access the parallel port directly. This program has
+been tested under Windows NT 4 only. To control the alarm circuit, only pin 2(Data 0) needs to be set/cleared. Hence the bit pattern is
+simple - 1 or 0. Download the software <a href=setport.zip>here</a>.
+<br><br>
+Freeware NT drivers:
+<br><br>
+<a href=http://ourworld.compuserve.com/homepages/manfred_keul/tinyport.zip>TinyPort 2.2(Win2K/XP)</a><br>
+<a href=http://www.embeddedtronics.com/public/Electronics/minidaq/userport/UserPort.zip>UserPort</a><br>
+<a href=http://www.beyondlogic.org/porttalk/porttalk.htm>porttalk</a><br>
+<a href=http://www.driverlinx.com/Software_Products/SoftwareProducts.htm>PortIO</a><br>
+
+<br><br>
+<b>Java Control Program</b>
+<br><br>
+
+To control the alarm circuit from a Java program in Windows 2000/XP, download the following:<br><br>
+<a href="http://www.geocities.com/Juanga69/parport/parport-win32.zip">ParallelPort class</a><br>
+<a href="http://www.embeddedtronics.com/public/Electronics/minidaq/userport/UserPort.zip">UserPort driver</a><br>
+<br>
+<ul>
+<li>Unzip parport-win32.zip into your classpath directory. You should end up with eg. C:\classes\parport...
+<li>Unzip UserPort.zip under parport. You should end up with eg. C:\classes\parport\UserPort...
+<li>Copy parport.dll to your JDK bin directory.
+<li>Copy UserPort\UserPort.SYS to %WINDIR%\SYSTEM32\DRIVERS
+<li>Run UserPort.EXE, add or remove required addresses(default: parport base at 0x378), click Start, Exit
+<li>The following program has been tested under JDK 1.4.2_04.<br>
+<pre>
+import parport.ParallelPort;
+
+class SetPort {
+   public static void main ( String []args ) {
+      int aByte;
+      ParallelPort lpt1;
+
+      if (args.length != 1) {
+        System.out.println("Usage: java SetPort NN where NN=00-FF(hex bit pattern to send to LPT1)");
+        System.exit(1);
+      }
+      else {
+        lpt1 = new ParallelPort(0x378); // 0x378 is normally the base address for the LPT1 port
+        aByte=Integer.parseInt(args[0],16);
+        lpt1.write(aByte); // write a byte to the port's DATA pins
+        System.out.println("Output to port: " + aByte);
+      }
+   }
+}
+</pre>
+<li>Example usage: java SetPort 1  - this will set pin 2(Data 0) high on the parallel port.
+<li>Example usage: java SetPort 0  - will set all pins low on the parallel port.
+</ul>
+</td></tr>
+</table>
+<center><h2>SETPORT Debugging Tool</h2></center>
+<table cellpadding=0 cellspacing=0 border=0 class=f1 align=center width=80%>
+<tr><td align=center><img src=parportled.gif border=0></td></tr>
+<tr><td height=30>&nbsp;</td></tr>
+<tr><td class=f1>
+This is a tool for debugging problems with the SETPORT program. LEDs are connected to pins 2 to 9 and light up
+when the pins are set high. For example, java SetPort 5 will light up LEDs connected to port pins 2,4 (Data 0,2) as shown below:
+<br><br>
+<table border=0 width=80% align=center>
+<tr><td align=center width=50%><img src=setport5.jpg border=0></td><td align=center width=50%><img src=parportool.jpg border=0></td></tr>
+</table>
+<br>
+Here's a random flashing LED program for fun: it generates random numbers between 0 - 255 and writes them to LPT1 at 500 msec interval.
+<pre>
+import parport.ParallelPort;
+import java.util.*;
+
+class SetPortFun {
+   public static void main ( String []args ) {
+      int aByte,irand;
+      Random ranNum;
+      ParallelPort lpt1;
+
+      lpt1 = new ParallelPort(0x378); // 0x378 is normally the base address for the LPT1 port
+      ranNum=new Random();
+      while (true) {
+        aByte=ranNum.nextInt(256);
+        lpt1.write(0);          //clear prev display
+        lpt1.write(aByte);      // write random byte to the port's DATA pins
+        System.out.println("Pattern "+aByte);
+        try {
+          Thread.sleep(500);    //sleep 500msec
+        }
+        catch (Exception e) {}
+      }
+   }
+}
+</pre>
+</td></tr>
+</table>
+
+</body>
+</html>
