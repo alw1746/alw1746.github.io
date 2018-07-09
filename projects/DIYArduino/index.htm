@@ -1,0 +1,96 @@
+<html>
+<head>
+<title>
+DIY Arduino Tutorial
+</title>
+<STYLE TYPE="text/css">
+.text1 { color:maroon;font-weight:bold;font-size:140%;font-family:sans-serif;}
+.text2 { color:black;font-weight:bold;font-size:95%;font-family:courier;}
+.text3 { color:maroon;font-weight:1000;font-size:100%;font-family:sans-serif;}
+.text4 { color:black;font-weight:bold;font-size:95%;font-family:sans-serif;}
+.indented
+   {
+   padding-left: 60pt;
+   padding-right: 50pt;
+   }
+</STYLE>
+<link rel=stylesheet type="text/css" href="../style.css">
+</head>
+
+<body bgcolor=white class=text4>
+
+<center><h3 class=text1>DIY Arduino Tutorial</h3></center>
+<div class="indented">
+
+Make your own Arduino using just the basic through-hole components - blank ATMEGA328 chip, caps, resistor, crystal and switch.
+If you can't be bothered, get a Pro Mini from ebay. Costs about the same but then there's no brag factor.
+<br><br>
+A bootloader needs to be burnt into the ATMEGA328 chip so that the IDE can talk to it and program the flash. You can either
+use a chip programmer like the AVR Dragon or another Arduino board to act as one. I used an Arduino Pro Mini since I
+have plenty of them lying around pretending to be useful. I use <a href=https://github.com/WestfW/OptiLoader>OptiLoader</a>
+from Bill Westfield. It's a quarter of the size of the standard Arduino bootloader and starts up faster. It is also
+simpler to use.
+<br><br>
+<table border=1>
+<tr><td><image src=ATMEGA328.jpg border=0></td><td><image src=ArduinoProMini.png border=0></td></tr>
+</table>
+<br>
+1. Wire up a Arduino Pro Mini to a USB serial adapter like the Sparkfun FT231X breakout board. 
+<br><br>
+<image src=ArduinoISP.png border=1>
+<br><br>
+2. Download Optiloader from <a href=https://github.com/WestfW/OptiLoader/archive/master.zip>here</a>. Unzip into 
+a directory structure below:
+<br><br>
+<image src=folder.png border=0>
+<br><br>
+Run the Arduino IDE.
+<br><br>
+Tools -> Board -> Arduino Pro or Pro Mini
+<br>
+Set the Port to the USB serial adapter port.
+<br>
+File -> Open -> select optiLoader.ino
+<br>
+Upload sketch.
+<br><br>
+3. After the upload, unplug the USB adapter to power down the device.
+Connect the Arduino Pro Mini to the standalone ATMEGA328 chip. D10=Pro Mini pin, PIN1=ATMEGA328 physical pin.
+<br><br>
+VCC -> VCC<br>
+GND -> GND<br>
+SS(D10) -> RST(PIN1)<br>
+MOSI(D11) -> MOSI(PIN17)<br>
+MISO(D12) -> MISO(PIN18)<br>
+SCK(D13) -> SCK(PIN19)<br>
+<br><br>
+<image src=BurnBootloader.png border=1>
+<br><br>
+4. Plug in the USB adapter now and open a terminal window. 
+<br><br>
+Tools -> Serial Monitor
+<br>
+Select 19200 baud.
+<br>
+In the terminal window, enter G and click Send. OptiLoader will be burnt into the ATMEGA328 chip.
+<br><br>
+5. After the bootloader is burnt, disconnect the Arduino Pro Mini and wire the USB serial adapter to the circuit.
+<br><br>
+<image src=DIYArduino.png border=1>
+<br><br>
+<image src=Breadboard.jpg border=0>
+<br><br>
+The DIY Arduino is now ready for programming. The standard blink test worked perfectly and comparing the max available flash after build,
+<br><br>
+<font class=text3>Arduino bootloader</font><br>
+Sketch uses 1,030 bytes (3%) of program storage space. Maximum is 30,720 bytes.
+<br>
+<font class=text3>OptiLoader</font><br>
+Sketch uses 1,030 bytes (3%) of program storage space. Maximum is 32,256 bytes.
+<br><br>
+We have a winner! Right, jolly good. Now...time to chuck it in the bin and order a real Pro Mini.
+<br><br>
+
+</div>
+</body>
+</html>
