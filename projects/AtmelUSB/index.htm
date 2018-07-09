@@ -1,0 +1,188 @@
+<html>
+<STYLE TYPE="text/css">
+.text1 { color:maroon;font-weight:bold;font-size:140%;font-family:sans-serif;}
+.text2 { color:black;font-weight:bold;font-size:95%;font-family:courier;}
+.text3 { color:maroon;font-weight:1000;font-size:120%;font-family:sans-serif;}
+.text4 { color:black;font-weight:bold;font-size:95%;font-family:sans-serif;}
+.indented
+   {
+   padding-left: 40pt;
+   padding-right: 50pt;
+   }
+-->
+</STYLE>
+
+<body bgcolor=white class=text4>
+
+<center><h3 class=text1>
+USB interface on an ATMEL ATtiny45<br>
+Alex Wong, May 2009<br>
+Sydney PIC Club
+</h3></center>
+<div class="indented">
+<h3 class=text3>Introduction</h3>
+An ATMEL ATtiny45 is programmed with USB firmware to emulate a joystick and communicates with a host PC
+using the Human Interface Device (HID) driver. The 2 ADC ports on the ATtiny45 are used to convert analog
+voltages to digital with reference to an internal 2.56V level. The digitised values are sent via the USB
+interface to the host application for display. The HID driver supports moderate speed devices like mouse,
+keyboard, joystick, etc. Its main limitation is speed, with a maximum transfer rate of 64KB/s compared to
+the full-speed USB 1.1 rate of 12Mbits/s.
+<br><br>
+This project requires the following components:
+<ol>
+<li>The USB firmware for the ATMEL ATtiny45 from Object Development's <a href=http://www.obdev.at/products/vusb/easylogger.html>EasyLogger</a>
+<li>A <a href=http://www.codeproject.com/KB/cs/USB_HID.aspx>HID component for C# .NET</a>, a USB API library from Avans Hogeschool(Netherlands).
+<li>Windows application(C#) derived from <a href=http://yveslebrac.blogspot.com/2008/10/cheapest-dual-trace-scope-in-galaxy.html>Jacques Lepot</a>.
+</ol>
+Download this project from <a href=UsbAdc.zip>here</a>.
+
+<h3 class=text3>Schematic</h3>
+
+<img src=schematic.png border=0>
+<br>
+<h3text3>Parts List</h3>
+1 Led + 330R resistor<br>
+2 68R resistor on USB D+ & D-lines<br>
+1 1.5K pullup resistor for USB device detection<br>
+2 3.6V Zener(400-500mW) to regulate USB signal levels<br>
+2 100nf & 47uf(polarised) bypass caps <br>
+2 100nf filter caps on analog inputs(optional)<br>
+1 USB socket<br>
+1 Atmel Tiny45-20.<br>
+Note: for 1W zeners like 1N4729, use 470R for pullup.
+<br>
+<h3 class=text3>ATtiny45 firmware</h3>
+<pre>
+  usbconfig.h
+  -----------
+    #define  USB_CFG_VENDOR_ID       0x42, 0x42
+    #define  USB_CFG_DEVICE_ID       0x02, 0x00
+
+  main.c 
+  ------
+  /* USB report descriptor */
+    PROGMEM char usbHidReportDescriptor[USB_CFG_HID_REPORT_DESCRIPTOR_LENGTH] = { 
+      0x05, 0x01,        // USAGE_PAGE (Generic Desktop = 01)
+    	0x09, 0x05,        // USAGE (Game Pad = 05)
+    	0xa1, 0x01,        // COLLECTION (Application)
+    	0x09, 0x01,        //   USAGE (Pointer)
+    	0xa1, 0x00,        //   COLLECTION (Physical)
+    	0x09, 0x30,        //     USAGE (X)
+    	0x09, 0x31,        //     USAGE (Y)
+    	0x15, 0x00,        //   LOGICAL_MINIMUM (0)
+    	0x26, 0xff, 0x00,  //   LOGICAL_MAXIMUM (255)
+    	0x75, 0x08,        //   REPORT_SIZE (8bits)
+    	0x95, 0x04,        //   REPORT_COUNT (2)
+    	0x81, 0x02,        //   INPUT (Data,Var,Abs)
+    	0xc0,              // END_COLLECTION
+    
+    static void buildReport(void)
+    {
+    	reportBuffer[0] = adcval1>>8;
+    	reportBuffer[1] = adcval1;
+    	reportBuffer[2] = adcval2>>8;
+    	reportBuffer[3] = adcval2;    
+    	reportBuffer[4] = 0x01;
+    }
+
+    usbDeviceConnect();
+    adcInit();
+    usbInit();
+    sei();
+	  setIsRecording(1);
+    for(;;){    /* main event loop */
+        wdt_reset();
+        usbPoll();
+        if(usbInterruptIsReady() ){ /* we can send a report */
+            buildReport();
+            usbSetInterrupt(reportBuffer, sizeof(reportBuffer));
+        }
+        adcPoll();
+    }
+</pre>
+<br>
+
+<h3 class=text3>Application Interfacing with USB</h3>
+<img src=usbadc.png border=0>
+<br><br>
+The host application communicates with the USB device through the use of a USB library.
+The USB library simplifies the complexities of interfacing with the HID driver and reduces the
+application code to checking for device and handling USB events.
+<ol>
+<li>Register the application with Windows when the form is created. This enables
+the application to be notified of USB events eg. device insertion or removal.
+<br>
+<pre>
+    protected override void OnHandleCreated(EventArgs e)
+    {
+      base.OnHandleCreated(e);
+      usb.RegisterHandle(base.Handle);
+    }
+</pre>
+<li>When a USB device is inserted or removed, the WndProc method is invoked by Windows
+which then parses the device change messages. More events are triggered as a result of the parsing.
+<pre>
+    protected override void WndProc(ref Message m)
+    {
+      usb.ParseMessages(ref m);
+      base.WndProc(ref m);
+    }
+    
+    private void usb_OnDeviceArrived(object sender, EventArgs e)
+    {
+      this.toolStripStatusLabel1.Text = "Found a Device";
+    }
+
+</pre>
+<li>When the Start button is clicked, the PC identifies the attached USB device when it
+scans through a list of USB device descriptors during a process called enumeration.
+<pre>
+    private void btn_ok_Click(object sender, EventArgs e)
+    {
+      usb.ProductId = int.Parse(this.tb_product.Text, HexNumber);
+      usb.VendorId = int.Parse(this.tb_vendor.Text, HexNumber);
+      usb.CheckDevicePresent();
+    }
+    
+    public void CheckDevicePresent()
+    {
+        try
+        {
+            specified_device = SpecifiedDevice.FindSpecifiedDevice(this.vendor_id, this.product_id);
+            // look for the device on the USB bus
+            if (specified_device != null)	// did we find it?
+            {
+                if (OnSpecifiedDeviceArrived != null)
+                {
+                    this.OnSpecifiedDeviceArrived(this, new EventArgs());
+                    specified_device.DataReceived += new DataReceivedEventHandler(OnDataReceived);
+                    specified_device.DataSend += new DataSendEventHandler(OnDataSend);
+                }
+            }
+            else
+            {
+                if (OnSpecifiedDeviceRemoved != null && history)
+                {
+                    this.OnSpecifiedDeviceRemoved(this, new EventArgs());
+
+</pre>
+<li>After the USB device is enumerated, the application obtains data from it  when an event is
+dispatched by the USB library on receiving data from the HID driver.
+<pre>
+    private void usb_OnDataReceived(object sender, DataReceivedEventArgs args)
+    {
+      float num = ((args.data[1] * 0x100) + args.data[2]) * 0.92f;
+      float num2 = ((args.data[3] * 0x100) + args.data[4]) * 0.92f;
+      graphics.DrawLine(Pens.Black, this.ti + 1, 0, this.ti + 1, this.pictureBox1.Height);
+    }
+</pre>
+</ol>
+<br>
+To obtain a snapshot of the graph, click the SNAP button.
+<br><br>
+<img src=Usbscope.png border=0>
+<br>
+</div>
+</body>
+</html>
+
