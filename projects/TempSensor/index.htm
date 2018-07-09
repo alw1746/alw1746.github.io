@@ -1,0 +1,154 @@
+<html>
+<STYLE TYPE="text/css">
+<!--
+.text1 { color:blue;font-weight:bold;font-size:140%;font-family:sans-serif;}
+.text2 { color:black;font-weight:bold;font-size:95%;font-family:courier;}
+.text3 { color:blue;font-weight:1000;font-size:120%;font-family:sans-serif;}
+.text4 { color:black;font-weight:bold;font-size:95%;font-family:sans-serif;}
+.indented
+   {
+   padding-left: 60pt;
+   padding-right: 100pt;
+   }
+-->
+</STYLE>
+
+<body bgcolor=white class=text4>
+
+<center><h3 class=text1>
+PICAXE Temperature Sensing with LM335<br>
+Alex Wong<br>
+Sydney PIC Club
+</h3></center>
+
+<div class="indented">
+<h3 class=text3>Introduction</h3>
+This project measures temperature using a PICAXE-08M to read voltage output from an LM335 sensor. 
+A PC program polls the PICAXE through the serial port for temperature readings and displays them
+in real-time on a GUI interface created with Autoit. Readings are also logged into a CSV file.
+The prerequisites for this project are:
+<ul>
+<li><a href=http://www.autoitscript.com/>Autoit V3</a> on a Windows PC.
+<li>Netcomm.OCX from <a href=http://www.hardandsoftware.com>Richard Grier</a>
+<li>My project files <a href=LM335.zip>here</a>.
+</ul>
+<h3 class=text3>Schematic</h3>
+<img src=schematic.png border=1>
+<br>
+<img src=picaxe.gif border=0>
+<br>
+<img src=lm335.gif border=0>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src=lm335circ.gif border=0>
+<br><br>
+The LM335 series are precision, easily-calibrated, integrated circuit temperature sensors.
+Operating as a 2-terminal zener, the LM335 has a breakdown voltage directly proportional to absolute temperature
+at +10 mV/Kelvin. With less than 1Ohm dynamic impedance the device operates over a current range of 400 µA to 5 mA
+with virtually no change in performance. When calibrated at 25&#8451; the LM335 has typically less than 1&#8451; error over
+a 100&#8451; temperature range. Unlike other sensors the LM335 has a linear output.
+
+<h3 class=text3>PICAXE Code</h3>
+<pre>
+'TempSensor.bas - Measure temperature by using a PICAXE-08M to read the voltage from
+'an LM335 sensor. The results are converted to Centigrade(ASCII) and sent to
+'PC through an RS232 connection for display. The PC polls for values by sending the
+'string SSSS to the PICAXE at regular intervals.
+'COM port settings - 2400,N,8,1
+'------------------------------------------------------------------------------------
+   Symbol ADVal=W0                        'voltage from LM335
+   Symbol Sum=W1                          'total readings
+   Symbol SensorOutput=W1                 'LM335 output voltage
+   Symbol Fraction=W1                     'eg: 8 in 10.8
+   Symbol Whole=W2                        'eg: 10 in 10.8 
+   Symbol factor=W4                       'Kelvin to Centigrade conversion factor
+   symbol loop=b10                        'loop counter
+
+   factor=273                             '273k = 0c
+main:
+   serin 2,n2400,b1,b2,b3,b4              'Wait for poll string from PC
+   if b1 = "S" then tempout               'got SSSS? send temperature
+   if b1 = "C" then calibrate             'got Cnnn? calibrate factor
+   goto main                              'ignore anything else
+
+tempout:
+   Sum = 0
+   For loop = 1 to 64                     ' sum 64 readings
+      ReadADC10 1, ADVal
+      Sum = Sum + ADVal
+   Next
+   ADVal = Sum / 64                       ' calculate the average
+
+'The ADC has a resolution of 10 bits ie. it will return a value between 0 and 1023 over
+'the 5V power supply range ie. each value represents 5/1024 = 4.88 mV. The LM335 outputs
+'10mV/Kelvin rise hence - temp in Kelvin=total mV/10.
+'Note: PICAXE does not support floating point maths hence, in a multiply calculation, the
+'integer and fractions must be separately added together.
+
+   SensorOutput = ADVal * 4                       'total mV=4.88 * ADVal
+   SensorOutput = ADval * 8 / 10 + SensorOutput   'add fraction
+   SensorOutput = ADval * 8 / 100 + SensorOutput  'LM335 output in mV
+   Whole = SensorOutput / 10                      'get Kelvin (10mV/Kelvin)
+   Whole=Whole-factor                             'get Centigrade (273k = 0c)
+   Fraction = SensorOutput % 10                   'fraction=10th of degree
+
+   SEROUT 4,n2400,(#Whole, ".", #Fraction, 13,10)   'send ASCII temp to PC
+
+   goto main                              'wait for next poll
+
+calibrate:      'change value of factor. Useful if battery runs low.
+   factor=b2-48 *100                      'eg: ascii 216 -> bin 200
+   factor=b3-48 *10 +factor               '200 + bin 10
+   factor=b4-48 +factor                   '210 + bin 6 = 216
+   goto main
+</pre>
+
+<h3 class=text3>Autoit GUI</h3>
+The GUI interface to this project is created using a freeware BASIC-like scripting language called 
+AUTOIT. The software requires an additional freeware module called Netcomm.OCX from Richard Grier for
+serial port communications. <br><br>
+This is what the GUI looks like:
+<br><br>
+<img src=autoitgui.png border=0>
+<br><br>
+AutoIt uses a combination of simulated keystrokes, mouse movement and window/control manipulation in order
+to automate tasks in a way not possible or reliable with other languages (e.g. VBScript and SendKeys). 
+<ul>
+ <li>Execute Windows and DOS executables 
+ <li>Simulate key strokes (supports most keyboards layouts) 
+ <li>Simulate mouse movements and clicks 
+ <li>Move, resize and manipulate windows 
+ <li>Interact directly with "controls" on a window (set/get text, move, disable, etc.) 
+ <li>Work with the clipboard to cut/paste text items 
+ <li>Work with the registry
+ <li>Invoke DLLs and ActiveX objects.
+</ul>
+AutoIt enables you to create some complex GUIs like this below.
+<br><br>
+<img src=gui_eg1.png border=0>
+<br><br>
+My personal experience with Autoit.<br><br>
+<table border=1 cellspacing=1 cellpadding=4 bgcolor=wheat class=text4>
+<tr><td>Pros</td><td>Cons</td></tr>
+<tr><td>
+<ul>
+<li>Simple to learn, less complexity.
+<li>Easy prototyping.
+<li>Built-in forms designer.
+<li>Customised IDE for editing.
+<li>Very good support forum.
+<li>Lots of user-contributed functions.
+<li>Freeware.
+</ul>
+</td><td>
+<ul>
+<li>Code is interpreted - Slow.
+<li>No real debugging capabilities.
+<li>Limited error handling facilities.
+<li>A bit buggy in places.
+<li>1-way forms designer.
+<li>Language not object-oriented.
+</ul>
+</td></tr>
+</table>
+
+</div>
+</body>
+</html>

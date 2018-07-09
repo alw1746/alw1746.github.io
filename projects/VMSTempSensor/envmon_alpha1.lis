@@ -1,0 +1,17 @@
+ATSDA1 - COMPAQ AlphaServer DS20E 500 MHz
+14-DEC-2007 14:15:37
+
+Sensor            Status  Current  Alarm Setting
+------            ------  -------  -------------
+Room Temperature  Normal  	 23  	      28
+CPU Temperature 	Normal 	   32 	      36
+Thermal 1 	      Normal 	  	 
+Thermal 2 	      Normal 	  	 
+Fan 1 	          Normal 	  	 
+Fan 2 	          Normal 	  	 
+Power Supply 1 	  Normal 	  	 
+Power Supply 2 	  Normal
+
+Event Log
+---------
+12-DEC-2007 11:43:20,Room temperature 22 > 20.

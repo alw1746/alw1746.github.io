@@ -1,0 +1,666 @@
+<object type="TAForm" name="TempSenForm">
+  <properties>
+    <property name="Left" vt="Int16">206</property>
+    <property name="Top" vt="Int8">115</property>
+    <property name="Width" vt="Int16">652</property>
+    <property name="Height" vt="Int16">627</property>
+    <property name="Caption" vt="String">Temperature Sensor</property>
+    <property name="Color" vt="Ident">clBtnFace</property>
+    <property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
+    <property name="Font.Color" vt="Ident">clWindowText</property>
+    <property name="Font.Height" vt="Int8">-11</property>
+    <property name="Font.Name" vt="String">MS Sans Serif</property>
+    <property name="Font.Style" vt="Set"></property>
+    <property name="OldCreateOrder" vt="False">False</property>
+    <property name="Visible" vt="True">True</property>
+    <property name="Style" vt="Int32">-1798438912</property>
+    <property name="ExStyle" vt="Int16">256</property>
+    <property name="Version" vt="String">1.01</property>
+    <property name="Description" vt="String">A standard Windows Form.</property>
+    <property name="PixelsPerInch" vt="Int8">96</property>
+    <property name="TextHeight" vt="Int8">13</property>
+  </properties>
+  <components>
+    <object type="TAGroup" name="SettingsGroup">
+      <properties>
+        <property name="Left" vt="Int8">48</property>
+        <property name="Top" vt="Int8">40</property>
+        <property name="Width" vt="Int16">217</property>
+        <property name="Height" vt="Int16">201</property>
+        <property name="Caption" vt="String">Settings</property>
+        <property name="Constraints.MaxWidth" vt="Int32">1342308359</property>
+      </properties>
+      <components>
+        <object type="TACombo" name="SerialPort">
+          <properties>
+            <property name="Left" vt="Int8">104</property>
+            <property name="Top" vt="Int8">24</property>
+            <property name="Width" vt="Int8">81</property>
+            <property name="Height" vt="Int8">21</property>
+            <property name="Constraints.MaxWidth" vt="Int32">1342374466</property>
+            <property name="ItemHeight" vt="Int8">13</property>
+            <property name="TabOrder" vt="Int8">1</property>
+          </properties>
+          <components>
+          </components>
+        </object>
+        <object type="TALabel" name="SerialPortLabel">
+          <properties>
+            <property name="Left" vt="Int8">32</property>
+            <property name="Top" vt="Int8">24</property>
+            <property name="Width" vt="Int8">52</property>
+            <property name="Height" vt="Int8">17</property>
+            <property name="Caption" vt="String">Serial Port</property>
+            <property name="Constraints.MaxWidth" vt="Int32">1342308608</property>
+            <property name="TabOrder" vt="Int8">2</property>
+            <property name="HaveVariable" vt="False">False</property>
+          </properties>
+          <components>
+          </components>
+        </object>
+        <object type="TACombo" name="Baud">
+          <properties>
+            <property name="Left" vt="Int8">104</property>
+            <property name="Top" vt="Int8">48</property>
+            <property name="Width" vt="Int8">81</property>
+            <property name="Height" vt="Int8">21</property>
+            <property name="Constraints.MaxWidth" vt="Int32">1342374466</property>
+            <property name="ItemHeight" vt="Int8">13</property>
+            <property name="TabOrder" vt="Int8">3</property>
+            <property name="Items.Strings" vt="List">
+              <list>
+                <li vt="String">1200</li>
+                <li vt="String">2400</li>
+                <li vt="String">4800</li>
+                <li vt="String">9600</li>
+              </list>
+            </property>
+          </properties>
+          <components>
+          </components>
+        </object>
+        <object type="TALabel" name="BaudLabel">
+          <properties>
+            <property name="Left" vt="Int8">32</property>
+            <property name="Top" vt="Int8">48</property>
+            <property name="Width" vt="Int8">55</property>
+            <property name="Height" vt="Int8">17</property>
+            <property name="Caption" vt="String">Baud Rate</property>
+            <property name="Constraints.MaxWidth" vt="Int32">1342308608</property>
+            <property name="TabOrder" vt="Int8">4</property>
+            <property name="HaveVariable" vt="False">False</property>
+          </properties>
+          <components>
+          </components>
+        </object>
+        <object type="TACombo" name="parity">
+          <properties>
+            <property name="Left" vt="Int8">104</property>
+            <property name="Top" vt="Int8">72</property>
+            <property name="Width" vt="Int8">81</property>
+            <property name="Height" vt="Int8">21</property>
+            <property name="Constraints.MaxWidth" vt="Int32">1342374466</property>
+            <property name="ItemHeight" vt="Int8">13</property>
+            <property name="TabOrder" vt="Int8">5</property>
+            <property name="Items.Strings" vt="List">
+              <list>
+                <li vt="String">None,8,1</li>
+                <li vt="String">None,8,0</li>
+                <li vt="String">Even,8</li>
+                <li vt="String">Odd,8</li>
+              </list>
+            </property>
+          </properties>
+          <components>
+          </components>
+        </object>
+        <object type="TALabel" name="ParityLabel">
+          <properties>
+            <property name="Left" vt="Int8">32</property>
+            <property name="Top" vt="Int8">72</property>
+            <property name="Width" vt="Int8">30</property>
+            <property name="Height" vt="Int8">17</property>
+            <property name="Caption" vt="String">Parity</property>
+            <property name="Constraints.MaxWidth" vt="Int32">1342308608</property>
+            <property name="TabOrder" vt="Int8">6</property>
+            <property name="HaveVariable" vt="False">False</property>
+          </properties>
+          <components>
+          </components>
+        </object>
+        <object type="TARadio" name="Centigrade">
+          <properties>
+            <property name="Left" vt="Int8">32</property>
+            <property name="Top" vt="Int8">104</property>
+            <property name="Width" vt="Int8">73</property>
+            <property name="Height" vt="Int8">17</property>
+            <property name="Caption" vt="String">Centigrade</property>
+            <property name="Checked" vt="True">True</property>
+            <property name="Constraints.MaxWidth" vt="Int32">1342373897</property>
+            <property name="TabOrder" vt="Int8">7</property>
+            <property name="TabStop" vt="True">True</property>
+          </properties>
+          <components>
+          </components>
+        </object>
+        <object type="TARadio" name="Farenheit">
+          <properties>
+            <property name="Left" vt="Int8">120</property>
+            <property name="Top" vt="Int8">104</property>
+            <property name="Width" vt="Int8">65</property>
+            <property name="Height" vt="Int8">17</property>
+            <property name="Caption" vt="String">Farenheit</property>
+            <property name="Color" vt="Ident">clBtnFace</property>
+            <property name="Constraints.MaxWidth" vt="Int32">1342373897</property>
+            <property name="ParentColor" vt="False">False</property>
+            <property name="TabOrder" vt="Int8">8</property>
+          </properties>
+          <components>
+          </components>
+        </object>
+        <object type="TALabel" name="SampIntLabel">
+          <properties>
+            <property name="Left" vt="Int8">32</property>
+            <property name="Top" vt="Int16">136</property>
+            <property name="Width" vt="Int8">85</property>
+            <property name="Height" vt="Int8">17</property>
+            <property name="Caption" vt="String">Sampling Interval</property>
+            <property name="Constraints.MaxWidth" vt="Int32">1342308608</property>
+            <property name="TabOrder" vt="Int8">9</property>
+            <property name="HaveVariable" vt="False">False</property>
+          </properties>
+          <components>
+          </components>
+        </object>
+        <object type="TAInput" name="SampInt">
+          <properties>
+            <property name="Left" vt="Int16">136</property>
+            <property name="Top" vt="Int16">136</property>
+            <property name="Width" vt="Int8">41</property>
+            <property name="Height" vt="Int8">21</property>
+            <property name="Constraints.MaxHeight" vt="Int16">512</property>
+            <property name="Constraints.MaxWidth" vt="Int32">1342374016</property>
+            <property name="TabOrder" vt="Int8">10</property>
+          </properties>
+          <components>
+          </components>
+        </object>
+        <object type="TASlider" name="Slider">
+          <properties>
+            <property name="Left" vt="Int8">24</property>
+            <property name="Top" vt="Int16">160</property>
+            <property name="Width" vt="Int16">161</property>
+            <property name="Height" vt="Int8">20</property>
+            <property name="Cursor" vt="Ident">crSizeWE</property>
+            <property name="Constraints.MaxWidth" vt="Int32">1342308353</property>
+            <property name="Max" vt="Int8">20</property>
+            <property name="TabOrder" vt="Int8">11</property>
+            <property name="ThumbLength" vt="Int8">14</property>
+          </properties>
+          <components>
+          </components>
+        </object>
+      </components>
+    </object>
+    <object type="TAListView" name="TempLV">
+      <properties>
+        <property name="Left" vt="Int8">48</property>
+        <property name="Top" vt="Int16">272</property>
+        <property name="Width" vt="Int16">217</property>
+        <property name="Height" vt="Int16">273</property>
+        <property name="Columns" vt="Collection">
+          <collection>
+          </collection>
+        </property>
+        <property name="Constraints.MaxWidth" vt="Int32">1343422477</property>
+        <property name="Items.Data" vt="Binary">
+          <bin>4500000002000000FFFFFFFFFFFFFFFFFFFFFFFF00000000000000000854696D</bin>
+          <bin>6520202020FFFFFFFFFFFFFFFFFFFFFFFF00000000000000000B54656D706572</bin>
+          <bin>6174757265</bin><bin/>
+        </property>
+        <property name="TabOrder" vt="Int8">1</property>
+      </properties>
+      <components>
+      </components>
+    </object>
+    <object type="TAGroup" name="ConPanelGroup">
+      <properties>
+        <property name="Left" vt="Int16">312</property>
+        <property name="Top" vt="Int8">96</property>
+        <property name="Width" vt="Int16">281</property>
+        <property name="Height" vt="Int16">145</property>
+        <property name="Caption" vt="String">Control Panel</property>
+        <property name="Constraints.MaxWidth" vt="Int32">1342308359</property>
+      </properties>
+      <components>
+        <object type="TAButton" name="StartBtn">
+          <properties>
+            <property name="Left" vt="Int8">32</property>
+            <property name="Top" vt="Int8">32</property>
+            <property name="Width" vt="Int8">89</property>
+            <property name="Height" vt="Int8">33</property>
+            <property name="Caption" vt="String">Start</property>
+            <property name="Constraints.MaxWidth" vt="Int32">1342242817</property>
+            <property name="TabOrder" vt="Int8">1</property>
+          </properties>
+          <components>
+          </components>
+        </object>
+        <object type="TAButton" name="StopBtn">
+          <properties>
+            <property name="Left" vt="Int8">32</property>
+            <property name="Top" vt="Int8">88</property>
+            <property name="Width" vt="Int8">89</property>
+            <property name="Height" vt="Int8">33</property>
+            <property name="Caption" vt="String">Stop</property>
+            <property name="Constraints.MaxWidth" vt="Int32">1342242816</property>
+            <property name="TabOrder" vt="Int8">2</property>
+          </properties>
+          <components>
+          </components>
+        </object>
+        <object type="TAButton" name="HelpBtn">
+          <properties>
+            <property name="Left" vt="Int16">160</property>
+            <property name="Top" vt="Int8">32</property>
+            <property name="Width" vt="Int8">89</property>
+            <property name="Height" vt="Int8">33</property>
+            <property name="Caption" vt="String">Help</property>
+            <property name="Constraints.MaxWidth" vt="Int32">1342242816</property>
+            <property name="TabOrder" vt="Int8">3</property>
+          </properties>
+          <components>
+          </components>
+        </object>
+        <object type="TAButton" name="ExitBtn">
+          <properties>
+            <property name="Left" vt="Int16">160</property>
+            <property name="Top" vt="Int8">88</property>
+            <property name="Width" vt="Int8">89</property>
+            <property name="Height" vt="Int8">33</property>
+            <property name="Caption" vt="String">Exit</property>
+            <property name="Constraints.MaxWidth" vt="Int32">1342242816</property>
+            <property name="TabOrder" vt="Int8">4</property>
+          </properties>
+          <components>
+          </components>
+        </object>
+      </components>
+    </object>
+    <object type="TAGroup" name="ReadingsGroup">
+      <properties>
+        <property name="Left" vt="Int16">312</property>
+        <property name="Top" vt="Int16">264</property>
+        <property name="Width" vt="Int16">281</property>
+        <property name="Height" vt="Int16">145</property>
+        <property name="Caption" vt="String">Readings</property>
+        <property name="Constraints.MaxWidth" vt="Int32">1342308359</property>
+      </properties>
+      <components>
+        <object type="TALabel" name="TempLabel">
+          <properties>
+            <property name="Left" vt="Int8">24</property>
+            <property name="Top" vt="Int8">32</property>
+            <property name="Width" vt="Int8">31</property>
+            <property name="Height" vt="Int8">17</property>
+            <property name="Caption" vt="String">Temp</property>
+            <property name="Constraints.MaxWidth" vt="Int32">1342308608</property>
+            <property name="TabOrder" vt="Int8">1</property>
+            <property name="HaveVariable" vt="False">False</property>
+          </properties>
+          <components>
+          </components>
+        </object>
+        <object type="TAInput" name="Temp">
+          <properties>
+            <property name="Left" vt="Int8">64</property>
+            <property name="Top" vt="Int8">32</property>
+            <property name="Width" vt="Int8">41</property>
+            <property name="Height" vt="Int8">21</property>
+            <property name="Color" vt="Ident">clInactiveCaptionText</property>
+            <property name="Constraints.MaxHeight" vt="Int16">512</property>
+            <property name="Constraints.MaxWidth" vt="Int32">1342376066</property>
+            <property name="TabOrder" vt="Int8">2</property>
+          </properties>
+          <components>
+          </components>
+        </object>
+        <object type="TALabel" name="MinLabel">
+          <properties>
+            <property name="Left" vt="Int8">24</property>
+            <property name="Top" vt="Int8">56</property>
+            <property name="Width" vt="Int8">21</property>
+            <property name="Height" vt="Int8">17</property>
+            <property name="Caption" vt="String">Min</property>
+            <property name="Constraints.MaxWidth" vt="Int32">1342308608</property>
+            <property name="TabOrder" vt="Int8">3</property>
+            <property name="HaveVariable" vt="False">False</property>
+          </properties>
+          <components>
+          </components>
+        </object>
+        <object type="TAInput" name="Min">
+          <properties>
+            <property name="Left" vt="Int8">64</property>
+            <property name="Top" vt="Int8">56</property>
+            <property name="Width" vt="Int8">41</property>
+            <property name="Height" vt="Int8">21</property>
+            <property name="Color" vt="Ident">clInactiveCaptionText</property>
+            <property name="Constraints.MaxHeight" vt="Int16">512</property>
+            <property name="Constraints.MaxWidth" vt="Int32">1342376066</property>
+            <property name="TabOrder" vt="Int8">4</property>
+          </properties>
+          <components>
+          </components>
+        </object>
+        <object type="TALabel" name="MaxLabel">
+          <properties>
+            <property name="Left" vt="Int8">24</property>
+            <property name="Top" vt="Int8">80</property>
+            <property name="Width" vt="Int8">24</property>
+            <property name="Height" vt="Int8">17</property>
+            <property name="Caption" vt="String">Max</property>
+            <property name="Constraints.MaxWidth" vt="Int32">1342308608</property>
+            <property name="TabOrder" vt="Int8">5</property>
+            <property name="HaveVariable" vt="False">False</property>
+          </properties>
+          <components>
+          </components>
+        </object>
+        <object type="TAInput" name="Max">
+          <properties>
+            <property name="Left" vt="Int8">64</property>
+            <property name="Top" vt="Int8">80</property>
+            <property name="Width" vt="Int8">41</property>
+            <property name="Height" vt="Int8">21</property>
+            <property name="Color" vt="Ident">clInactiveCaptionText</property>
+            <property name="Constraints.MaxHeight" vt="Int16">512</property>
+            <property name="Constraints.MaxWidth" vt="Int32">1342376066</property>
+            <property name="TabOrder" vt="Int8">6</property>
+          </properties>
+          <components>
+          </components>
+        </object>
+        <object type="TALabel" name="AvgLabel">
+          <properties>
+            <property name="Left" vt="Int8">24</property>
+            <property name="Top" vt="Int8">104</property>
+            <property name="Width" vt="Int8">23</property>
+            <property name="Height" vt="Int8">17</property>
+            <property name="Caption" vt="String">Avg</property>
+            <property name="Constraints.MaxWidth" vt="Int32">1342308608</property>
+            <property name="TabOrder" vt="Int8">7</property>
+            <property name="HaveVariable" vt="False">False</property>
+          </properties>
+          <components>
+          </components>
+        </object>
+        <object type="TAInput" name="Avg">
+          <properties>
+            <property name="Left" vt="Int8">64</property>
+            <property name="Top" vt="Int8">104</property>
+            <property name="Width" vt="Int8">41</property>
+            <property name="Height" vt="Int8">21</property>
+            <property name="Color" vt="Ident">clInactiveCaptionText</property>
+            <property name="Constraints.MaxHeight" vt="Int16">512</property>
+            <property name="Constraints.MaxWidth" vt="Int32">1342376066</property>
+            <property name="TabOrder" vt="Int8">8</property>
+          </properties>
+          <components>
+          </components>
+        </object>
+        <object type="TALabel" name="TimeLabel">
+          <properties>
+            <property name="Left" vt="Int16">144</property>
+            <property name="Top" vt="Int8">32</property>
+            <property name="Width" vt="Int8">26</property>
+            <property name="Height" vt="Int8">17</property>
+            <property name="Caption" vt="String">Start</property>
+            <property name="Constraints.MaxWidth" vt="Int32">1342308608</property>
+            <property name="TabOrder" vt="Int8">9</property>
+            <property name="HaveVariable" vt="False">False</property>
+          </properties>
+          <components>
+          </components>
+        </object>
+        <object type="TAInput" name="Time">
+          <properties>
+            <property name="Left" vt="Int16">200</property>
+            <property name="Top" vt="Int8">32</property>
+            <property name="Width" vt="Int8">49</property>
+            <property name="Height" vt="Int8">21</property>
+            <property name="Color" vt="Ident">clInactiveCaptionText</property>
+            <property name="Constraints.MaxHeight" vt="Int16">512</property>
+            <property name="Constraints.MaxWidth" vt="Int32">1342376066</property>
+            <property name="TabOrder" vt="Int8">10</property>
+          </properties>
+          <components>
+          </components>
+        </object>
+        <object type="TALabel" name="StartLabel">
+          <properties>
+            <property name="Left" vt="Int16">144</property>
+            <property name="Top" vt="Int8">56</property>
+            <property name="Width" vt="Int8">27</property>
+            <property name="Height" vt="Int8">17</property>
+            <property name="Caption" vt="String">Time</property>
+            <property name="Constraints.MaxWidth" vt="Int32">1342308608</property>
+            <property name="TabOrder" vt="Int8">11</property>
+            <property name="HaveVariable" vt="False">False</property>
+          </properties>
+          <components>
+          </components>
+        </object>
+        <object type="TAInput" name="Start">
+          <properties>
+            <property name="Left" vt="Int16">200</property>
+            <property name="Top" vt="Int8">56</property>
+            <property name="Width" vt="Int8">49</property>
+            <property name="Height" vt="Int8">21</property>
+            <property name="Color" vt="Ident">clInactiveCaptionText</property>
+            <property name="Constraints.MaxHeight" vt="Int16">512</property>
+            <property name="Constraints.MaxWidth" vt="Int32">1342376066</property>
+            <property name="TabOrder" vt="Int8">12</property>
+          </properties>
+          <components>
+          </components>
+        </object>
+        <object type="TALabel" name="FinishLabel">
+          <properties>
+            <property name="Left" vt="Int16">144</property>
+            <property name="Top" vt="Int8">80</property>
+            <property name="Width" vt="Int8">42</property>
+            <property name="Height" vt="Int8">17</property>
+            <property name="Caption" vt="String">Elapsed</property>
+            <property name="Constraints.MaxWidth" vt="Int32">1342308608</property>
+            <property name="TabOrder" vt="Int8">13</property>
+            <property name="HaveVariable" vt="False">False</property>
+          </properties>
+          <components>
+          </components>
+        </object>
+        <object type="TAInput" name="Finish">
+          <properties>
+            <property name="Left" vt="Int16">200</property>
+            <property name="Top" vt="Int8">80</property>
+            <property name="Width" vt="Int8">49</property>
+            <property name="Height" vt="Int8">21</property>
+            <property name="Color" vt="Ident">clInactiveCaptionText</property>
+            <property name="Constraints.MaxHeight" vt="Int16">512</property>
+            <property name="Constraints.MaxWidth" vt="Int32">1342376066</property>
+            <property name="TabOrder" vt="Int8">14</property>
+          </properties>
+          <components>
+          </components>
+        </object>
+        <object type="TALabel" name="SampLabel">
+          <properties>
+            <property name="Left" vt="Int16">144</property>
+            <property name="Top" vt="Int8">104</property>
+            <property name="Width" vt="Int8">44</property>
+            <property name="Height" vt="Int8">17</property>
+            <property name="Caption" vt="String">Samples</property>
+            <property name="Constraints.MaxWidth" vt="Int32">1342308608</property>
+            <property name="TabOrder" vt="Int8">15</property>
+            <property name="HaveVariable" vt="False">False</property>
+          </properties>
+          <components>
+          </components>
+        </object>
+        <object type="TAInput" name="Samples">
+          <properties>
+            <property name="Left" vt="Int16">200</property>
+            <property name="Top" vt="Int8">104</property>
+            <property name="Width" vt="Int8">49</property>
+            <property name="Height" vt="Int8">21</property>
+            <property name="Color" vt="Ident">clInactiveCaptionText</property>
+            <property name="Constraints.MaxHeight" vt="Int16">512</property>
+            <property name="Constraints.MaxWidth" vt="Int32">1342376066</property>
+            <property name="TabOrder" vt="Int8">16</property>
+          </properties>
+          <components>
+          </components>
+        </object>
+      </components>
+    </object>
+    <object type="TALabel" name="TempSenLabel">
+      <properties>
+        <property name="Left" vt="Int16">352</property>
+        <property name="Top" vt="Int8">48</property>
+        <property name="Width" vt="Int16">245</property>
+        <property name="Height" vt="Int8">33</property>
+        <property name="Caption" vt="String">Temperature Sensor</property>
+        <property name="Constraints.MaxWidth" vt="Int32">1342308608</property>
+        <property name="Font.Charset" vt="Ident">ANSI_CHARSET</property>
+        <property name="Font.Color" vt="Ident">clBlack</property>
+        <property name="Font.Height" vt="Int8">-24</property>
+        <property name="Font.Name" vt="String">Microsoft Sans Serif</property>
+        <property name="Font.Style" vt="Set">fsBold</property>
+        <property name="ParentFont" vt="False">False</property>
+        <property name="TabOrder" vt="Int8">4</property>
+        <property name="HaveVariable" vt="False">False</property>
+      </properties>
+      <components>
+      </components>
+    </object>
+    <object type="TAIcon" name="TempSenIcon">
+      <properties>
+        <property name="Left" vt="Int16">312</property>
+        <property name="Top" vt="Int8">48</property>
+        <property name="Width" vt="Int8">32</property>
+        <property name="Height" vt="Int8">32</property>
+        <property name="AutoSize" vt="False">False</property>
+        <property name="Caption" vt="String">AIcon1</property>
+        <property name="Constraints.MaxWidth" vt="Int32">1342310671</property>
+        <property name="TabOrder" vt="Int8">5</property>
+        <property name="PicturePath" vt="String">C:\autoit\TempSensorBig.ico</property>
+        <property name="Picture.Data" vt="Binary">
+          <bin>055449636F6E0000010001002020000001000800A80800001600000028000000</bin>
+          <bin>2000000040000000010008000000000000000000000000000000000000000000</bin>
+          <bin>00000000FFF0FF00FCD2FC00F9B4F900F696F600F378F300F05AF000ED3CED00</bin>
+          <bin>EA1EEA00E700E700CF00CF00B700B7009F009F00870087006F006F0057005700</bin>
+          <bin>40004000F4EBFF00E8CEFC00DCB1F900D094F600C477F300B85AF000AC3DED00</bin>
+          <bin>A020EA009100E7008200CF007300B70064009F005500870046006F0037005700</bin>
+          <bin>28004000E0E0FF00C4C4FC00A8A8F9008C8CF6007070F3005454F0003838ED00</bin>
+          <bin>1C1CEA000000E7000000CF000000B70000009F000000870000006F0000005700</bin>
+          <bin>00004000E0F5FF00C4E8FC00A8DCF9008CD0F60070C4F30054B8F00038ACED00</bin>
+          <bin>1CA0EA000091E7000082CF000073B70000649F000055870000466F0000375700</bin>
+          <bin>00284000E0FFFF00C4FCFC00A8F9F9008CF6F60070F3F30054F0F00038EDED00</bin>
+          <bin>1CEAEA0000E7E70000CFCF0000B7B700009F9F0000878700006F6F0000575700</bin>
+          <bin>00404000E0FFF000C4FCEB00A8F9E6008CF6E10070F3DC0054F0D70038EDD200</bin>
+          <bin>1CEACD0000E7C90000CFB20000B79B00009F840000876D00006F560000573F00</bin>
+          <bin>00402800E0FFE000C4FCC400A8F9A8008CF68C0070F3700054F0540038ED3800</bin>
+          <bin>1CEA1C0000E7000000CF000000B70000009F000000870000006F000000570000</bin>
+          <bin>00400000F0FFE000EBFCC400E6F9A800E1F68C00DCF37000D7F05400D2ED3800</bin>
+          <bin>CDEA1C00C9E70000B2CF00009BB70000849F00006D870000566F00003F570000</bin>
+          <bin>28400000FFFFE000FCFCC400F9F9A800F6F68C00F3F37000F0F05400EDED3800</bin>
+          <bin>EAEA1C00E7E70000CFCF0000B7B700009F9F0000878700006F6F000057570000</bin>
+          <bin>40400000FFF8E000FCF2C400F9ECA800F6E68C00F3E07000F0DA5400EDD43800</bin>
+          <bin>EACE1C00E7CB0000CFB60000B7A100009F8C0000877700006F620000574D0000</bin>
+          <bin>40370000FFF0E000FCE8C400F9E0A800F6D88C00F3D07000F0C85400EDC03800</bin>
+          <bin>EAB81C00E7AE0000CF9C0000B78A00009F780000876600006F54000057420000</bin>
+          <bin>40300000FFE8E000FCDAC400F9CCA800F6BE8C00F3B07000F0A25400ED943800</bin>
+          <bin>EA861C00E7740000CF680000B75C00009F500000874400006F380000572C0000</bin>
+          <bin>401C0000FFE0E000FCC4C400F9A8A800F68C8C00F3707000F0545400ED383800</bin>
+          <bin>EA1C1C00E7000000CF000000B70000009F000000870000006F00000057000000</bin>
+          <bin>40000000FFE8F000FCCBE400F9AED800F691CC00F374C000F057B400ED3AA800</bin>
+          <bin>EA1D9C00E7009100CF008200B70073009F006400870055006F00460057003700</bin>
+          <bin>40002800FFFFFF00F0F0F000E8E8E800E0E0E000D8D8D800D0D0D000C8C8C800</bin>
+          <bin>C0C0C000B8B8B800B0B0B000A8A8A800A0A0A000989898009090900088888800</bin>
+          <bin>8080800080808000707070006868680060606000585858005050500048484800</bin>
+          <bin>4040400038383800303030002828280020202000181818001010100008080800</bin>
+          <bin>00000000A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1</bin>
+          <bin>A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1</bin>
+          <bin>A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A12828A1A1A1A1A1A1A1A1A1A1A1</bin>
+          <bin>A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1282828282828A1A1A1A1A1A1A1A1A1</bin>
+          <bin>A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A12828282828282828A1A1A1A1A1A1A1A1</bin>
+          <bin>A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A12828282828282828A1A1A1A1A1A1A1A1</bin>
+          <bin>A1A1A1A1A1A1A1A1A1A1A1A1A1A1A128282828282828282828A1A1A1A1A1A1A1</bin>
+          <bin>A1A1A1A1A1A1A1A1A1A1A1A1A1A1A128282828282828282828A1A1A1A1A1A1A1</bin>
+          <bin>A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A12828282828282828A1A1A1A1A1A1A1A1</bin>
+          <bin>A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A12828282828282828A1A1A1A1A1A1A1A1</bin>
+          <bin>A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1282828282828A1A1A1A1A1A1A1A1A1</bin>
+          <bin>A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A12828A1A1A1A1A1A1A1A1A1A1A1</bin>
+          <bin>A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A12828A1A1A1A1A1A1A1A1A1A1A1</bin>
+          <bin>A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A12828A1A1A1A1A1A1A1A1A1A1A1</bin>
+          <bin>A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A12828A1A1A1A1A1A1A1A1A1A1A1</bin>
+          <bin>A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A12828FEFEFEA1A1A1A1A1A1A1A1</bin>
+          <bin>A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A12828A1A1A1A1A1A1A1A1A1A1A1</bin>
+          <bin>A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A12828A1A1A1A1A1A1A1A1A1A1A1</bin>
+          <bin>A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A12828A1A1A1A1A1A1A1A1A1A1A1</bin>
+          <bin>A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A12828A1A1A1A1A1A1A1A1A1A1A1</bin>
+          <bin>A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A16666FEFEFEA1A1A1A1A1A1A1A1</bin>
+          <bin>A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A16666A1A1A1A1A1A1A1A1A1A1A1</bin>
+          <bin>A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A16666A1A1A1A1A1A1A1A1A1A1A1</bin>
+          <bin>A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A16666A1A1A1A1A1A1A1A1A1A1A1</bin>
+          <bin>A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A16666A1A1A1A1A1A1A1A1A1A1A1</bin>
+          <bin>A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A16666FEFEFEA1A1A1A1A1A1A1A1</bin>
+          <bin>A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A16666A1A1A1A1A1A1A1A1A1A1A1</bin>
+          <bin>A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A16666A1A1A1A1A1A1A1A1A1A1A1</bin>
+          <bin>A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A16666A1A1A1A1A1A1A1A1A1A1A1</bin>
+          <bin>A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A16666A1A1A1A1A1A1A1A1A1A1A1</bin>
+          <bin>A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1</bin>
+          <bin>A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1</bin>
+          <bin>A1A1A1A100000000000000000000000000000000000000000000000000000000</bin>
+          <bin>0000000000000000000000000000000000000000000000000000000000000000</bin>
+          <bin>0000000000000000000000000000000000000000000000000000000000000000</bin>
+          <bin>0000000000000000000000000000000000000000000000000000000000000000</bin>
+          <bin>00000000</bin><bin/>
+        </property>
+      </properties>
+      <components>
+      </components>
+    </object>
+  </components>
+</object>
+ <bin>A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1</bin>
+          <bin>A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1</bin>
+          <bin>A1A1A1A100000000000000000000000000000000000000000000000000000000</bin>
+          <bin>0000000000000000000000000000000000000000000000000000000000000000</bin>
+          <bin>0000000000000000000000000000000000000000000000000000000000000000</bin>
+          <bin>0000000000000000000000000000000000000000000000000000000000000000</bin>
+          <bin>00000000</bin><bin/>
+        </property>
+      </properties>
+      <components>
+      </components>
+    </object>
+  </components>
+</object>
+      <bin>A1A1A1A100000000000000000000000000000000000000000000000000000000</bin>
+          <bin>0000000000000000000000000000000000000000000000000000000000000000</bin>
+          <bin>0000000000000000000000000000000000000000000000000000000000000000</bin>
+          <bin>0000000000000000000000000000000000000000000000000000000000000000</bin>
+          <bin>00000000</bin><bin/>
+        </property>
+      </properties>
+      <components>
+      </components>
+    </object>
+  </components>
+</object>
+s>
+      </components>
+    </object>
+  </components>
+</object>

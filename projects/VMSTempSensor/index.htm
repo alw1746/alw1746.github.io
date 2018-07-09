@@ -1,0 +1,61 @@
+<html>
+<head>
+  <link rel="stylesheet" href="site.css" type="text/css">
+</head>
+<body bgcolor=white class=a10b>
+<br>
+<center><span class=a16b>Alpha System Environment Monitor</span><br>
+<span class=a12b>Alex Wong<br>
+Sydney PIC Club Presentation 2008
+</span></center><br>
+<div class="indented">
+The HP Alpha DS20E computer system runs the OpenVMS operating system and has two RS232C serial ports.
+In order to monitor the health status of the system, a room temperature sensor is connected to
+the Alpha computer via the serial port. A DCL script then polls the serial
+port every 5 minutes for the room temperature. The temperature, along with other environmental
+information, is written to a html page and then transferred to an IIS web server where it can
+be <a href=envmon.htm>viewed</a> with a browser.
+<br><br>
+If an event such as the temperature exceeds a pre-determined alarm
+setting, an alert message is sent to the OpenView Console(OVO) which is monitored 24-hours.
+An example of a web page for an Alpha with an alarm condition can be seen <a href=envmon_alpha1_alarm.htm>here</a>.
+<br><br>
+The room temperature sensor is a <a href=http://www.sparkfun.com/commerce/product_info.php?products_id=245>DS18B20</a> digital thermometer which is interfaced to a
+ <a href=http://en.wikipedia.org/wiki/PICAXE>PICAXE-08M</a> microcontroller as shown in the schematic below. <br><br>
+ Click here : <a href=tempDS18B20.htm>PICAXE code</a>
+<br><br>
+<center><img src=schematic.gif border=0></center>
+<br>
+Power for the circuit is derived from the RTS pin of the serial port. 
+The voltage of this pin is normally at 0V but rises to 9V when the port is initialised with the command:
+<br><br>
+$ SET TERMINAL/MODEM/NOECHO/SPEED=2400 TTA0:
+<br><br>
+The resistor network divides the RTS voltage equally and approx 4V is supplied to the PICAXE. The sensor
+is built into an old serial mouse case with its innards gutted. The circuit is built on a matrix PCB
+which is shaped to fit into the casing.
+<br><br>
+<center><img src=pic1.jpg border=0 width=640 height=480></center>
+<br>
+<center><img src=pic3.jpg border=0 width=640 height=480></center>
+<br>
+<center><img src=pic2.jpg border=0 width=640 height=480></center>
+<br>
+The DS18B20 is attached to the PICAXE with standard square board pins and sockets for ease of assembly and
+future maintenance.
+<br><br>
+<center><img src=pic4.jpg border=0 width=640 height=480></center>
+<br>
+The sensor pokes out of a hole drilled into the upper shell of the casing. It is not glued to the
+casing as it was found the tension of the bent wires kept it fairly secure in the hole. The assembled
+mouse sensor looks like this.
+<br><br>
+<center><img src=pic5.jpg border=0 width=640 height=480></center>
+<br>
+This pictures shows the sensor sitting behind the Alpha computer and connected to the serial port. The long mouse
+cable is actually useful in allowing the mouse to measure the temperature of nearby equipment eg. fan output.
+<br><br>
+<center><img src=pic6.jpg border=0 width=640 height=480></center>
+</div>
+</body>
+</html>

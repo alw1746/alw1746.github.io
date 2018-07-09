@@ -1,0 +1,85 @@
+<html>
+<STYLE TYPE="text/css">
+.text1 { color:maroon;font-weight:bold;font-size:120%;font-family:sans-serif;}
+.text2 { color:black;font-weight:bold;font-size:95%;font-family:courier;}
+.text3 { color:maroon;font-weight:1000;font-size:100%;font-family:sans-serif;}
+.text4 { color:black;font-weight:bold;font-size:95%;font-family:sans-serif;}
+.indented
+   {
+   padding-left: 50pt;
+   padding-right: 50pt;
+   }
+-->
+</STYLE>
+
+<body bgcolor=white class=text4>
+
+<center><h3 class=text1>Interrupting the PICAXE SERIN Command</h3></center>
+<div class="indented">
+<h3 class=text3>Introduction</h3>
+The Picaxe SETINT command checks an input pin for a certain condition between code execution.
+When condition is true, code will gosub to an interrupt routine, then return to main code.
+However, the SERIN (serial port input) command is not interruptible - once executed, it waits until data arrives.
+This means the Picaxe cannot handle multiple tasks once a SERIN is in the code. Obviously not an ideal situation.
+<br><br>
+But there is a good idea from <a href=http://www.hippy.freeserve.co.uk/picaxesi.htm>Chris Leigh</a> which requires an extra Picaxe.
+Why not use a slave Picaxe to receive data, set a pin to high before sending byte to master Picaxe?
+The Master can be doing some work while waiting for input from slave. On interrupt, it will gosub and 
+execute the SERIN command.
+<br><br>
+The Picaxe circuit and programs for testing this idea are shown below:
+<ul>
+<li>Run a terminal emulator on PC eg. Hyperterm or Reflection and open COM1,2400,N,8,1
+<li>Master Picaxe works continuously to send a loop counter to PC serial port and flash an LED.
+<li>When keyboard data is entered on terminal emulator, it is sent to slave Picaxe.
+<li>Slave Picaxe receives data, raises send pin high and forwards data to Master.
+<li>On input pin high, master Picaxe interrupts, reads data and sends it to PC serial port.
+<li>Note: a readadc in interrupt routine will cause Picaxe to NOT return to main code (bug?).
+</ul>
+
+<img src=pic.gif border=0>
+
+
+<h3 class=text3>Sender Program on Slave PICAXE</h3>
+<pre class=text2>
+;Read a byte from PC kbd via a serial port.
+;Raise line to high briefly before sending byte in TTL
+;level to master PICAXE.
+
+MainLoop:
+  SERIN 2,N2400,b0      ;recv 1 byte from kbd
+  HIGH 4                ;set line high
+  PAUSE 20              ;allow master to respond to hi
+  SEROUT 4,T2400,(b0)   ;transmit char (T=True Output)
+  LOW 4                 ;set line low
+  GOTO MainLoop
+</pre>
+
+<h3 class=text3>Receiver Program on Master PICAXE</h3>
+<pre class=text2>
+;Continuously send a loop count to PC and flash an LED. When a byte is
+;sent from slave PICAXE, an interrupt is generated. The byte is
+;read and then sent to PC before master resumes its main loop.
+
+  SETINT %00000100,%00000100    ;generate interrupt on pin 2 high
+  b1=0                          ;init counter
+
+MainLoop:
+  SEROUT 4,N2400,("Loop ",#b1,13,10)   ;continuously output loop count
+  b1=b1+1                       ;inc counter
+  high 1                        ;turn LED on
+  pause 100                     ;sleep
+  low 1                         ;turn LED off
+  pause 100                     ;sleep
+  GOTO MainLoop
+
+Interrupt:                      ;high detected on pin 2
+  SERIN 2,T2400,b0              ;receive byte (T=True input)
+  SEROUT 4,N2400,("Received ",b0,13,10)	   ;output byte
+  SETINT %00000100,%00000100    ;setup interrupt again
+  RETURN
+</pre>
+</div>
+
+</body>
+</html>

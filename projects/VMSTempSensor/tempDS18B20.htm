@@ -1,0 +1,33 @@
+<html>
+<head>
+  <link rel="stylesheet" href="site.css" type="text/css">
+</head>
+<body bgcolor=wheat class=a10b>
+<pre>
+'TempDS1820B.bas - Measure temperature by using a PICAXE-08M to read the voltage from
+'a DS18B20 sensor. The results in Centigrade(ASCII) are sent to a host cpu via an RS232
+'connection for display. The host polls for values by sending the char P to the PICAXE
+'every 5 minutes. COM port settings - 2400,N,8,1
+'The DS18B20 senses -55 to +125C.
+
+main:
+   serin 2,n2400,b2              'read serial port
+   if b2 = "P" then tempout      'got P? send temperature
+   goto main                     'ignore anything else
+
+tempout:
+   readtemp 1,b1                 'read DS18B20
+   if b1 > 127 then neg          'test for negative
+   SEROUT 4,n2400,(#counter," ",#b1, 13,10)   'send ASCII temp to host
+   goto main
+neg:
+   let b1 = b1 - 128             'adjust neg value
+   SEROUT 4,n2400,(#counter," -",#b1, 13,10)   'send ASCII temp to host
+   goto main
+</pre>
+</body>
+</html>
+
+
+
+

@@ -1,0 +1,31 @@
+<html>
+<head>
+  <link rel="stylesheet" href="site.css" type="text/css">
+</head>
+<body bgcolor=wheat class=a10b>
+<br>
+<center><span class=a12b>Alpha System Environment Monitor</span><br></center><br>
+<table cellspacing=0 cellpadding=4 border=0 align=center>
+<tr bgcolor=silver class=a10b>
+  <td align=left>
+    To temporarily prevent notification messages from spamming the OVO console:
+    <ul>
+    <li>Log into the system using OMEX_SYS_SFE.
+    <li>$ define/system ENVMON_EVENT_NOTIFICATION 0
+    <li>Alarm notifications for ALL sensors will be disabled.
+    <li>Remember to re-enable notifications again later.
+    </ul>
+
+    To disable environment monitoring for the day:
+    <ul>
+    <li>Log into the system using OMEX_SYS_SFE.
+    <li>$ show que/bat/all
+    <li>Get the entry number for the executing ENVMON job(not the pending job).
+    <li>$ delete/entry=[entry_number]
+    <li>ENVMON will automatically restart itself at midnight.
+    </ul>
+  </td>
+</tr>
+</table>
+</body>
+</html>

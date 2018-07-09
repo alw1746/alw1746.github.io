@@ -1,0 +1,35 @@
+.f1 {font-family: Arial, Helvetica, sans-serif; font-size: 10pt; font-weight: normal; color: #000000}
+.f4 {font-family: Arial, Helvetica, sans-serif; font-size: 8pt; font-weight: normal; color: #000000}
+.f5 {font-family: Arial, Helvetica, sans-serif; font-size: 8pt; font-weight: bold; color: #000000}
+.f6 {font-family: Arial, Helvetica, sans-serif; font-size: 20pt; font-weight: bold; color: #000000}
+
+.a16b { font-family: Arial, Helvetica, sans-serif; font-size: 16pt; font-weight: bold; color: #000000}
+.a12b { font-family: Arial, Helvetica, sans-serif; font-size: 12pt; font-weight: bold; color: #000000}
+.a10n { font-family: Arial, Helvetica, sans-serif; font-size: 10pt; font-weight: normal; color: #000000}
+.a10g { font-family: Arial, Helvetica, sans-serif; font-size: 10pt; font-weight: normal; color: green}
+.a10b { font-family: Arial, Helvetica, sans-serif; font-size: 10pt; font-weight: bold; color: #000000}
+.a8n { font-family: Arial, Helvetica, sans-serif; font-size: 8pt; font-weight: normal; color: #000000}
+.a8b { font-family: Arial, Helvetica, sans-serif; font-size: 8pt; font-weight: bold; color: #000000}
+.c10n { font-family: monospace; font-size: 8pt; font-weight: normal; color: #000000}
+.a10w { font-family: Arial,Helvetica, sans-serif; font-size: 10pt; font-weight: bold; color: #ffffff}
+
+A:link    {color: blue; font-family:Arial,helvetica, verdana, sans-serif; text-decoration: none; font-size: 10pt;}
+A:visited {color: red; font-family:Arial,helvetica, verdana, sans-serif; text-decoration: none; font-size: 10pt;}
+A:hover   {color: black; font-family:Arial,helvetica, verdana, sans-serif; text-decoration: none; font-size: 10pt;}
+A:active  {color: purple; font-family:Arial,helvetica, verdana, sans-serif; text-decoration: none; font-size: 10pt;}
+
+a.ncolor:link {color: #000000; font-family:helvetica, verdana, sans-serif; text-decoration: none; font-size: 9pt;}
+a.ncolor:visited {text-decoration: none; color: #000000; font-family:helvetica, verdana, sans-serif; font-size: 9pt;}
+a.ncolor:hover {color: #000000; font-family:helvetica, verdana, sans-serif; cursor: hand; font-size: 9pt; font-weight : bold }
+a.ncolor:active {color: #000000; font-family:helvetica, verdana, sans-serif; font-size: 9pt;}
+
+a.f6:link {color: blue; font-family:Arial, Helvetica, sans-serif; font-size: 10pt; text-decoration: none;font-weight: normal;}
+a.f6:visited {color: purple; font-family:Arial, Helvetica, sans-serif; font-size: 10pt; text-decoration: none;font-weight: normal;}
+a.f6:hover {color: red; font-family: Helvetica, sans-serif; font-size: 10pt; text-decoration: underline;font-weight: normal;}
+a.f6:active {color: #000000; font-family:Arial, Helvetica, sans-serif; font-size: 10pt; text-decoration: none;font-weight: normal;}
+
+.indented
+   {
+   padding-left: 40pt;
+   padding-right: 50pt;
+   }

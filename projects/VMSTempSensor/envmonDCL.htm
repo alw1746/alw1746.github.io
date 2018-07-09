@@ -1,0 +1,382 @@
+<html>
+<head>
+  <link rel="stylesheet" href="site.css" type="text/css">
+</head>
+<body bgcolor=wheat class=a10b>
+<pre>
+$!-----------------------------------------------------------------------
+$! envmon: DCL script to poll sensor for room temperature and extracts other
+$! environmental information from undocumented F$GETSYI lexical parameters:
+$!   f$getsyi("thermal_vector")
+$!   f$getsyi("fan_vector")
+$!   f$getsyi("temperature_vector")
+$!   f$getsyi("power_vector")
+$! The following logicals control the operations of ENVMON:
+$!   ENVMON_CPU_MAXTEMP = "36"
+$!   ENVMON_EVENT_NOTIFICATION = "1"
+$!   ENVMON_ROOM_MAXTEMP = "28"
+$!   ENVMON_SLEEP = "00:05:00"
+$!   ENVMON_SENSOR_PORT = "TTA0:"
+$! The output from sensor are written to a web page and uploaded to IIS.
+$! To view the output, browse to http://nn.nn.nn.nn/envmon
+$! The output is also available as a text file ENVMON_[node].LIS.
+$! This script runs as a daily self-submitting batch job.
+$! Alex Wong, OMX Aust. 2007
+$!-----------------------------------------------------------------------
+$!
+$ on error then goto done
+$ on control_y then goto done
+$!
+$ node=f$getsyi("nodename")
+$ model=f$getsyi("hw_name")
+$ date=f$cvtime(f$time())
+$ date=f$element(0," ",date) - "-" - "-"
+$ submit/user=omex_sys_sfe/log/after="TOM"/que='node'_batch envmon
+$ purge envmon.log
+$ if f$search("envmon_''node'.csv") .eqs. "" then cre envmon_'node'.csv
+$ if f$search("envmon_''node'.log") .eqs. "" then cre envmon_'node'.log
+$readtemp:
+$ curdate=f$cvtime(f$time())
+$ curdate=f$element(0," ",curdate) - "-" - "-"
+$ if curdate .nes. date
+$ then
+$   goto done        !exit after midnight
+$ endif
+$ buf=f$trnlnm("ENVMON_ROOM_MAXTEMP")       !alarm setting for room temperature
+$ if buf .nes. ""
+$ then
+$   ENVMON_ROOM_MAXTEMP=buf
+$ else
+$   ENVMON_ROOM_MAXTEMP="28"
+$   define/sys ENVMON_ROOM_MAXTEMP 'ENVMON_ROOM_MAXTEMP'
+$ endif
+$ buf=f$trnlnm("ENVMON_SENSOR_PORT")        !room temperature sensor serial port
+$ if buf .nes. ""
+$ then
+$   ENVMON_SENSOR_PORT=buf
+$   SET TERMINAL/MODEM/NOECHO/SPEED=2400 'ENVMON_SENSOR_PORT'
+$ else
+$   ENVMON_SENSOR_PORT=""
+$ endif
+$ buf=f$trnlnm("ENVMON_CPU_MAXTEMP")       !alarm setting for cpu temperature
+$ if buf .nes. ""
+$ then
+$  ENVMON_CPU_MAXTEMP=buf
+$ else
+$   ENVMON_CPU_MAXTEMP="36"
+$   define/sys ENVMON_CPU_MAXTEMP 'ENVMON_CPU_MAXTEMP'
+$ endif
+$ buf=f$trnlnm("ENVMON_SLEEP")            !script polling interval
+$ if buf .nes. ""
+$ then
+$   ENVMON_SLEEP=buf
+$ else
+$   ENVMON_SLEEP="00:05:00"
+$   define/sys ENVMON_SLEEP "''ENVMON_SLEEP'"
+$ endif
+$ buf=f$trnlnm("ENVMON_EVENT_NOTIFICATION")
+$ if buf .nes. ""
+$ then
+$   ENVMON_EVENT_NOTIFICATION==buf
+$ else
+$   ENVMON_EVENT_NOTIFICATION=="1"        !note:global symbol
+$   define/sys ENVMON_EVENT_NOTIFICATION 'ENVMON_EVENT_NOTIFICATION'
+$ endif
+$!
+$ now=f$time()
+$ now=f$extract(0,20,now)
+$ open/append csv envmon_'node'.csv       !temperature log
+$ write csv now+","+tempbuf
+$ close csv
+$ open/append log envmon_'node'.log       !event log
+$ define/user sys$output nl:
+$ define/user sys$error nl:
+$ delete envmon_'node'.htm;*, envmon_'node'.lis;*
+$ open/write lis ENVMON_'node'.lis        !text file
+$ open/write htm envmon_'node'.htm        !web page
+$ call html1 'node' "''model'"
+$ write lis "''node' - ''model'"
+$ write lis "''now'"
+$ call html2 "''now'"
+$ write lis ""
+$ write lis "Sensor            Status  Current  Alarm Setting"
+$ write lis "------            ------  -------  -------------"
+$ if ENVMON_SENSOR_PORT .nes. ""
+$ then
+$   call ReadSensor 'ENVMON_SENSOR_PORT'    !get room temperature
+$   if tempbuf .gts. ENVMON_ROOM_MAXTEMP
+$   then
+$     write lis "Room Temperature  Failed  ''tempbuf'       " + -
+      "''ENVMON_ROOM_MAXTEMP'"
+$     call html4 "yellow" "Room Temperature" "Failed" 'tempbuf' 'ENVMON_ROOM_MAXTEMP'
+$     msg="Room temperature ''tempbuf' > ''ENVMON_ROOM_MAXTEMP'"
+$     call log "''msg'"
+$   else
+$     write lis "Room Temperature  Normal  ''tempbuf'       " + -
+      "''ENVMON_ROOM_MAXTEMP'"
+$     call html4 "silver" "Room Temperature" "Normal" 'tempbuf' 'ENVMON_ROOM_MAXTEMP'
+$   endif
+$ endif
+$ thermal_ctr = 0
+$ thermal_size = 2
+$ thermal_length = 32
+$ fan_ctr = 0
+$ fan_size = 2
+$ fan_length = 32
+$ temp_ctr = 0
+$ temp_size = 2
+$ temp_length = 32
+$ power_ctr = 0
+$ power_size = 2
+$ power_length = 32
+$ tv = f$getsyi("thermal_vector")
+$ fv = f$getsyi("fan_vector")
+$ temp_v = f$getsyi("temperature_vector")
+$ pv = f$getsyi("power_vector")
+$ gosub temp_loop         !cpu temp
+$ gosub thermal_loop      !thermal sensor
+$ gosub fan_loop          !fan sensor
+$ gosub power_loop        !power controller
+$ close log
+$!
+$ write lis ""
+$ write lis "Event Log"
+$ write lis "---------"
+$ call html5
+$ open/read log envmon_'node'.log
+$nextrec:
+$ read/end=eof log buf
+$ pos=f$locate(",",buf)
+$ date=f$extract(0,pos,buf)
+$ event=f$extract(pos+1,999,buf)
+$ write lis date+","+event
+$ call html6 "''date'" "''event'"
+$ goto nextrec
+$eof:
+$ close log
+$ close lis
+$ call html99
+$ close htm
+$ call ftp_file envmon_'node'.htm     !send web page to web server
+$ wait 'ENVMON_SLEEP'                 !sleep for an interval
+$ goto readtemp
+$done:
+$ set message/notext/nofac/noid/nosever
+$ close log
+$ close lis
+$ close htm
+$ close csv
+$ set message/text/fac/id/sever
+$ exit
+$!
+$! Begin subroutines
+$!
+$THERMAL_LOOP:
+$ thermal_ctr = thermal_ctr + 1
+$ if thermal_ctr * thermal_size .gt. thermal_length then return
+$ thermal'thermal_ctr = f$extract(thermal_length - (thermal_size * thermal_ctr),
+thermal_size,tv)
+$ if thermal'thermal_ctr .eqs. "01"
+$ then
+$   write lis "Thermal ''thermal_ctr'         Normal"
+$   call html4 "silver" "Thermal ''thermal_ctr'" "Normal" "&nbsp;" "&nbsp;"
+$ endif
+$ if thermal'thermal_ctr .eqs. "00"
+$ then
+$   msg="Thermal ''thermal_ctr'         Failed"
+$   write lis "''msg'"
+$   call log "''msg'"
+$   call html4 "yellow" "Thermal ''thermal_ctr'" "Failed" "&nbsp;" "&nbsp;"
+$ endif
+$ goto thermal_loop
+$!
+$FAN_LOOP:
+$ fan_ctr = fan_ctr + 1
+$ if fan_ctr * fan_size .gt. fan_length then return
+$ fan'fan_ctr = f$extract(fan_length - (fan_size * fan_ctr),fan_size,fv)
+$ if fan'fan_ctr .eqs. "01"
+$ then
+$   write lis "FAN ''fan_ctr'             Normal"
+$   call html4 "silver" "FAN ''fan_ctr'" "Normal" "&nbsp;" "&nbsp;"
+$ endif
+$ if fan'fan_ctr .eqs. "00"
+$ then
+$   msg="FAN ''fan_ctr'             Failed"
+$   write lis "''msg'"
+$   call log "''msg'"
+$   call html4 "yellow" "FAN ''fan_ctr'" "Failed" "&nbsp;" "&nbsp;"
+$ endif
+$ goto fan_loop
+$!
+$TEMP_LOOP:
+$ temp_ctr = temp_ctr + 1
+$ if temp_ctr * temp_size .gt. temp_length then return
+$ temp'temp_ctr = f$extract(temp_length - (temp_size * temp_ctr),temp_size,temp_
+v)
+$ if temp'temp_ctr .nes. "FF"
+$ then
+$   actual_temp = temp'temp_ctr
+$   actual_temp = %x'actual_temp
+$   if actual_temp .gt. f$integer(ENVMON_CPU_MAXTEMP)
+$   then
+$     write lis "CPU Temperature   Failed  ''actual_temp'       " + -
+      "''ENVMON_CPU_MAXTEMP'"
+$     msg="CPU temperature ''actual_temp' > ''ENVMON_CPU_MAXTEMP'"
+$     call log "''msg'"
+$     call html4 "yellow" "CPU Temperature" "Failed" 'actual_temp' 'ENVMON_CPU_MAXTEMP'
+$   else
+$     write lis "CPU Temperature   Normal  ''actual_temp'       " + -
+      "''ENVMON_CPU_MAXTEMP'"
+$   call html4 "silver" "CPU Temperature" "Normal" 'actual_temp' 'ENVMON_CPU_MAXTEMP'
+$   endif
+$ endif
+$ goto temp_loop
+$!
+$POWER_LOOP:
+$ power_ctr = power_ctr + 1
+$ if power_ctr * power_size .gt. power_length then return
+$ power'power_ctr = f$extract(power_length - (power_size * power_ctr),power_size
+,pv)
+$ if power'power_ctr .eqs. "01"
+$ then
+$   msg="Power Supply ''power_ctr'    Normal"
+$   write lis "''msg'"
+$   call html4 "silver" "Power Supply ''power_ctr'" "Normal" "&nbsp;" "&nbsp;"
+$ endif
+$ if power'power_ctr .eqs. "00"
+$ then
+$   msg="Power Supply ''power_ctr'    Failed"
+$   write lis "''msg'"
+$   call log "''msg'"
+$   call html4 "yellow" "Power Supply ''power_ctr'" "Failed" "&nbsp;" "&nbsp;"
+$ endif
+$ goto power_loop
+$!
+$!-------------------- subroutines --------------------
+$!
+$ReadSensor: SUBROUTINE
+$!read serial port and returns temperature value in global symbol tempbuf.
+$ open/write tty 'P1'
+$ write tty "P"      !poll for data
+$ tempbuf==""
+$ read/timeout=5/prom="" tty tempbuf   !read serial port
+  close tty
+$ ENDSUBROUTINE
+$!
+$FTP_FILE: SUBROUTINE
+$ augsm1="nn.nn.nn.nn"
+$ pipe (-
+  write sys$output "ascii" ; -
+  write sys$output "cd [.relay]" ; -
+  write sys$output "put ''p1'" ; -
+  write sys$output "bye") -
+| ftp 'augsm1'/user=gs_ftp/pass=<pwd>
+$ENDSUBROUTINE
+$!
+$HTML1: SUBROUTINE
+$ write htm "<html>"
+$ write htm "<head>"
+$ write htm "  <link rel=stylesheet href=site.css type=text/css>"
+$ write htm "</head>"
+$ write htm "<body bgcolor=wheat>"
+$ write htm "<br>"
+$ write htm "<center><span class=a12b>"
+$ write htm "''p1' <a href=''p1'.htm>-</a> ''p2'"
+$ENDSUBROUTINE
+$!
+$HTML2: SUBROUTINE
+$ write htm "</span><br>"
+$ write htm "<span class=a10b>''p1'</span>"
+$ write htm "</center>"
+$ write htm "<br>"
+$ write htm "<table cellspacing=0 cellpadding=4 border=1 align=center class=a10n
+>"
+$ write htm "<tr bgcolor=gray class=a10b>"
+$ write htm "  <td align=center>"
+$ write htm "    Sensor"
+$ write htm "  </td>"
+$ write htm "  <td align=center>"
+$ write htm "    Status"
+$ write htm "  </td>"
+$ write htm "  <td align=center>"
+$ write htm "    Current"
+$ write htm "  </td>"
+$ write htm "  <td align=center>"
+$ write htm "    Alarm Setting"
+$ write htm "  </td>"
+$ write htm "</tr>"
+$ENDSUBROUTINE
+$!
+$HTML4: SUBROUTINE
+$ write htm "<tr bgcolor=''p1'>"
+$ write htm "  <td align=left>"
+$ write htm "    ''p2'"
+$ write htm "  </td>"
+$ write htm "  <td align=center>"
+$ if p1 .eqs. "silver"
+$ then
+$   write htm "    ''p3'"
+$ else
+$   write htm "    <a href=alarm_disable.htm>''p3'</a>"
+$ endif
+$ write htm "  </td>"
+$ write htm "  <td align=center>"
+$ write htm "    ''p4'"
+$ write htm "  </td>"
+$ write htm "  <td align=center>"
+$ write htm "    ''p5'"
+$ write htm "  </td>"
+$ write htm "</tr>"
+$ENDSUBROUTINE
+$!
+$HTML5: SUBROUTINE
+$ write htm "</table>"
+$ write htm "<br>"
+$ write htm "<table cellspacing=0 cellpadding=4 border=1 align=center class=a10n
+>"
+$ write htm "<caption class=a12b>Event Log</caption>"
+$ENDSUBROUTINE
+$!
+$HTML6: SUBROUTINE
+$ write htm "<tr bgcolor=silver>"
+$ write htm "  <td align=left>"
+$ write htm "    ''p1'"
+$ write htm "  </td>"
+$ write htm "  <td align=left>"
+$ write htm "    ''p2'"
+$ write htm "  </td>"
+$ write htm "</tr>"
+$ENDSUBROUTINE
+$!
+$HTML99: SUBROUTINE
+$ write htm "</table>"
+$ write htm "</body>"
+$ write htm "</html>"
+$ENDSUBROUTINE
+$!
+$LOG: SUBROUTINE
+$ now=f$time()
+$ now=f$extract(0,20,now)
+$ write log now+",''p1'"
+$ if ENVMON_EVENT_NOTIFICATION                          !check global symbol
+$ then
+$   call email "''f$getsyi("nodename")' - ''p1'"        !email alert
+$   write sys$output "ENVMON ALERT: ''p1'"              !batch log
+$   call OVO "''p1'                                     !OVO alert
+$ endif
+$ENDSUBROUTINE
+$!
+$EMAIL: SUBROUTINE
+$  MAIL/SUBJ="''p1'" NL: IP$nn.nn.nn.nn::mail_gate6
+$ENDSUBROUTINE
+$!
+$OVO: SUBROUTINE
+$!Send alert message to OVO console.
+$ @amt_root:amt_setup
+$ am -application appmind -inst "" -attach envmon
+$ am -application appmind -inst "" -message E 0 "''p1'"
+$ am -application appmind -inst "" -terminate 0
+$ENDSUBROUTINE
+</pre>
+</body>
+</html>
