@@ -1,0 +1,148 @@
+<html>
+<head>
+<title>
+Waveshare 4.3" E-paper display
+</title>
+<STYLE TYPE="text/css">
+.text1 { color:maroon;font-weight:bold;font-size:140%;font-family:sans-serif;}
+.text2 { color:black;font-weight:bold;font-size:95%;font-family:courier;}
+.text3 { color:maroon;font-weight:1000;font-size:100%;font-family:sans-serif;}
+.text4 { color:black;font-weight:bold;font-size:95%;font-family:sans-serif;}
+.indented
+   {
+   padding-left: 60pt;
+   padding-right: 50pt;
+   }
+</STYLE>
+<link rel=stylesheet type="text/css" href="../style.css">
+</head>
+
+<body bgcolor=white class=text4>
+
+<center><h3 class=text1>Waveshare 4.3" E-paper display</h3></center>
+<div class="indented">
+
+This is a US$60 serial interface E-Ink display module, 4.3inch, 800 X 600 resolution, with embedded font libraries, ultra low power consumption.
+<br><br>
+Purchase from the <a href="http://www.waveshare.com/4.3inch-e-Paper.htm" class=f5 title="online shop" target="_blank">online shop.</a>
+<br>
+Documentation and downloads can be found <a href="http://www.waveshare.com/wiki/4.3inch_e-Paper#Resources" class=f5 title="Documentation" target="_blank">here.</a>
+<br><br><br>
+<image src=front.jpg border=0>
+<br><br><br>
+<image src=back.jpg border=0>
+<br><br>
+<h3 class=text1>Download demo code</h3>
+Download from http://www.waveshare.com/wiki/4.3inch_e-Paper_Software
+<ul>
+<li>4.3inch-e-Paper-COM.7z (serial port test program)</li> 
+<li>UC-GUI-BitmapConvert.7z (image conversion tool)</li>
+<li>4.3inch-e-paper-TF.zip (vendor fonts and images)</li>
+</ul>
+
+Download from http://www.waveshare.com/w/upload/e/eb/
+<ul>
+<li>4.3inch-e-Paper-Code.7z (Arduino demo code)</li>
+</ul>
+<h3 class=text1>Serial port interface</h3>
+Test-drive the display by hooking it to a USB serial device and connect to PC. Ignore the RST(1) and WAKE_UP(2) lines.
+<br><br>
+<image src=usbserial.jpg border=0>
+<br><br>
+Check your COM port in Device Manager -> Ports -> Silicon Labs CP210x (COM4).
+<br>
+Run the test program:
+<br>
+4.3inch-e-Paper-COM\EPSCOMM\EN\EPSCOMM_EN.exe
+<br><br>
+Set port COM4
+<br>
+Open -> Shake hands (OK in Receive)
+<br><br>
+<image src=textcmd.jpg border=0>
+<br><br>
+Set X1=100, Y1=100, Input text=DIY 4.3-inch Kindle device!
+<br>
+Character -> Refresh
+<br><br>
+<image src=textdisplay.jpg border=0><br><br>
+<br><br>
+Clear screen -> Refresh
+<br>
+Set X1=0, Y1=0, Input text=PIC7.BMP
+<br><br>
+<image src=piccmd.jpg border=0>
+<br><br>
+Picture -> Refresh
+<br><br>
+<image src=picdisplay.jpg border=0>
+<br>
+<h3 class=text1>Arduino interface</h3>
+Create the folder C:\Users\...\Documents\Arduino\libraries\Epaper.
+<br>
+Copy epd.cpp and epd.h (in 4.3inch-e-Paper-Code\4_3inch-ePaper\4_3inch-ePaper-demo\Arduino-epd\epd)
+to Epaper folder.
+<br><br>
+Format a microSD card(16G card worked ok) as FAT32, 4KB allocation unit size in Windows.
+<br>
+Copy 4.3inch-e-paper-TF\TF\*.* to microSD card.
+<br><br>
+<font class="text3">Generate custom bitmap images</font>
+<br>
+Use MSPAINT to resize image to 800x600.<br>
+Save as BMP,  followed by 24-bit bitmap.<br>
+Run uC-GUI-BitmapConvert.exe<br>
+Open bitmap image.<br>
+Image -> Convert Into -> Gray4 (2 BPP)<br>
+Save as BMP eg. MT07.BMP (all upcase,max 9 char).<br>
+Copy to microSD card and insert into display socket.<br>
+<br>
+<image src=microsd.png border=0>
+<br>
+<font class="text3">Connect  display to  Arduino</font>
+<br><br>
+<table class="f1" border=1 bgcolor="wheat">
+<tr class=text4 bgcolor="silver"><td>Arduino</td><td>4.3inch e-Paper</td></tr>
+<tr class=text4><td>5V</td><td>Red/6 VCC</td></tr>
+<tr class=text4><td>GND</td><td>Black/5 GND</td></tr>
+<tr class=text4><td>RX</td><td>White/4 DOUT</td></tr>
+<tr class=text4><td>TX</td><td>Green/3 DIN</td></tr>
+<tr class=text4><td>D2</td><td>Yellow/2 WAKE_UP</td></tr>
+<tr class=text4><td>leave unconnected</td><td>Blue/1 RST</td></tr>
+</table>
+<br><br>
+<image src=arduino.jpg border=0>
+<br><br>
+Source code is in 4.3inch-e-Paper-Code\4_3inch-ePaper\4_3inch-ePaper-demo\Arduino-epd\<a href="Arduino-epd.txt" class=f5 title="source code" target="_blank">Arduino-epd.ino</a>
+<br>
+Since the display shares the RX/TX lines of the Arduino Pro Mini UART with the USB serial interface:
+<br><br>
+Open code in Arduino IDE.
+<br>
+Disconnect display RX/TX lines.
+<br>
+Connect USB serial RX/TX lines.
+<br>
+Compile and upload code to Arduino.
+<br>
+Disconnect  USB serial RX/TX lines.
+<br>
+Connect display RX/TX lines.
+<br>
+Reset Arduino to restart demo program.
+<br>
+Code will cycle thru several sample screens.
+<br><br>
+<video src="RunDemo.mp4" type="video/mp4" controls="controls"> 
+</video>
+<br><br>
+Last picture retained on screen after power off.
+<br><br>
+
+<image src=poweroff.jpg border=0>
+<br><br>
+Thanks to Paul Killeen for loaning the display for this write-up!
+<br><br>
+</div>
+</body>
+</html>
