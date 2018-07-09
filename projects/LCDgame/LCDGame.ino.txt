@@ -1,0 +1,507 @@
+/*
+A simple computer shooter game using a 16x2 LCD panel, an Arduino, piezo buzzer, WAV player module, and pushbutton switches.
+The first line of the LCD consists of randomly generated bricks which you blow up by launching rockets from a
+gun on the second line. A cooperative task scheduler called (naturally) TaskScheduler by Anatoli Arkhipenko 
+is used to handle the multitasking requirements of creating the bricks, processing the movement and fire buttons and
+playing musical tones. The bottom buttons shift the gun left-right. The buttons above are the fire buttons, you can shoot
+with left or right hand. The top left blue button is the power switch and the top right the reset button. The LED flashes
+when a brick is blown up and a piezo buzzer produces sounds of rocket launches and explosions(with a bit of imagination).
+You can plugin headphones to hear lasercannon shots and explosions from WAV files.
+*/
+#include <Button.h>
+#include "pitches.h"
+#include <LiquidCrystal.h>
+#include <TaskScheduler.h>
+#include <LowPower.h>
+#include <SoftwareSerial.h>
+
+#define gun byte(0)
+#define fire1 1
+#define fire2 2
+#define fire3 3
+#define brick 4
+#define blank 32
+#define ledflash 17
+#define PIEZO 0
+#define WAV 1
+#define BUSY 15
+
+// notes in the melody:
+int melody[] = {
+  NOTE_C4, NOTE_G3, NOTE_G3, NOTE_A3, NOTE_G3, 0, NOTE_B3, NOTE_C4
+  //NOTE_D4, NOTE_G3, NOTE_G3, NOTE_C3, NOTE_G3, 0, NOTE_D3, NOTE_E4
+};
+#define noteCount (sizeof(melody)/sizeof(int *)) //array size
+// note durations: 4 = quarter note, 8 = eighth note, etc.:
+int noteDurations[] = {
+  4, 8, 8, 4, 4, 4, 4, 4
+};
+
+SoftwareSerial mySerial(13, 14); // RX, TX for debugging purposes
+LiquidCrystal lcd(8, 7, 6, 5, 4, 3);
+long count;
+boolean running;
+int prevsense=0,sensorValue=0,col=0,prevcol=0,piezo,shots,cleared,thisNote,sfx,cheat=1;
+char wall[16];
+unsigned long start,elapsed;
+ButtonCB button(11, Button::INTERNAL_PULLUP, 30);
+ButtonCB lbutton(12, Button::INTERNAL_PULLUP, 30);
+ButtonCB rbutton(10, Button::INTERNAL_PULLUP, 30);
+
+byte bar[3] = {5,6,7};
+byte sfont0[8] = {
+  B00000,
+  B00000,
+  B00000,
+  B00100,
+  B01110,
+  B01010,
+  B11111
+};
+byte sfont1[8] = {
+  B00000,
+  B00000,
+  B00100,
+  B00000,
+  B01110,
+  B01110,
+  B11111
+};
+byte sfont2[8] = {
+  B00000,
+  B00100,
+  B00000,
+  B00000,
+  B01110,
+  B01110,
+  B11111
+};
+
+byte sfont3[8] = {
+  B00100,
+  B00000,
+  B00000,
+  B00000,
+  B01110,
+  B01110,
+  B11111
+};
+
+byte sfont4[8] = {
+  B11111,
+  B11111,
+  B11111,
+  B11111,
+  B11111,
+  B11111,
+  B11111
+};
+
+byte sfont5[8] = {
+  B11111,
+  B11111,
+  B11111,
+  B11111,
+  B11111,
+  B00000,
+  B00000
+};
+
+byte sfont6[8] = {
+  B11111,
+  B11111,
+  B11111,
+  B00000,
+  B00000,
+  B00000,
+  B00000
+};
+
+byte sfont7[8] = {
+  B11111,
+  B00000,
+  B00000,
+  B00000,
+  B00000,
+  B00000,
+  B00000
+};
+
+//write user-defined font to LCD at col,row.
+void wrudf(int col,int row,byte b0,byte b1,byte b2,byte b3,byte b4,byte b5,byte b6,byte b7) {
+  #define CGRAM 7
+  byte font[8];
+  
+  font[0]=b0;
+  font[1]=b1;
+  font[2]=b2;
+  font[3]=b3;
+  font[4]=b4;
+  font[5]=b5;
+  font[6]=b6;
+  font[7]=b7;
+  lcd.createChar(CGRAM, font);
+  lcd.setCursor(col,row);
+  lcd.write(CGRAM);
+}
+
+Scheduler runner;
+Task t1(TASK_IMMEDIATE, TASK_FOREVER, &t1Callback);   //
+Task t2(TASK_IMMEDIATE, TASK_FOREVER, &t2Callback);   //
+Task t3(TASK_IMMEDIATE, TASK_FOREVER, &t3Callback);   //
+Task t9(1000*cheat, TASK_FOREVER, &t9Callback);       //
+Task t8(TASK_IMMEDIATE, TASK_FOREVER, &t8Callback);   //
+Task led(1000,2,&ledCallback);                        //
+Task Msg1(TASK_IMMEDIATE, TASK_ONCE, &msg1Callback);  //
+Task Msg2(TASK_IMMEDIATE, TASK_ONCE, &msg2Callback);  //
+Task Msg3(TASK_IMMEDIATE, TASK_ONCE, &msg3Callback);  //
+Task Msg4(TASK_IMMEDIATE,TASK_ONCE, &msg4Callback);   //
+
+//Task Scheduler callback routine t1.
+void t1Callback()
+{
+  unsigned long count;
+  lcd.setCursor(prevcol,1);
+  count=t1.getRunCounter();
+  if (count == 1) {
+    shoot(200);
+    lcd.write(fire1);
+  }
+  if (count == 2) {
+    lcd.write(fire2);
+  }
+  if (count == 3) {
+    lcd.write(fire3);
+  }
+  if (count == 4) {
+    lcd.write(gun);
+
+    if (wall[prevcol] < 4) {
+      lcd.setCursor(prevcol,0);
+      if (wall[prevcol] < 3) {
+        lcd.write(bar[wall[prevcol]]);
+      }
+      else {
+        explode(10);
+        lcd.write(blank);
+        led.enable();
+        led.setIterations(2);
+        cleared++;
+      }
+      wall[prevcol]++;
+    }
+    t1.disable();
+    return;
+  }
+  t1.delay(50);
+}
+
+void t2Callback() {
+  if (!digitalRead(BUSY)) {
+    mySerial.write(1);
+    t2.disable();
+  }
+}
+
+void t3Callback()
+{
+  if (running) button.process(); 
+  if (running) lbutton.process(); 
+  if (running) rbutton.process();
+}
+
+void t8Callback()
+{
+  int noteDuration = 1000 / noteDurations[thisNote];
+  tone(piezo, melody[thisNote], noteDuration);
+  int pauseBetweenNotes = noteDuration * 1.30;
+  t8.setCallback(&t8_1Callback);
+  t8.delay(pauseBetweenNotes);
+  thisNote++;    
+}
+
+void t8_1Callback()
+{
+  noTone(piezo);
+  t8.setIterations(t8.getIterations()+1);
+  t8.setCallback(&t8Callback);
+}
+
+void t9Callback()
+{
+    int pos,count;
+
+    count=0;
+    for (int i=0; i < 16; i++) {
+      if (wall[i] == 4)
+        count++;
+    }
+    elapsed=(millis()-start)/1000;
+    if (cleared >= 10 and elapsed < 30*cheat) {
+      gameover(true);
+    }
+    else if (count > 0) {
+      do {
+        pos = random(0,16);
+      }
+      while (wall[pos] != 4);
+      lcd.setCursor(pos,0);
+      lcd.write(brick);
+      wall[pos]=0;
+      nubrik(220,20);    
+    }
+    else {
+      gameover(false);
+    }
+}
+
+void gameover(bool win) {
+  running=false;
+  t1.disable();
+  t3.disable();
+  t9.disable();
+  digitalWrite(ledflash, LOW);
+  //t8.enable();
+  lcd.clear();
+  if (win)
+    Msg3.enable();
+  else
+    Msg1.enable();
+}
+
+void ledCallback() {
+  digitalWrite(ledflash, !digitalRead(ledflash));
+}
+
+void msg1Callback() {
+  lcd.clear();
+  lcd.print("Game over,loser ");
+  if (sfx==WAV) {
+    mySerial.write(7);
+  }
+   Msg2.enableDelayed(1000);
+}
+
+void msg2Callback() {
+  lcd.setCursor(0, 1);
+  lcd.print("Woohoo! D'oh    ");
+  if (sfx==WAV) {
+    mySerial.write(5);
+  }
+  Msg4.enableDelayed(4000);
+}
+
+void msg3Callback() {
+  lcd.clear();
+  lcd.print("You've won...   ");
+  if (sfx==WAV) {
+    mySerial.write(4);
+  }
+  lcd.setCursor(0, 1);
+  lcd.print("Cool man!       ");
+  Msg4.enableDelayed(4000);
+}
+
+void msg4Callback() {
+  lcd.clear();
+  lcd.print(elapsed);
+  lcd.print("s,");
+  lcd.print(shots);
+  lcd.print(" shots");        
+  lcd.setCursor(0, 1);
+  lcd.print(cleared);
+  if (cleared < 2)
+    lcd.print(" brick blown");
+  else
+    lcd.print(" bricks blown");
+  digitalWrite(ledflash, LOW);
+  //Serial.println("sleep now");
+  //Serial.flush();
+  LowPower.powerDown(SLEEP_FOREVER, ADC_OFF, BOD_OFF); 
+}
+
+void piezoTone(long freq, long duration){
+  long aSecond = 1000000;
+  long period = aSecond/freq;
+  duration = duration*1000;
+  duration = duration/period;
+  for(long k = 0; k < duration; k++) {
+    digitalWrite(piezo,HIGH);
+    delayMicroseconds(period/2);
+    digitalWrite(piezo,LOW);
+    delayMicroseconds(period/2);
+  }
+}
+
+void nubrik(long freq, long duration){
+  if (sfx==PIEZO) {
+    piezoTone(freq,duration);
+  }
+  else {
+    //t2.enable();
+    if (!digitalRead(BUSY)) mySerial.write(1);
+  }
+}
+
+void shoot(long freq) {
+  if (sfx==PIEZO) {
+    long freqIn;  
+    for (freqIn = freq; freqIn < freq+40; freqIn = freqIn + 5) {
+      piezoTone(1000000/freqIn,10);
+    }
+  }
+  else {
+      mySerial.write(3);
+  }
+}
+
+void explode(int loop) {
+  if (sfx==PIEZO) {
+    for(int count = 0; count < loop; count++) {
+      int duration = random(500,1000);
+      int freq = random(1,5);
+      piezoTone(freq,duration);
+    }
+  }
+  else {
+    mySerial.write(2);
+  }
+}
+
+void setup() {
+  thisNote=0;
+  pinMode(ledflash, OUTPUT);      //builtin LED
+  digitalWrite(ledflash, LOW);
+  randomSeed(analogRead(A1));
+  Serial.begin(9600);
+  lcd.begin(16, 2);
+  piezo=9;
+  pinMode(piezo,OUTPUT);
+  lbutton.setPressHandler(onPressLB);
+  rbutton.setPressHandler(onPressRB);
+  button.setPressHandler(onPressFB);
+  lcd.setCursor(0, 0);
+  lcd.print("Press L/R button");
+  lcd.setCursor(0, 1);
+  lcd.print("for Piezo/Spkr");
+  sfx=9;
+  while (sfx == 9) {
+    lbutton.process();
+    rbutton.process();
+    button.process();
+  }
+  if (sfx == WAV)
+    mySerial.begin(9600);
+  shoot(200);
+
+  lcd.setCursor(0, 0);  
+  lcd.print("Build the wall? ");
+  delay(2000);
+  lcd.setCursor(0, 1);
+  lcd.print("No,blow the wall");
+  
+  delay(2000);
+  lcd.clear();
+  lcd.print("Blowup 10 bricks");
+  lcd.setCursor(0, 1);
+  lcd.print("in 30s to win.");
+  delay(3000);
+  lcd.clear();
+
+  lcd.createChar(0, sfont0);
+  lcd.createChar(1, sfont1); 
+  lcd.createChar(2, sfont2);
+  lcd.createChar(3, sfont3);
+  lcd.createChar(4, sfont4); 
+  lcd.createChar(5, sfont5); 
+  lcd.createChar(6, sfont6);
+  lcd.createChar(7, sfont7);
+
+  for (int i=0; i < 16; i++)
+    wall[i]=4;
+
+  t8.setIterations(noteCount);
+  runner.init();
+  runner.addTask(t1);
+  runner.addTask(t2);
+  runner.addTask(t3);
+  runner.addTask(t9);
+  runner.addTask(t8);
+  runner.addTask(led);
+  runner.addTask(Msg1);
+  runner.addTask(Msg2);
+  runner.addTask(Msg3);
+  runner.addTask(Msg4);
+  t9.enable();
+
+  running=true;
+  start=millis();
+  shots=0;
+  cleared=0;
+  col=8;
+  lcd.setCursor(col,1);
+  lcd.write(gun);
+  prevcol=col;
+  col++;
+
+  button.setPressHandler(onPressHoldFB);
+  button.setHoldHandler(onPressHoldFB);
+  button.setHoldRepeats(true);
+  button.setHoldThreshold(100);
+
+  lbutton.setPressHandler(onPressHoldLB);
+  lbutton.setHoldHandler(onPressHoldLB);
+  lbutton.setHoldRepeats(true);
+  lbutton.setHoldThreshold(150);
+
+  rbutton.setPressHandler(onPressHoldRB);
+  rbutton.setHoldHandler(onPressHoldRB);
+  rbutton.setHoldRepeats(true);
+  rbutton.setHoldThreshold(150);
+  t3.enable();
+
+}
+
+void onPressFB(const Button&) {
+  t9.setInterval(3000);
+  cheat=3;
+}
+
+void onPressLB(const Button&) {
+  sfx=PIEZO;
+}
+
+void onPressRB(const Button&) {
+  sfx=WAV;
+}
+
+void onPressHoldFB(const Button&) {
+  if (!t1.isEnabled()) {
+    t1.enable();
+    shots++;
+  }
+}
+
+void onPressHoldLB(const Button&) {
+  if (col > 1) {
+    lcd.setCursor(col-2, 1);
+    lcd.write(gun);
+    lcd.write(blank);
+    col--;
+    prevcol=col-1;
+  }
+}
+
+void onPressHoldRB(const Button&) {
+  if (col < 16) {
+    lcd.setCursor(col-1, 1);
+    lcd.write(blank);
+    lcd.write(gun);
+    prevcol=col;
+    col++;
+  }
+}
+
+void loop() {
+  runner.execute();   //start tasks
+}

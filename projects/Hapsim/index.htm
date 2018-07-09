@@ -1,0 +1,155 @@
+<html>
+<STYLE TYPE="text/css">
+<!--
+.text1 { color:maroon;font-weight:bold;font-size:120%;font-family:sans-serif;}
+.text2 { color:black;font-weight:bold;font-size:95%;font-family:courier;}
+.text3 { color:maroon;font-weight:1000;font-size:100%;font-family:sans-serif;}
+.text4 { color:black;font-weight:bold;font-size:95%;font-family:sans-serif;}
+.indented
+   {
+   padding-left: 50pt;
+   padding-right: 50pt;
+   }
+-->
+</STYLE>
+
+<body bgcolor=white class=text4>
+
+<center><h2 class=text1>
+HAPSIM and the AVR Studio Simulator<br>
+By Alex Wong<br>
+PIC Club meeting Aug 2008<br>
+</h2></center>
+<div class="indented">
+<h3 class=text3>AVR STUDIO</h3>
+
+<ul class=text4>
+<li>The AVR Studio is Atmel's answer to PIC's MPLAB.
+<br>
+<li>AVR Studio is an IDE for writing and debugging AVR applications in Windows environments.
+<br>
+<li>It provides a project management tool, source code editor, simulator, assembler, front-end for compilers, debugger.
+<br>
+<li>The popular open-source GCC compiler is available for AVR Studio packaged as WINAVR.
+<br>
+<li>Download and install WINAVR first, then AVR Studio. GCC automatically included as a compiler plug-in.
+<br>
+<li>Optimised code, wide user base, forum support, free.
+<br>
+<li>Compiler and library supports all AVR microcontrollers: ATMEGA, ATTINY, AT90, ATXMEGA
+</ul>
+
+<h3 class=text3>AVR SIMULATOR</h3>
+<ul class=text4>
+<li>AVR Simulator is a software simulator for the AVR devices. It simulates the CPU, including all instructions, interrupts and most of the on-chip I/O modules.
+
+<li>The AVR Simulator operates within the AVR Studio application as a debug target.
+
+<li>You can use normal debug commands such as Run, Break, Reset, Single step, set breakpoints and watch variables.
+
+<li>The I/O, memory and register views are fully functional using the AVR Simulator.
+
+<li>Debug by single stepping through C or assembler code.
+
+<li>You can test your code before burning into chip.
+
+</ul>
+
+<h3 class=text3>HAPSIM</h3>
+<ul class=text4>
+<li><a href=http://helmix.at/hapsim/>HAPSIM</a> stands for Helmi's AVR Periphery Simulator
+<li>Provides software-simulated LCD, USART/UART and TWI, LEDs, Push-Buttons and Keypad for the AVR Simulator.
+<li>With AVR Studio and HAPSIM in a laptop, you have a nice, portable workbench to experiment with various 
+projects.
+<li>Think of long bus trips, waiting at airports, ships, boring dates, etc.
+<br><br>
+<img src=hapsim1.gif border=0><br><br>
+
+<li>Supports one or more of the following components simultaneously:
+<ol>
+<li>HD44780U compatible LCD with 40 x 2 or 20 x 4 characters. 
+<li>Pushbuttons connected to Input Port Pins. 
+<li>LEDs connected to Output Port Pins. 
+<li>Terminal connected to USART, UART or TWI(I2C) ports. 
+<li>4x4 Matrix Keypad. 
+<li>Watch Cycle Counter and Simulation Speed
+</ol>
+<li>Easy configuration of the components using XML files.
+
+<li>Targets all microcontrollers supported by the AVR Simulator. 
+
+<li>AVR Studio Version 4.12.452 or higher strongly recommended.
+
+<li>Code tested with HAPSIM simulator will run on chips (and vice versa).
+
+<li>Build and run your code in the simulator. It will break at first line.
+
+<li>Run HAPSIM.EXE then open an existing XML config file.
+
+<li>Or create new control and add i/o components eg. button, leds.
+
+<li>Each component has customisable settings eg. PORT, bits.
+
+<li>Remember to specify your CPU type.
+
+<li>Once all components are set up, save settings in XML file.
+
+<li>Continue program simulation and test the virtual peripherals.
+
+<li>Always build with -DFASTSIM to fake delay timers.
+</ul>
+
+<h3 class=text3>Demo</h3>
+The supplied demo programs exercise the various HAPSIM components.
+<ul class=text4>
+<li>LCDTest<br>
+Simulates an LCD connected to an ATmega128 PORTA Pin 4-7<br><br>
+<img src=hapsim2.gif border=0><br><br>
+Cursor  - cycles thru _, _block, block, invisible cursor<br>
+Mode 0: Left/Right overwrites chars <br>
+Mode 1: Left/Right move cursor<br>
+Mode 2: Left/Right shifts display<br>
+Mode 3: Left/Right changes bitmap display<br>
+
+Must reset program to return to Mode 0.<br><br>
+
+<li>USART2TWI<br>
+Connects a terminal to USART0 and terminal to TWI (PORTD).<br>
+Data received from USART0 is written to TWI.<br>
+Data received from TWI sent to USART0.<br><br>
+<img src=hapsim3.gif border=0><br><br>
+<li>UART
+
+Terminal sends data to USART0 which echoes it back. Code also tested on an actual ATtiny2313 with no change.
+<br><br>
+<li>TestKeypad<br><br>
+
+Simulates a 0-9 cursor keypad with selection sent to terminal.<br>
+Must define D FASTSIM in Project -> Config Options -> Custom Options.<br><br>
+<img src=keypadtst.gif border=0><br><br>
+<li>Trinary Button<br><br>
+
+<li>utrans<br><br>
+
+<li>ToggleLED<br>
+
+Pushbutton turns LED on/off but has startup bug. Code also tested on an actual ATtiny2313 with no problems.
+</ul>
+<h3 class=text3>Tips and Tricks</h3>
+<ul>
+<li>Must specify correct F_CPU clock speed for baud rate to work properly.
+
+<li>Single-stepping can give misleading results with uart i/o.
+
+<li>Disable code optimisation for debugging. But larger code size, timer delays and watchdog affected.
+
+<li>Switch debounce using delays do not simulate accurately unless you specify -D FASTSIM build option.
+
+<li>Certain antivirus eg. Trend Micro will block HAPSIM dll hook.
+
+<li>Always stop AVR simulation before closing HAPSIM.
+</ul>
+
+</div>
+</body>
+</html>

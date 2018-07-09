@@ -1,0 +1,130 @@
+<html>
+<head>
+<title>
+Blow the wall!
+</title>
+<STYLE TYPE="text/css">
+.text1 { color:maroon;font-weight:bold;font-size:140%;font-family:sans-serif;}
+.text2 { color:black;font-weight:bold;font-size:95%;font-family:courier;}
+.text3 { color:maroon;font-weight:1000;font-size:100%;font-family:sans-serif;}
+.text4 { color:black;font-weight:bold;font-size:95%;font-family:sans-serif;}
+.indented
+   {
+   padding-left: 60pt;
+   padding-right: 50pt;
+   }
+</STYLE>
+<link rel=stylesheet type="text/css" href="../style.css">
+</head>
+
+<body bgcolor=white class=text4>
+
+<center><h3 class=text1>Blow the wall!</h3></center>
+<div class="indented">
+
+This is a simple computer shooter game using a 16x2 LCD panel, an Arduino, piezo buzzer, WAV player module, and pushbutton switches.
+The first line of the LCD consists of randomly generated bricks which you blow up by launching rockets from a
+gun on the second line. A cooperative task scheduler called (naturally) TaskScheduler by Anatoli Arkhipenko 
+is used to handle the multitasking requirements of creating the bricks, processing the movement and fire buttons and playing musical tones.
+<h3 class=text3>Game Box</h3>
+The LCD game box has a laser-cut 3mm acrylic top panel. The bottom buttons shift the gun left-right.
+The next buttons above are the fire buttons, you can shoot with left or right hand. The top left blue button is the
+power switch and the top right the reset button. The LED flashes when a brick is blown up and a piezo buzzer
+produces sounds of rocket launches and explosions(with a bit of imagination). You can plugin headphones to hear lasercannon shots and explosions
+from WAV files.
+<br><br>
+<image src=gametitle.jpg border=0>
+<br><br>
+To win a game, you must blow up at least 10 bricks within 30 secs. It's not as easy as it sounds!
+<br><br>
+<image src=gameplay.jpg border=0>
+<br><br>
+Picture below shows bricks on first line of the LCD panel and the rocket launcher on the second. When the fire
+button is pressed, animated rockets shoot at the bricks.
+<br><br>
+<image src=gamebrick.jpg border=0>
+<br><br>
+Player statistics are shown at the end of each game.
+<br><br>
+<image src=gamestats.jpg border=0>
+<br><br>
+Winning game with WAV effects.
+<br><br>
+<video src="SFX_Win.mp4" type="video/mp4" controls="controls"> 
+Your browser does not support the video tag.
+</video>
+<br><br>
+Losing game with WAV effects.
+<br><br>
+<video src="SFX_Lose.mp4" type="video/mp4" controls="controls"> 
+Your browser does not support the video tag.
+</video>
+<br><br>
+Winning game with piezo effects.
+<br><br>
+<video src="PZO_Win.mp4" type="video/mp4" controls="controls"> 
+Your browser does not support the video tag.
+</video>
+
+<h3 class=text3>Schematic</h3>
+
+<image src=schematic.png border=1>
+<h3 class=text3>Resources</h3>
+
+<ul>
+<li><a href=https://github.com/arkhipenko/TaskScheduler>TaskScheduler library</a></li>
+<li><a href=https://github.com/leethomason/Button>Button library</a></li>
+<li><a href=https://github.com/rocketscream/Low-Power>Low power library</a></li>
+</ul>
+
+View the code <a href=LCDGame.ino.txt>here</a>.
+<br><br>
+Read the <a href=TaskScheduler.html>TaskScheduler</a> documentation for API details.
+<br><br>
+<a href=AU5017_MP3PLAYER.pdf target="_blank">MDFLY embedded MP3/WAV player module datasheet</a> for API details.
+<br><br>
+Sound effects WAV files from the web:
+<br><br>
+Bart Simpson
+<br>
+<audio controls>
+  <source src="1004.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio>
+<br><br>
+Homer Simpson
+<br>
+<audio controls>
+  <source src="1007.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio>
+<br>
+<audio controls>
+  <source src="1005.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio>
+<br><br>
+Brick, Lasercannon shot, Explosion
+<br>
+<audio controls>
+  <source src="1001.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio>
+<br>
+<audio controls>
+  <source src="1003.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio>
+<br>
+<audio controls>
+  <source src="1002.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio>
+
+
+
+<br><br>
+
+</div>
+</body>
+</html>
