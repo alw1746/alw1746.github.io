@@ -1,4 +1,2 @@
 # alw1746.github.io
-Personal website
-
-<a href=projects/>Projects</a>
+<a href=projects/>Personal website</a>
