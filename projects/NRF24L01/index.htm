@@ -1,1 +1,38 @@
+<html>
+<head>
+<title>
+Arduino Pro Mini with NRF24L01+ 2.4Ghz radio
+</title>
+<STYLE TYPE="text/css">
+.text1 { color:maroon;font-weight:bold;font-size:140%;font-family:sans-serif;}
+.text2 { color:black;font-weight:bold;font-size:95%;font-family:courier;}
+.text3 { color:maroon;font-weight:1000;font-size:100%;font-family:sans-serif;}
+.text4 { color:black;font-weight:bold;font-size:95%;font-family:sans-serif;}
+.indented
+   {
+   padding-left: 60pt;
+   padding-right: 50pt;
+   }
+</STYLE>
+<link rel=stylesheet type="text/css" href="../style.css">
+</head>
 
+<body bgcolor=white class=text4>
+
+<center><h3 class=text1>Arduino Pro Mini with NRF24L01+ 2.4Ghz radio</h3></center>
+<div class="indented">
+
+The nRF24L01+ is a cheap ($5 AUD) 2.4Ghz radio transceiver module on ebay with a data transfer rate of 250kbps, 1Mbps and 2Mbps over
+a SPI interface. It runs on 3.3V but the i/o pins are 5V-tolerant which makes it simple to interface to an Arduino Pro Mini. 
+<br><br>
+<image src=nrf24L01.png border=0>
+<br><br>
+A bypass capacitor is used to smooth out power fluctuations that could affect its operation. Some recommend the use of a 100nf decoupling cap to 
+filter out high frequency noise in the power as well. All the cheap ebay modules are clones of the original Nordic Semiconductor
+chip but good enough for hobbyist use.
+<br><br>
+<image src=schematic.png border=0>
+<br><br>
+</div>
+</body>
+</html>
