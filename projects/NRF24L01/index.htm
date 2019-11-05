@@ -1,4 +1,4 @@
-<html>
+has <html>
 <head>
 <title>
 Arduino Pro Mini with NRF24L01+ 2.4Ghz radio
@@ -20,28 +20,32 @@ Arduino Pro Mini with NRF24L01+ 2.4Ghz radio
 <body bgcolor=white class=text4>
 
 <center><h3 class=text1>Arduino Pro Mini with NRF24L01+ 2.4Ghz radio</h3></center>
+<br>
 <div class="indented">
 
 The nRF24L01+ is a cheap ($5 AUD) 2.4Ghz radio transceiver module on ebay with a data transfer rate of 250kbps, 1Mbps and 2Mbps over
-a SPI interface. It runs on 3.3V but the i/o pins are 5V-tolerant which makes it simple to interface to an Arduino Pro Mini. 
+a SPI interface. It runs on 3.3V but the i/o pins are 5V-tolerant which makes it easy to interface to an Arduino Pro Mini. 
 <br><br>
-<image src=nrf24L01.png border=0>
+<image src=nrf24_1.png border=0><image src=nrf24_2.jpg border=0>
 <br><br>
-A bypass capacitor is used to smooth out power fluctuations that could affect its operation. Some recommend the use of a 100nf decoupling cap to 
-filter out high frequency noise in the power as well. All the cheap ebay modules are clones of the original Nordic Semiconductor
+A 47uF bypass capacitor is used to smooth out power fluctuations that could affect its operation. Some recommend using a 100nf decoupling cap as well to 
+filter out high frequency noise in the power. All the cheap ebay modules are clones of the original Nordic Semiconductor
 chip but good enough for hobbyist use.
 <br><br>
 <image src=schematic.png border=0>
 <br><br>
- The example sketches below are customised from the original RF24 library at https://github.com/nRF24/RF24
+The NRF24L01+ has a peak transmit current of 115mA so a stable power supply from a 500 mA USB port is good. A 250 mA 3.3V LDO regulator
+steps the 5V down for the transceiver.
 <br><br>
-Range test using pingpair_ack sketch.<br>
-   https://github.com/alw1746/NRF24L01-Arduino/blob/master/examples/pingpair_ack/pingpair_ack.ino
-<br>
-Scan and display 2.4Ghz wifi channel traffic to help pick a 'quiet' channel.<br>
-   https://github.com/alw1746/NRF24L01-Arduino/blob/master/examples/scanner/scanner.ino
-   <br><br>
-   <a href=scanner_output.txt>Scanner output</a>
+The example sketches below are customised from the original RF24 library at https://github.com/nRF24/RF24
+<br><br>
+
+<a href="https://github.com/alw1746/NRF24L01-Arduino/blob/master/examples/pingpair_ack/pingpair_ack.ino">
+   Range test using pingpair_ack sketch.</a><br>
+<a href="https://github.com/alw1746/NRF24L01-Arduino/blob/master/examples/scanner/scanner.ino">
+   Scan and display 2.4Ghz wifi channel traffic to help pick a 'quiet' channel.</a><br>
+   
+<a href=scanner_output.txt>Scanner output</a>
    </div>
 </body>
 </html>
