@@ -1,0 +1,258 @@
+
+
+RF24/examples/pingpair_ack/
+
+ROLE: Pong back
+*** PRESS 'T' to begin transmitting to the other node
+Chip connected
+STATUS		 = 0x0e RX_DR=0 TX_DS=0 MAX_RT=0 RX_P_NO=7 TX_FULL=0
+RX_ADDR_P0-1	 = 0x544d52687c 0xabcdabcd71
+RX_ADDR_P2-5	 = 0xc3 0xc4 0xc5 0xc6
+TX_ADDR		 = 0x544d52687c
+RX_PW_P0-6	 = 0x01 0x01 0x00 0x00 0x00 0x00
+EN_AA		 = 0x3f
+EN_RXADDR	 = 0x02
+RF_CH		 = 0x4c
+RF_SETUP	 = 0x27
+CONFIG		 = 0x0f
+DYNPD/FEATURE	 = 0x03 0x06
+Data Rate	 = 250KBPS
+Model		 = nRF24L01+
+CRC Length	 = 16 bits
+PA Power	 = PA_MAX
+*** CHANGING TO TRANSMIT ROLE -- PRESS 'R' TO SWITCH BACK
+Now sending 51 as payload. Got response 51, round-trip delay: 1132 microseconds
+Now sending 52 as payload. Got response 52, round-trip delay: 1128 microseconds
+Now sending 53 as payload. Got response 53, round-trip delay: 3096 microseconds
+Now sending 54 as payload. Got response 54, round-trip delay: 3096 microseconds
+Now sending 55 as payload. Got response 55, round-trip delay: 3116 microseconds
+Now sending 56 as payload. Got response 56, round-trip delay: 1132 microseconds
+Now sending 57 as payload. Got response 57, round-trip delay: 1168 microseconds
+Now sending 58 as payload. Got response 58, round-trip delay: 3096 microseconds, faults: 0
+Now sending 59 as payload. Got response 59, round-trip delay: 1132 microseconds
+Now sending 60 as payload. Got response 60, round-trip delay: 1164 microseconds
+Now sending 61 as payload. Got response 61, round-trip delay: 3100 microseconds
+Now sending 62 as payload. Got response 62, round-trip delay: 1132 microseconds
+Now sending 63 as payload. Got response 63, round-trip delay: 1164 microseconds
+Now sending 64 as payload. Got response 64, round-trip delay: 1144 microseconds
+Now sending 65 as payload. Got response 65, round-trip delay: 1132 microseconds
+Now sending 66 as payload. Got response 66, round-trip delay: 3100 microseconds
+Now sending 67 as payload. Got response 67, round-trip delay: 1168 microseconds
+Now sending 68 as payload. Got response 68, round-trip delay: 1132 microseconds
+Now sending 69 as payload. Got response 69, round-trip delay: 3096 microseconds
+Now sending 70 as payload. Got response 70, round-trip delay: 1140 microseconds
+Now sending 71 as payload. Got response 71, round-trip delay: 1176 microseconds
+Now sending 72 as payload. Got response 72, round-trip delay: 1132 microseconds
+Now sending 73 as payload. Got response 73, round-trip delay: 1168 microseconds
+Now sending 74 as payload. Got response 74, round-trip delay: 1172 microseconds
+Now sending 75 as payload. Got response 75, round-trip delay: 1136 microseconds
+Now sending 76 as payload. Got response 76, round-trip delay: 1140 microseconds
+Now sending 77 as payload. Got response 77, round-trip delay: 1168 microseconds
+Now sending 78 as payload. Got response 78, round-trip delay: 1132 microseconds
+Now sending 79 as payload. Got response 79, round-trip delay: 1140 microseconds
+Now sending 80 as payload. Got response 80, round-trip delay: 1164 microseconds
+Now sending 81 as payload. Got response 81, round-trip delay: 3088 microseconds
+Now sending 82 as payload. Got response 82, round-trip delay: 1168 microseconds
+Now sending 83 as payload. Got response 83, round-trip delay: 3096 microseconds
+Now sending 84 as payload. Got response 84, round-trip delay: 1172 microseconds
+Now sending 85 as payload. Got response 85, round-trip delay: 1132 microseconds
+Now sending 86 as payload. Got response 86, round-trip delay: 1164 microseconds
+Now sending 87 as payload. Got response 87, round-trip delay: 1148 microseconds
+Now sending 88 as payload. Got response 88, round-trip delay: 1132 microseconds
+Now sending 89 as payload. Got response 89, round-trip delay: 1140 microseconds
+Now sending 90 as payload. Got response 90, round-trip delay: 1172 microseconds
+Now sending 91 as payload. Got response 91, round-trip delay: 1132 microseconds
+Now sending 92 as payload. Got response 92, round-trip delay: 1168 microseconds
+Now sending 93 as payload. Got response 93, round-trip delay: 3096 microseconds
+Now sending 94 as payload. Got response 94, round-trip delay: 5064 microseconds
+Now sending 95 as payload. Got response 95, round-trip delay: 1128 microseconds
+Now sending 96 as payload. Got response 96, round-trip delay: 1168 microseconds
+Now sending 97 as payload. Got response 97, round-trip delay: 3096 microseconds
+Now sending 98 as payload. Got response 98, round-trip delay: 16868 microseconds
+Now sending 99 as payload. failed.
+Now sending 99 as payload. Got response 99, round-trip delay: 7028 microseconds
+Now sending 100 as payload. Got response 100, round-trip delay: 1132 microseconds
+Now sending 101 as payload. Got response 101, round-trip delay: 10964 microseconds
+Now sending 102 as payload. failed.
+Now sending 102 as payload. Got response 102, round-trip delay: 14884 microseconds
+Now sending 103 as payload. Got response 103, round-trip delay: 3096 microseconds
+Now sending 104 as payload. Got response 104, round-trip delay: 1136 microseconds
+Now sending 105 as payload. Got response 105, round-trip delay: 5068 microseconds
+Now sending 106 as payload. Got response 106, round-trip delay: 3096 microseconds, faults: 2
+Now sending 107 as payload. Got response 107, round-trip delay: 1132 microseconds
+Now sending 108 as payload. Got response 108, round-trip delay: 1132 microseconds
+Now sending 109 as payload. Got response 109, round-trip delay: 1132 microseconds
+Now sending 110 as payload. Got response 110, round-trip delay: 1140 microseconds
+Now sending 111 as payload. Got response 111, round-trip delay: 1132 microseconds
+Now sending 112 as payload. Got response 112, round-trip delay: 3096 microseconds
+Now sending 113 as payload. Got response 113, round-trip delay: 1136 microseconds
+Now sending 114 as payload. Got response 114, round-trip delay: 1132 microseconds
+Now sending 115 as payload. Got response 115, round-trip delay: 1132 microseconds
+Now sending 116 as payload. Got response 116, round-trip delay: 3104 microseconds
+Now sending 117 as payload. Got response 117, round-trip delay: 3096 microseconds
+Now sending 118 as payload. Got response 118, round-trip delay: 1132 microseconds
+Now sending 119 as payload. Got response 119, round-trip delay: 3096 microseconds
+Now sending 120 as payload. Got response 120, round-trip delay: 1132 microseconds
+Now sending 121 as payload. Got response 121, round-trip delay: 3096 microseconds
+Now sending 122 as payload. Got response 122, round-trip delay: 1132 microseconds
+Now sending 123 as payload. Got response 123, round-trip delay: 1132 microseconds
+Now sending 124 as payload. Got response 124, round-trip delay: 3100 microseconds
+Now sending 125 as payload. Got response 125, round-trip delay: 1132 microseconds
+Now sending 126 as payload. Got response 126, round-trip delay: 1132 microseconds
+Now sending 127 as payload. Got response 127, round-trip delay: 3096 microseconds
+Now sending 128 as payload. Got response 128, round-trip delay: 1132 microseconds
+Now sending 129 as payload. Got response 129, round-trip delay: 5064 microseconds
+Now sending 130 as payload. Got response 130, round-trip delay: 1132 microseconds
+Now sending 131 as payload. Got response 131, round-trip delay: 1132 microseconds
+Now sending 132 as payload. Got response 132, round-trip delay: 1140 microseconds
+Now sending 133 as payload. Got response 133, round-trip delay: 1132 microseconds
+Now sending 134 as payload. Got response 134, round-trip delay: 1132 microseconds
+Now sending 135 as payload. Got response 135, round-trip delay: 1164 microseconds
+Now sending 136 as payload. failed.
+Now sending 136 as payload. failed.
+Now sending 136 as payload. Got response 136, round-trip delay: 26692 microseconds
+Now sending 137 as payload. failed.
+Now sending 137 as payload. failed.
+Now sending 137 as payload. Got response 137, round-trip delay: 12928 microseconds
+Now sending 138 as payload. Got response 138, round-trip delay: 1136 microseconds
+Now sending 139 as payload. Got response 139, round-trip delay: 1132 microseconds
+Now sending 140 as payload. Got response 140, round-trip delay: 1132 microseconds
+Now sending 141 as payload. Got response 141, round-trip delay: 3096 microseconds
+Now sending 142 as payload. Got response 142, round-trip delay: 8988 microseconds
+Now sending 143 as payload. Got response 143, round-trip delay: 7040 microseconds
+Now sending 144 as payload. Got response 144, round-trip delay: 1132 microseconds
+Now sending 145 as payload. Got response 145, round-trip delay: 3096 microseconds
+Now sending 146 as payload. failed.
+Now sending 146 as payload. failed.
+Now sending 146 as payload. Got response 146, round-trip delay: 1132 microseconds
+Now sending 147 as payload. Got response 147, round-trip delay: 1132 microseconds
+Now sending 148 as payload. failed.
+Now sending 148 as payload. Got response 148, round-trip delay: 5068 microseconds
+Now sending 149 as payload. Got response 149, round-trip delay: 10964 microseconds, faults: 9
+Now sending 150 as payload. Got response 150, round-trip delay: 5072 microseconds
+Now sending 151 as payload. Got response 151, round-trip delay: 7040 microseconds
+Now sending 152 as payload. failed.
+Now sending 152 as payload. Got response 152, round-trip delay: 1132 microseconds
+Now sending 153 as payload. Got response 153, round-trip delay: 3096 microseconds
+Now sending 154 as payload. Got response 154, round-trip delay: 1136 microseconds
+Now sending 155 as payload. Got response 155, round-trip delay: 5072 microseconds
+Now sending 156 as payload. Got response 156, round-trip delay: 26692 microseconds
+Now sending 157 as payload. Got response 157, round-trip delay: 24744 microseconds
+Now sending 158 as payload. Got response 158, round-trip delay: 8988 microseconds
+Now sending 159 as payload. Got response 159, round-trip delay: 1132 microseconds
+Now sending 160 as payload. Got response 160, round-trip delay: 12936 microseconds
+Now sending 161 as payload. Got response 161, round-trip delay: 26692 microseconds
+Now sending 162 as payload. Got response 162, round-trip delay: 3096 microseconds
+Now sending 163 as payload. Got response 163, round-trip delay: 3100 microseconds
+Now sending 164 as payload. Got response 164, round-trip delay: 1132 microseconds
+Now sending 165 as payload. Got response 165, round-trip delay: 3096 microseconds
+Now sending 166 as payload. Got response 166, round-trip delay: 1132 microseconds
+Now sending 167 as payload. Got response 167, round-trip delay: 1132 microseconds
+Now sending 168 as payload. Got response 168, round-trip delay: 10956 microseconds
+Now sending 169 as payload. Got response 169, round-trip delay: 1132 microseconds
+Now sending 170 as payload. Got response 170, round-trip delay: 14880 microseconds
+Now sending 171 as payload. Got response 171, round-trip delay: 8984 microseconds
+Now sending 172 as payload. failed.
+Now sending 172 as payload. failed.
+Now sending 172 as payload. failed.
+Now sending 172 as payload. Got response 172, round-trip delay: 1132 microseconds
+Now sending 173 as payload. Got response 173, round-trip delay: 3096 microseconds
+Now sending 174 as payload. Got response 174, round-trip delay: 1132 microseconds
+Now sending 175 as payload. Got response 175, round-trip delay: 12928 microseconds
+Now sending 176 as payload. Got response 176, round-trip delay: 1132 microseconds
+Now sending 177 as payload. failed.
+Now sending 177 as payload. failed.
+Now sending 177 as payload. failed.
+Now sending 177 as payload. failed.
+Now sending 177 as payload. failed.
+Now sending 177 as payload. Got response 177, round-trip delay: 10956 microseconds
+Now sending 178 as payload. failed.
+Now sending 178 as payload. Got response 178, round-trip delay: 1132 microseconds
+Now sending 179 as payload. Got response 179, round-trip delay: 5072 microseconds
+Now sending 180 as payload. Got response 180, round-trip delay: 1132 microseconds
+Now sending 181 as payload. Got response 181, round-trip delay: 1132 microseconds
+Now sending 182 as payload. Got response 182, round-trip delay: 1132 microseconds
+Now sending 183 as payload. Got response 183, round-trip delay: 3096 microseconds
+Now sending 184 as payload. Got response 184, round-trip delay: 1132 microseconds
+Now sending 185 as payload. Got response 185, round-trip delay: 1132 microseconds
+Now sending 186 as payload. Got response 186, round-trip delay: 3096 microseconds
+Now sending 187 as payload. Got response 187, round-trip delay: 1132 microseconds
+Now sending 188 as payload. Got response 188, round-trip delay: 1132 microseconds
+Now sending 189 as payload. Got response 189, round-trip delay: 1128 microseconds, faults: 19
+Now sending 190 as payload. Got response 190, round-trip delay: 1132 microseconds
+Now sending 191 as payload. Got response 191, round-trip delay: 3096 microseconds
+Now sending 192 as payload. Got response 192, round-trip delay: 1132 microseconds
+Now sending 193 as payload. Got response 193, round-trip delay: 1132 microseconds
+Now sending 194 as payload. Got response 194, round-trip delay: 1128 microseconds
+Now sending 195 as payload. Got response 195, round-trip delay: 7044 microseconds
+Now sending 196 as payload. Got response 196, round-trip delay: 3096 microseconds
+Now sending 197 as payload. Got response 197, round-trip delay: 3096 microseconds
+Now sending 198 as payload. Got response 198, round-trip delay: 3096 microseconds
+Now sending 199 as payload. Got response 199, round-trip delay: 1132 microseconds
+Now sending 200 as payload. Got response 200, round-trip delay: 5044 microseconds
+Now sending 201 as payload. Got response 201, round-trip delay: 1132 microseconds
+Now sending 202 as payload. Got response 202, round-trip delay: 3100 microseconds
+Now sending 203 as payload. Got response 203, round-trip delay: 3096 microseconds
+Now sending 204 as payload. Got response 204, round-trip delay: 3100 microseconds
+Now sending 205 as payload. Got response 205, round-trip delay: 1132 microseconds
+Now sending 206 as payload. Got response 206, round-trip delay: 3096 microseconds
+Now sending 207 as payload. Got response 207, round-trip delay: 1132 microseconds
+Now sending 208 as payload. Got response 208, round-trip delay: 1132 microseconds
+Now sending 209 as payload. Got response 209, round-trip delay: 3096 microseconds
+Now sending 210 as payload. Got response 210, round-trip delay: 1132 microseconds
+Now sending 211 as payload. Got response 211, round-trip delay: 1132 microseconds
+Now sending 212 as payload. Got response 212, round-trip delay: 1132 microseconds
+Now sending 213 as payload. Got response 213, round-trip delay: 1132 microseconds
+Now sending 214 as payload. Got response 214, round-trip delay: 1132 microseconds
+Now sending 215 as payload. Got response 215, round-trip delay: 1132 microseconds
+Now sending 216 as payload. Got response 216, round-trip delay: 3096 microseconds
+Now sending 217 as payload. Got response 217, round-trip delay: 3096 microseconds
+Now sending 218 as payload. failed.
+Now sending 218 as payload. failed.
+Now sending 218 as payload. failed.
+Now sending 218 as payload. Got response 218, round-trip delay: 8984 microseconds
+Now sending 219 as payload. failed.
+Now sending 219 as payload. failed.
+Now sending 219 as payload. Got response 219, round-trip delay: 5068 microseconds
+Now sending 220 as payload. failed.
+Now sending 220 as payload. Got response 220, round-trip delay: 20796 microseconds
+Now sending 221 as payload. Got response 221, round-trip delay: 22776 microseconds
+Now sending 222 as payload. failed.
+Now sending 222 as payload. Got response 222, round-trip delay: 1132 microseconds
+Now sending 223 as payload. Got response 223, round-trip delay: 3092 microseconds
+Now sending 224 as payload. Got response 224, round-trip delay: 1132 microseconds
+Now sending 225 as payload. Got response 225, round-trip delay: 1132 microseconds
+Now sending 226 as payload. failed.
+Now sending 226 as payload. Got response 226, round-trip delay: 1132 microseconds
+Now sending 227 as payload. Got response 227, round-trip delay: 1132 microseconds
+Now sending 228 as payload. Got response 228, round-trip delay: 1132 microseconds
+Now sending 229 as payload. Got response 229, round-trip delay: 1132 microseconds
+Now sending 230 as payload. Got response 230, round-trip delay: 1132 microseconds
+Now sending 231 as payload. Got response 231, round-trip delay: 1136 microseconds, faults: 27
+Now sending 232 as payload. failed.
+Now sending 232 as payload. Got response 232, round-trip delay: 1132 microseconds
+Now sending 233 as payload. Got response 233, round-trip delay: 1132 microseconds
+Now sending 234 as payload. Got response 234, round-trip delay: 1132 microseconds
+Now sending 235 as payload. failed.
+Now sending 235 as payload. Got response 235, round-trip delay: 10964 microseconds
+Now sending 236 as payload. Got response 236, round-trip delay: 3096 microseconds
+Now sending 237 as payload. Got response 237, round-trip delay: 1132 microseconds
+Now sending 238 as payload. Got response 238, round-trip delay: 1132 microseconds
+Now sending 239 as payload. Got response 239, round-trip delay: 1132 microseconds
+Now sending 240 as payload. Got response 240, round-trip delay: 1128 microseconds
+Now sending 241 as payload. Got response 241, round-trip delay: 3096 microseconds
+Now sending 242 as payload. Got response 242, round-trip delay: 8988 microseconds
+Now sending 243 as payload. Got response 243, round-trip delay: 3096 microseconds
+Now sending 244 as payload. Got response 244, round-trip delay: 8992 microseconds
+Now sending 245 as payload. Got response 245, round-trip delay: 5072 microseconds
+Now sending 246 as payload. Got response 246, round-trip delay: 1132 microseconds
+Now sending 247 as payload. Got response 247, round-trip delay: 1132 microseconds
+Now sending 248 as payload. Got response 248, round-trip delay: 1132 microseconds
+Now sending 249 as payload. Got response 249, round-trip delay: 1132 microseconds
+Now sending 250 as payload. Got response 250, round-trip delay: 1132 microseconds
+Now sending 251 as payload. Got response 251, round-trip delay: 5072 microseconds
+Now sending 252 as payload. Got response 252, round-trip delay: 7044 microseconds
+Now sending 253 as payload. Got response 253, round-trip delay: 1132 microseconds
+Now sending 254 as payload. Got response 254, round-trip delay: 1132 microseconds
+Now sending 255 as payload. Got response 255, round-trip delay: 1132 microseconds
+Now sending 0 as payload. Got response 0, round-trip delay: 1172 microseconds
