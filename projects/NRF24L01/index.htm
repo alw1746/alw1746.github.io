@@ -1,7 +1,7 @@
-has <html>
+<html>
 <head>
 <title>
-Arduino Pro Mini with NRF24L01+ 2.4Ghz radio
+Arduino Pro Mini with nRF24L01+ 2.4GHz radio
 </title>
 <STYLE TYPE="text/css">
 .text1 { color:maroon;font-weight:bold;font-size:140%;font-family:sans-serif;}
@@ -19,33 +19,49 @@ Arduino Pro Mini with NRF24L01+ 2.4Ghz radio
 
 <body bgcolor=white class=text4>
 
-<center><h3 class=text1>Arduino Pro Mini with NRF24L01+ 2.4Ghz radio</h3></center>
+<center><h3 class=text1>Arduino Pro Mini with nRF24L01+ 2.4GHz radio</h3></center>
 <br>
 <div class="indented">
 
-The nRF24L01+ is a cheap ($5 AUD) 2.4Ghz radio transceiver module on ebay with a data transfer rate of 250kbps, 1Mbps and 2Mbps over
+The nRF24L01+ is a cheap ($5 AUD) 2.4GHz radio transceiver module widely available on ebay with a data transfer rate of 250kbps, 1Mbps and 2Mbps over
 a SPI interface. It runs on 3.3V but the i/o pins are 5V-tolerant which makes it easy to interface to an Arduino Pro Mini. 
+There are plenty of online documentation and guides on how to use this transceiver. For example  
+see this <a href="https://howtomechatronics.com/tutorials/arduino/arduino-wireless-communication-nrf24l01-tutorial/">tutorial</a>.
+
 <br><br>
-<image src=nrf24_1.png border=0><image src=nrf24_2.jpg border=0>
+<image src=nrf24_2.png border=0><image src=nrf24_1.png border=0>
 <br><br>
+
 A 47uF bypass capacitor is used to smooth out power fluctuations that could affect its operation. Some recommend using a 100nf decoupling cap as well to 
-filter out high frequency noise in the power. All the cheap ebay modules are clones of the original Nordic Semiconductor
-chip but good enough for hobbyist use.
+filter out any high frequency noise in the power. All the cheap ebay modules are clones of the original Nordic Semiconductor
+chip but good enough for hobbyists to play with. Some are worse than others so do a range/reliability test to check them out.
 <br><br>
 <image src=schematic.png border=0>
 <br><br>
-The NRF24L01+ has a peak transmit current of 115mA so a stable power supply from a 500 mA USB port is good. A 250 mA 3.3V LDO regulator
+The nRF24L01+ has a peak transmit current of 115mA so a stable power supply from a 500mA USB port is good. A 250mA 3.3V LDO regulator
 steps the 5V down for the transceiver.
 <br><br>
-The example sketches below are customised from the original RF24 library at https://github.com/nRF24/RF24
+My sketches below are customised from the original <a href="https://github.com/nRF24/RF24">RF24 library</a> which is well documented
+<a href="http://tmrh20.github.io/RF24/">here</a>.
+<br>
+<ol>
+<li><a href="https://github.com/alw1746/NRF24L01-Arduino/blob/master/examples/pingpair_ack/pingpair_ack.ino">pingpair_ack.ino</a><br>
+Range/reliability testing between 2 transceivers using a timed ping-pong (transmit-response) algorithm.
+<br>
+<p>2m apart in same room - <a href="range1.txt">output text file</a>
+<br>
+10m apart, separate rooms, 2 brick walls - <a href="range2.txt">output text file</a>
+<br></p>
+<li><a href="https://github.com/alw1746/NRF24L01-Arduino/blob/master/examples/scanner/scanner.ino">scanner.ino</a><br>
+Scan and display 2.4GHz wifi channel traffic to help pick a 'quiet' channel.
+<br>
+The default radio channel used by nRF24L01+ is 76(0x4C) which is on the edge of busy wifi traffic.
 <br><br>
-
-<a href="https://github.com/alw1746/NRF24L01-Arduino/blob/master/examples/pingpair_ack/pingpair_ack.ino">
-   Range test using pingpair_ack sketch.</a><br>
-<a href="https://github.com/alw1746/NRF24L01-Arduino/blob/master/examples/scanner/scanner.ino">
-   Scan and display 2.4Ghz wifi channel traffic to help pick a 'quiet' channel.</a><br>
-   
-<a href=scanner_output.txt>Scanner output</a>
+<image src=scanner_output.png border=0 width=675px height=446px>
+<br><br>
+<a href=scanner_output.txt>output text file</a>
+</ol>
+<br><br>
    </div>
 </body>
 </html>
