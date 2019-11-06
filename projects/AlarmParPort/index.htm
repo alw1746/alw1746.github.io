@@ -37,24 +37,16 @@ Pin 18 - 25 = Ground
 <b>C++ Control Program</b>
 <br><br>
 <a href=setport_cpp.txt>setport</a> is a C++ program that writes a bit pattern to LPT1 to toggle data output lines high(1) or low(0). It
-uses an NT driver Tinyport 2.0(included) which allows user mode programs to access the parallel port directly. This program has
+uses an NT driver Tinyport 2.0(included in zip) which allows user mode programs to access the parallel port directly. This program has
 been tested under Windows NT 4 only. To control the alarm circuit, only pin 2(Data 0) needs to be set/cleared. Hence the bit pattern is
-simple - 1 or 0. Download the software <a href=setport.zip>here</a>.
-<br><br>
-Freeware NT drivers:
-<br><br>
-<a href=http://ourworld.compuserve.com/homepages/manfred_keul/tinyport.zip>TinyPort 2.2(Win2K/XP)</a><br>
-<a href=http://www.embeddedtronics.com/public/Electronics/minidaq/userport/UserPort.zip>UserPort</a><br>
-<a href=http://www.beyondlogic.org/porttalk/porttalk.htm>porttalk</a><br>
-<a href=http://www.driverlinx.com/Software_Products/SoftwareProducts.htm>PortIO</a><br>
-
+simple - 1 or 0. Download the software <a href="https://github.com/alw1746/Parallel-port-alarm/blob/master/setport.zip">here</a>.
 <br><br>
 <b>Java Control Program</b>
 <br><br>
 
 To control the alarm circuit from a Java program in Windows 2000/XP, download the following:<br><br>
-<a href="http://www.geocities.com/Juanga69/parport/parport-win32.zip">ParallelPort class</a><br>
-<a href="http://www.embeddedtronics.com/public/Electronics/minidaq/userport/UserPort.zip">UserPort driver</a><br>
+<a href="https://github.com/alw1746/Parallel-port-alarm/blob/master/parport-win32.zip">ParallelPort class</a><br>
+<a href="https://github.com/alw1746/Parallel-port-alarm/blob/master/UserPort.zip">UserPort driver</a><br>
 <br>
 <ul>
 <li>Unzip parport-win32.zip into your classpath directory. You should end up with eg. C:\classes\parport...
