@@ -38,8 +38,22 @@ chip but good enough for hobbyists to play with. Some are worse than others so d
 <br><br>
 <image src=schematic.png border=0>
 <br><br>
-The nRF24L01+ has a peak transmit current of 115mA so a stable power supply from a 500mA USB port is good. A 250mA 3.3V LDO regulator
-steps the 5V down for the transceiver.
+   <table>
+<caption>nRF24L01+ transceiver module Specification</caption>
+<tbody>
+<tr><td>Frequency Range</td><td>2.4 GHz ISM Band</td></tr><tr><td>Maximum Air Data Rate</td><td>2 Mb/s</td></tr>
+<tr><td>Modulation Format</td><td>GFSK</td></tr>
+<tr><td>Max. Output Power</td><td>0 dBm</td></tr>
+<tr><td>Operating Supply Voltage</td><td>1.9 V to 3.6 V</td></tr>
+<tr><td>Max. Operating Current</td><td>13.5mA</td></tr>
+<tr><td>Min. Current(Standby Mode)</td><td>26uA</td></tr>
+<tr><td>Logic Inputs</td><td>5V Tolerant</td></tr>
+<tr><td>Communication Range</td><td>800+ m (line of sight)</td></tr>
+</tbody>
+</table>
+<br>
+The nRF24L01+ has a peak transmit current of 11.5mA so a stable power supply from a 500mA USB port is good enough. A 250mA 3.3V LDO regulator
+steps the 5V down for the transceiver. 
 <br><br>
 My sketches below are customised from the original <a href="https://github.com/nRF24/RF24">RF24 library</a> which is well documented
 <a href="http://tmrh20.github.io/RF24/">here</a>.
