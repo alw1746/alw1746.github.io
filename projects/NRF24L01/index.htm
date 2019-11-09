@@ -27,34 +27,36 @@ The nRF24L01+ is a cheap ($5 AUD) 2.4GHz radio transceiver module widely availab
 a SPI interface. It runs on 3.3V but the i/o pins are 5V-tolerant which makes it easy to interface to an Arduino Pro Mini. 
 There are plenty of online documentation and guides on how to use this transceiver. For example  
 see this <a href="https://howtomechatronics.com/tutorials/arduino/arduino-wireless-communication-nrf24l01-tutorial/">tutorial</a>.
-
-<br><br>
+<br>
+<br>
 <image src=nrf24_2.png border=0><image src=nrf24_1.png border=0>
-<br><br>
-
-A 47uF bypass capacitor is used to smooth out power fluctuations that could affect its operation. Some recommend using a 100nf decoupling cap as well to 
-filter out any high frequency noise in the power. All the cheap ebay modules are clones of the original Nordic Semiconductor
-chip but good enough for hobbyists to play with. Some are worse than others so do a range/reliability test to check them out.
-<br><br>
-<image src=schematic.png border=0>
-<br><br>
-<h3 class=text3>nRF24L01+ transceiver module Specification</h3>
-<table>
+<br>
+<h3 class=text3>Specification</h3>
+<table cellspacing=0 cellpadding=4 border=1>
 <tbody>
 <tr><td>Frequency Range</td><td>2.4 GHz ISM Band</td></tr><tr><td>Maximum Air Data Rate</td><td>2 Mb/s</td></tr>
 <tr><td>Modulation Format</td><td>GFSK</td></tr>
 <tr><td>Max. Output Power</td><td>0 dBm</td></tr>
 <tr><td>Operating Supply Voltage</td><td>1.9 V to 3.6 V</td></tr>
-<tr><td>Max. Operating Current</td><td>13.5mA</td></tr>
+<tr><td>Max. Receive Current</td><td>13.5mA</td></tr>
+<tr><td>Max. Transmit Current</td><td>11.5mA</td></tr>
 <tr><td>Min. Current(Standby Mode)</td><td>26uA</td></tr>
 <tr><td>Logic Inputs</td><td>5V Tolerant</td></tr>
 <tr><td>Communication Range</td><td>800+ m (line of sight)</td></tr>
 </tbody>
 </table>
 <br>
-The nRF24L01+ has a peak transmit current of 11.5mA so a stable power supply from a 500mA USB port is good enough. A 250mA 3.3V LDO regulator
-steps the 5V down for the transceiver. 
+The nRF24L01+ has a peak receive current of 13.5mA so a stable power supply from a 500mA USB port is good enough. A 250mA 3.3V LDO regulator
+steps the 5V down for the transceiver.
+<br>
+<h3 class=text3>Schematic</h3>
+<image src=schematic.png border=0>
 <br><br>
+A 10uF bypass capacitor is used to smooth out power fluctuations that could affect its operation. Some recommend the use of an additional 100nf decoupling cap as well to 
+filter out any high frequency noise in the power. All the cheap ebay modules are clones of the original Nordic Semiconductor
+chip but good enough for hobbyists to play with. Some are worse than others so do a range/reliability test to check them out.
+
+<h3 class=text3>Arduino Sketches</h3>
 My sketches below are customised from the original <a href="https://github.com/nRF24/RF24">RF24 library</a> which is well documented
 <a href="http://tmrh20.github.io/RF24/">here</a>.
 <br>
