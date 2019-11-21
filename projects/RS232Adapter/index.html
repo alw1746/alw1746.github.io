@@ -1,0 +1,59 @@
+<html>
+<head>
+<title>
+RS232 to TTL serial adapter using MAX233 chip
+</title>
+<STYLE TYPE="text/css">
+.text1 { color:maroon;font-weight:bold;font-size:140%;font-family:sans-serif;}
+.text2 { color:black;font-weight:bold;font-size:95%;font-family:courier;}
+.text3 { color:maroon;font-weight:1000;font-size:100%;font-family:sans-serif;}
+.text4 { color:black;font-weight:bold;font-size:95%;font-family:sans-serif;}
+.indented
+   {
+   padding-left: 60pt;
+   padding-right: 50pt;
+   }
+</STYLE>
+<link rel=stylesheet type="text/css" href="../style.css">
+</head>
+
+<body bgcolor=white class=text4>
+
+<center><h3 class=text1>RS232 to TTL serial adapter using MAX233 chip</h3></center>
+<br>
+<div class="indented">
+
+Since my PC has a COM1 serial port, I made an RS232 to TTL adapter similar to the popular Sparkfun FTDI Basic board to program the Arduino by
+using a MAX233 chip bought during the mid-90's.
+<br>
+<br>
+<image src=ftdi_sparkfun.jpg border=0>
+<br><br>
+A feature of this board is the DTR pin which is pulsed low by the IDE to reset the ATMEGA328P processor when a sketch is uploaded. On reset, the
+bootloader begins to read the executable code from the serial port and writes it to flash memory. On completion, the chip resets and
+execution begins at the address of the loaded user program.
+<br><br>
+There are many USB to TTL serial adapters available on ebay but some only bring out the CTS signal which cannot be used for Arduino programming.
+A typical clone of the Sparkfun adapter(with fake FTDI chips) looks like:
+<br><br>
+<image src=ftdi_ebay.jpg border=0>
+<h3 class=text3>Schematic</h3>
+<image src=schematic.png border=0>
+<br><br>
+Since the COM1 port is a PC hardware port, no USB interfacing is required. Instead, a <a href="https://www.maximintegrated.com/en/products/interface/transceivers/MAX233.html">MAX233</a> 
+chip is used to convert the 12V RS232 signals to TTL(5V) and vice versa. It uses no external components and is recommended for applications where 
+PCB space is tight. DTR is available and the schematic also shows a separate 3.3V interface module.
+<br>
+<h3 class=text3>Adapter pictures</h3>
+<image src=top.jpg border=0><image src=bot.jpg border=0><image src=side.jpg border=0>
+<h3 class=text3>Programming the Arduino</h3>
+The Arduino Pro Mini's programming header is friction-fitted onto the output pins of the adapter. An external power supply provides 5V to the adapter and Arduino.
+Finally the Blink sketch is uploaded via COM1 and runs on the Arduino board.
+<br><br>
+<image src=prog.jpg border=0><image src=blink.png border=0><image src=blinking.jpg border=0>
+
+   </div>
+   <br>
+   <br>
+</body>
+</html>
