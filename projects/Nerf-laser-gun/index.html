@@ -1,1 +1,83 @@
+<html>
+<head>
+<title>
+Modify a Nerf Laser Ops Pro Gun
+</title>
+<STYLE TYPE="text/css">
+.text1 { color:maroon;font-weight:bold;font-size:140%;font-family:sans-serif;}
+.text2 { color:black;font-weight:bold;font-size:95%;font-family:courier;}
+.text3 { color:maroon;font-weight:1000;font-size:100%;font-family:sans-serif;}
+.text4 { color:black;font-weight:bold;font-size:95%;font-family:sans-serif;}
+.indented
+   {
+   padding-left: 60pt;
+   padding-right: 50pt;
+   }
+</STYLE>
+<link rel=stylesheet type="text/css" href="../style.css">
+</head>
 
+<body bgcolor=white class=text4>
+
+<center><h3 class=text1>Modify a Nerf Laser Ops Pro Gun</h3></center>
+<br>
+<div class="indented">
+
+The Nerf Laser Ops Pro is a toy gun for kids that play laser tag games. Laser tag guns actually emit infrared light not laser 
+so it is a bit of a marketing exercise. This one cost $10 secondhand but the sound effects are somewhat unimpressive due to the piezo speaker. 
+Need to amplify the tinny blaster shots and beef up the explosions.
+
+<br><br>
+<image src=Nerf1.jpg border=0>
+<br><br>
+<image src=NerfGuts.jpg border=0>
+<br><br>
+<image src=NerfPwr.jpg border=0>
+
+<br><br>
+<a href=https://youtu.be/lpTjk5_Zr0k><image src=NerfStd.jpg border=0></a>
+<br>
+<h3 class=text3>Laser Gun Mod</h3>
+
+So I hacked the gun by using an Arduino Pro Mini to send sound requests to a remote MP3 player with sound files on an SD card.
+An nRF24L01+ transceiver handles the wireless communications between the systems. The original switches are hooked up to the Arduino and a 
+real laser pointer added for effects. Everytime the trigger is pulled, the current weapon's song number is sent to the remote MP3 player. 
+The reload button triggers the Star Trek theme song as a background bonus. Note, this is now a special effects gun so you cannot play laser tag games with it. 
+<br><br>
+View the Arduino code in this link: <a href="https://github.com/alw1746/Nerf-Laser-Gun-mod/blob/master/src/NerfLaserGun.ino">Nerf Laser Gun</a><br>
+<br>
+<image src=Schematic_gun.jpg border=0>
+<br><br>
+<image src=NerfArduino.jpg border=0>
+<br><br>
+<image src=NerfLaserPointer.jpg border=0>
+<br><br>
+<h3 class=text3>Remote MP3 Player</h3>
+The remote MP3 player receives a song number from the gun via the nRF24L01+ transceiver and issues the play command to the DFPlayer Mini MP3 Player
+module via a software serial port. There are 2 DFPlayer modules, one to play gun shot sounds, and the other the theme song.
+The audio from the 2 modules are mixed at the output stage. This is to work around the DFPlayer's limitation of playing only one sound file at a time.
+The 9V-to-5V stepdown is not really necessary, it works fine with a powerbank (add a 100R load resistor to prevent idle cutoff).
+<br><br>
+View the Arduino code in this link: <a href="https://github.com/alw1746/Nerf-Laser-Gun-mod/blob/master/src/RemoteMP3Player.ino">Remote MP3 Player</a><br>
+<br>
+<image src=Schematic_mp3player.jpg border=0>
+<br><br>
+<image src=RemoteMP3.jpg border=0>
+<br>
+
+<h3 class=text3>Space the final frontier</h3>
+Listen to the new blaster sound with the theme song playing in the background. Strike fear into the heart of evey Klingon out there.
+<br><br>
+<a href=https://youtu.be/Z9xge96Q8qM><image src=NerfCustom.jpg border=0></a>
+<br><br>
+In weapons select mode, you can cycle through all the sound effects available to the gun. Awesome! Every Federation starship captain should carry one of this (along
+with a decent set of speakers).
+<br><br>
+<a href=https://youtu.be/HAG0SGrHGGQ><image src=NerfWeaponSel.jpg border=0></a>
+<br>
+
+   </div>
+   <br>
+   <br>
+</body>
+</html>
