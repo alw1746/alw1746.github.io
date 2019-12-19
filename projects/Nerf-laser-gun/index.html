@@ -57,6 +57,7 @@ The remote MP3 player receives a song number from the gun via the nRF24L01+ tran
 module via a software serial port. There are 2 DFPlayer modules, one to play gun shot sounds, and the other the theme song.
 The audio from the 2 modules are mixed at the output stage. This is to work around the DFPlayer's limitation of playing only one sound file at a time.
 The 9V-to-5V stepdown is not really necessary, it works fine with a powerbank (add a 100R load resistor to prevent idle cutoff).
+Connect the audio output jack to the line-in of an amplifier or hifi set using a stereo cable.
 <br><br>
 View the Arduino code in this link: <a href="https://github.com/alw1746/Nerf-Laser-Gun-mod/blob/master/src/RemoteMP3Player.ino">Remote MP3 Player</a><br>
 <br>
