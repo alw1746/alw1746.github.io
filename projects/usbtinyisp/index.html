@@ -1,1 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>
+DIY USBtinyISP-compatible AVR programmer
+</title>
+<STYLE TYPE="text/css">
+.text1 { color:maroon;font-weight:bold;font-size:140%;font-family:Georgia;}
+.text2 { color:black;font-weight:normal;font-size:110%;font-family:courier;}
+.text3 { color:maroon;font-weight:bold;font-size:120%;font-family:Georgia;}
+.text4 { color:black;font-weight:normal;font-size:110%;font-family:Georgia;}
+.indented
+   {
+   padding-left: 60pt;
+   padding-right: 50pt;
+   }
+.enlarge { cursor: -moz-zoom-in; cursor:-webkit-zoom-in; pointer: -moz-zoom-in; pointer: -webkit-zoom-in; }
+</STYLE>
+<link rel=stylesheet type="text/css" href="../style.css">
 
+<script>
+ 
+  function clickZoom(event) {
+    var element=document.getElementById(event.currentTarget.id);
+    var clicks=element.dataset.clicks;
+    switch (++clicks) {
+      case 1:
+        element.style.width = "50%";
+        break;
+      case 2:
+        element.style.width = "75%";
+        break;
+      case 3:
+        element.style.width = "100%";
+        break;
+      default:
+        element.style.width = "25%";
+        clicks=0;
+        break;
+    }
+    element.dataset.clicks=clicks;
+  }
+</script>
+
+</head>
+
+<body bgcolor=white class=text4>
+
+<center><h3 class=text1>DIY USBtinyISP-compatible AVR programmer</h3></center>
+<br>
+<div class="indented">
+
+The USBtinyISP, available from <a href="https://www.adafruit.com/product/46">Adafruit</a>, is a popular open-source USB programmer which uses the SPI interface to program Atmel AVR chips like
+those used in the Arduino family.
+<br><br>
+<img src="adafruitkit.jpg" id='pic1' class="enlarge" onclick="clickZoom(event)" width="25%" data-clicks='0'>
+<br><br>
+Having a standalone programmer is very useful when you need to burn a bootloader into eg. ATmega328P
+in an Arduino Pro Mini. You can also upload your sketch directly without a bootloader thus making an extra 2KB
+of flash available. While you can wire up a spare Pro Mini, upload the ArduinoISP sketch, and burn the bootloader into a target
+it's just handy to have a simple programmer ready for the job.
+<br><br>
+<img src=usbtinyisp.jpg id='pic2' class="enlarge" onclick="clickZoom(event)" width="25%" data-clicks='0' border=0>
+<br>
+<h3 class=text3>Schematic</h3>
+<img src=schematic.jpg id='pic3' class="enlarge" onclick="clickZoom(event)" width="30%" data-clicks='0' border=1>
+<br><br>
+This USBtinyISP-compatible AVR programmer uses a cheap ATTiny85 board from 
+<a href="https://www.ebay.com.au/itm/Arduino-General-Micro-USB-Development-Digispark-Kickstarter-ATTINY85-Board/282912911276?epid=4011253984&hash=item41deec6fac:g:k54AAOSwuWJaxgq4">ebay</a> 
+to run the Little Wire firmware. It can supply 5V or 3.3V power to the target and supports 5V/3.3V signal levels on the SPI pins. The Arduino IDE has built-in support
+for the programmer. The ATTiny85 pins for connecting to target SPI are:
+<br><br>
+P0 MOSI<br>
+P1 MISO<br>
+P2 SCK<br>
+P5 RST<br>
+<br>
+Connect 5V Arduino Pro Mini to USBtinyISP directly.
+<br><br>
+<img  src=5V.jpg id='pic4' class="enlarge" onclick="clickZoom(event)" width="25%" data-clicks='0'border=0>
+<br><br>
+Connect 3.3V Arduino Pro Mini to USBtinyISP via logic level shifter.
+<br><br>
+<img src=33V.jpg id='pic5' class="enlarge" onclick="clickZoom(event)" width="25%" data-clicks='0' border=0>
+<br><br>
+<br>
+<h3 class=text3>Usage</h3>
+To upload Arduino sketches in the IDE directly using the programmer,
+<br><br>
+<img src="upload.jpg" border=1>
+<br><br>
+This gives you 32KB of flash available but it means the bootloader will be erased. You cannot subsequently click the
+Upload button to upload your sketch until you burn a new bootloader into the chip.
+<br><br>
+To burn a bootloader, select Tools -> Programmer -> USBtinyISP and click Burn Bootloader. Example of burning bootloader
+for a Arduino Pro Mini:
+<br><br>
+<img src="tools.jpg" border=1>
+<br><br>
+After the bootloader is burnt, remove the wiring between the programmer and target. Set Programmer to AVRISP mkII
+and click the Upload button to upload using COM1 serial port.
+
+<h3 class=text3>Software Download</h3>
+Little Wire is multi-featured USB controlled Open Source Hardware tool packed in a minimal form factor designed by ihsan Kehribar.
+It features:
+<ul>
+<li>USBtinyISP-compatible AVR programmer</li>
+<li>4 channel GPIO</li>
+<li>ADC with 10 bit resolution</li>
+<li>2 parallel hardware PWM outputs</li>
+<li>SPI interface</li>
+<li>I2C interface</li>
+<li>1-Wire interface</li>
+<li>WS2812 RGB LED interface</li>
+</ul>
+The following software are required:<br><br>
+<table class=text4 cellpadding=0>
+<tr><td>ATTiny USB bootloader</td><td><a href="https://github.com/micronucleus/micronucleus/archive/master.zip">Micronucleus V2.04</a></td></tr>
+<tr><td>Little Wire Firmware</td><td><a href="http://littlewire.github.io/downloads.html">Little Wire v1.3</a></td></tr>
+<tr><td>Windows Driver(64bit)</td><td><a href="http://littlewire.github.io/downloads.html">littleWire_win_driver_64bit</a></td></tr>
+</table>
+<h3 class=text3>Installation in Windows</h3>
+Unzip the Micronucleus and Little Wire files into a folder eg. C:\Temp.<br><br>
+A chicken-and-egg situation here: in order to build the programmer, you must first program t85_default.hex into the ATTiny85 chip.
+The quickest way is ask someone with a programmer for help. A slightly more tedious way - wire up 
+<a href="https://www.arduino.cc/en/tutorial/arduinoISP">Arduino as ISP</a> one last time and burn with command eg:
+<br><br>
+ avrdude -carduino -PCOM4 -b57600 -p t85 -U flash:w:temp\micronucleus\firmware\releases\t85_default.hex -U lfuse:w:0xe1:m -U hfuse:w:0x5d:m -U efuse:w:0xfe:m
+<br><br>
+Note:
+<ol>
+<li>If the ATTiny85 has RSTDISBL fuse set, the above command will fail. This can happen if P5 is enabled as a GPIO
+pin. The Digispark ATTiny85 dev board provides 6 GPIO pins using this method.</li>
+<li>If you can burn the micronucleus, the RSTDISBL fuse WILL be set so there is no going back. You cannot even read the
+fuses again to verify the settings, it is as good as bricked.</li>
+<li>But you can use <a href="https://easyeda.com/alw1746/attiny85-dragon-hvsp">High Voltage Serial Programming (HVSP)</a> with 
+<a href=https://au.element14.com/microchip/atavrdragon/in-system-debugger-programmer/dp/1455088>AVR Dragon</a> programmer or
+<a href="https://github.com/ArminJo/ATtiny-HighVoltageProgrammer_FuseEraser">open source tool</a> to reset the RSTDISBL fuse.
+</li>
+</ol>
+Once micronucleus is burnt, disconnect the Arduino ISP from the ATTiny85. Plug the USB cable from PC to the ATTiny85. An 
+unknown device will appear in Windows Device Manager.<br><br>
+<img src="unknown.jpg" border=1>
+<br><br>
+Rightclick Unknown device -> Update driver -> browse to Temp\micronucleus\windows_driver and install driver. Next, 
+upload the Little Wire v1.3 firmware using micronucleus commandline application:
+
+<p class=text2>micronucleus.exe littlewire_v13.hex</p>
+
+Finally, rightclick USBtinySPI -> Update driver -> browse to Temp\Little-Wire\littleWire_win_driver_64bit\littleWire_driver and 
+install driver. In Device Manager, you should get:<br><br>
+<img src="libusb.jpg" border=1>
+<br><br>
+If the device drivers do not load, run the tool Temp\micronucleus\windows_driver_installer\zadig_2.1.2.exe:
+
+<ul>
+<li>Select Options -> List All Devices</li>
+<li>Select USBtinySPI</li>
+<li>Select libusb-win32</li>
+<li>Click Install Driver</li>
+</ul>
+<img src="zadig.jpg" border=1>
+<br><br>
+Note: libusb-win32 driver supports only 1 application at a time. If the driver is in use by another application, it will
+be deregistered in favour of USBtinySPI. To restore the original application, reinstall libusb for it using Zadig.
+<br>
+<h3 class=text3>ATTinyCore(optional)</h3>
+The ATTinyCore supports the Atmel 1634, x313, x4, x41, x5, x61, x7, x8 and 828 for Arduino 1.6.5 and later. Install
+this if you wish to develop programs using the Arduino framework(instead of Little Wire's library). Refer to
+<a href="https://github.com/SpenceKonde/ATTinyCore">Github ATTinyCore</a> for installation details.
+Use the Boards Manager Installation option for simplest method. Once installed, Tools -> Board will contain:
+<br><br>
+<img src="attinycore.jpg" border=1>
+<br><br>
+Note, you will need to burn the appropriate bootloader first before uploading your sketch. This is where the USBtinyISP
+earns its keep.
+   </div>
+   <br>
+   <br>
+</body>
+</html>
