@@ -1,1 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>
+Tooltips
+</title>
+<STYLE TYPE="text/css">
+.text1 { color:maroon;font-weight:bold;font-size:140%;font-family:Georgia;}
+.text2 { color:black;font-weight:normal;font-size:110%;font-family:courier;}
+.text3 { color:maroon;font-weight:bold;font-size:120%;font-family:Georgia;}
+.text4 { color:black;font-weight:normal;font-size:110%;font-family:Georgia;}
+.indented
+   {
+   padding-left: 60pt;
+   padding-right: 50pt;
+   }
+.enlarge { cursor: -moz-zoom-in; cursor:-webkit-zoom-in; pointer: -moz-zoom-in; pointer: -webkit-zoom-in; }
+</STYLE>
+<link rel=stylesheet type="text/css" href="../style.css">
 
+<script>
+ 
+  function clickZoom(event) {
+    return;    //disable this function
+    var element=document.getElementById(event.currentTarget.id);
+    var clicks=element.dataset.clicks;
+    switch (++clicks) {
+      case 1:
+        element.style.width = "50%";
+        break;
+      case 2:
+        element.style.width = "75%";
+        break;
+      case 3:
+        element.style.width = "100%";
+        break;
+      default:
+        element.style.width = "25%";
+        clicks=0;
+        break;
+    }
+    element.dataset.clicks=clicks;
+  }
+</script>
+
+</head>
+
+<body bgcolor=white class=text4>
+
+<center><h3 class=text1>Tooltips</h3></center>
+<br>
+<div class="indented">
+
+Life wasn't meant to be easy...but shouldn't be that expensive either! This collection of tools and tips can ease the pain a little.
+<ol>
+
+<li>
+A simple jig to keep PCBs in place while soldering male header pins. Caters for single row header as well.
+<br><br>
+<img src="jig1.jpg" id='pic1' class="enlarge" onclick="clickZoom(event)" width="40%" data-clicks='0'>
+<img src="jig2.jpg" id='pic1' class="enlarge" onclick="clickZoom(event)" width="40%" data-clicks='0'>
+<br><br>
+</li>
+
+<li>
+Use stackable ice cube trays to hold resistors, transistors, diodes, etc. Much cheaper than storage drawer cabinets.
+Search for components in a spreadsheet to get the cube coordinates. You can get Excel for Android phone too.
+<br><br>
+<img src=resistor1.jpg id='pic2' class="enlarge" onclick="clickZoom(event)" width="40%" data-clicks='0' border=0>
+<img src=resistor2.jpg id='pic2' class="enlarge" onclick="clickZoom(event)" width="40%" data-clicks='0' border=0>
+<br>
+<img src=resistor3.jpg id='pic2' class="enlarge" onclick="clickZoom(event)" width="40%" data-clicks='0' border=0>
+<img src=resistor4.jpg id='pic2' class="enlarge" onclick="clickZoom(event)" data-clicks='0' border=0>
+<br><br>
+</li>
+
+<li>
+Scavenge broken-down scanners or junk photocopiers for parts, especially the scanning lens. The magnification power is fantastic
+and most useful for checking solder joints.
+<br><br>
+<img src=lens1.jpg id='pic2' class="enlarge" onclick="clickZoom(event)" width="40%" data-clicks='0' border=0>
+<br><br>
+</li>
+
+<li>
+</li>
+
+</ol>
+</body>
+</html>
