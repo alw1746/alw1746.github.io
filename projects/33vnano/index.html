@@ -101,8 +101,15 @@ Once installed, select the options to burn the ATmega328 bootloader (8MHz intern
 <br><br>
 <img src="minicore.jpg" id='pic6' class="enlarge" width="40%">
 <br><br>
-Wire the programmer for 3.3V as shown and click Burn Bootloader.
-<br><br>
+Wire the programmer-Nano for 3.3V as shown and click Burn Bootloader.
+<pre class=text2>
+D11 MOSI
+D12 MISO
+D13 SCK
+RST RESET
+5V 3.3V
+GND GND
+</pre>
 <img src="burn.jpg" id='pic7' class="enlarge" onclick="clickZoom(event)" width="25%" data-prevwidth='0'>
 <br><br>
 The IDE console output should look like <a href=ide_log.txt>IDE_log.txt</a>. There are 2 steps to the burn:
