@@ -1,1 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>
+Convert a 5V Arduino Nano clone to run on 3.3V
+</title>
+<STYLE TYPE="text/css">
+.text1 { color:maroon;font-weight:bold;font-size:140%;font-family:Georgia;}
+.text2 { color:black;font-weight:normal;font-size:110%;font-family:courier;}
+.text3 { color:maroon;font-weight:bold;font-size:120%;font-family:Georgia;}
+.text4 { color:black;font-weight:normal;font-size:110%;font-family:Georgia;}
+.indented
+   {
+   padding-left: 60pt;
+   padding-right: 50pt;
+   }
+.enlarge { 
+  cursor: -moz-zoom-in; cursor:-webkit-zoom-in; pointer: -moz-zoom-in; pointer: -webkit-zoom-in;
+  box-shadow: 8px 8px 15px 2px #888888; border:0;
+ }
 
+</STYLE>
+<link rel=stylesheet type="text/css" href="../style.css">
+
+<script>
+ 
+  function clickZoom(event) {
+    var element=document.getElementById(event.currentTarget.id);
+    var width=element.style.width;
+    if (width != "100%") {
+      element.style.width = "100%";
+    }
+    else {
+      element.style.width = element.dataset.prevwidth;
+    }
+    element.dataset.prevwidth=width;
+  }
+</script>
+
+</head>
+
+<body bgcolor=white class=text4>
+
+<center><h3 class=text1>Convert a 5V Arduino Nano clone to run on 3.3V</h3></center>
+<br>
+<div class="indented">
+The standard Arduino Nano is a 5V 16MHz microcontroller board based on the ATmega328P. It has 22 digital input/output pins 
+(of which 6 can be used as PWM outputs), 8 analog inputs, a 16 MHz resonator, a USB connection, an ICSP header, 
+onboard LED and a reset button.
+<br>
+<img src="nano.jpg" id='pic1' width="30%" border=0>
+<br>
+To program the microcontroller, connect it to a computer with a USB cable and 5V is supplied by the USB Vbus. But
+there are good reasons to run it on 3.3V:
+<ul>
+<li>A lot of devices such as nRF24L01+ transceiver, BME280 sensor, etc all run at 3.3V max. Hence interfacing to
+a 3.3V Nano means common supply and no i/o level shifting required.</li>
+<li>Running it on 3.3V at 8MHz leads to lower power consumption for a portable device.</li>
+<li>You can directly run the Nano and sensors on 2 AA batteries.</li>
+<li>A 5V 16MHz Nano clone cost USD2.91 while the 3.3V 8MHz version is USD3.36 on banggood.com
+</ul>
+If you are starting a new project, it makes more economic sense to buy the 3.3V version. But if you already have 5V boards
+on hand and you want easy interfacing, there are a number of ways to convert it. Typically it involves replacing the
+5V regulator with 3.3V, cut some tracks and solder extra wires.
+<br><br>
+<img src="rework.jpg" id='pic2' class="enlarge" onclick="clickZoom(event)" width="25%" data-clicks='0' border=0>
+<br><br>
+But here is a simple solution that does not require component change or soldering. If the USB 5V is converted to 3.3V
+before it reaches the socket on the Nano board, the Nano works fine without hardware modifications. The IDE recognises it like 
+a normal Nano and sketches will upload seamlessly. Very handy if you want to reuse 5V for Vcc in future.
+<br><br>
+This method has been tested on a
+<a href=schematic_clone.png>Nano clone</a> that uses the <a href=ch340g.pdf>CH340G</a> USB chip. The 
+<a href=schematic_nano.pdf>real Nano</a> uses an FTDI USB chip and has not been tested(though the schematic seem to
+indicate this would work too). The USB voltage converter circuit looks like this:
+<br><br>
+<img src="schematic.jpg" id='pic3' class="enlarge" onclick="clickZoom(event)" width="25%" data-prevwidth='0' border=1>
+<br><br>
+The system clock frequency should be reduced from 16 to 8MHz according to Atmel ATMEGA328P datasheet even though many have reported
+no problems running 16MHz at 3.3V.
+<br><br>
+<img src="speed.jpg" id='pic4' width="40%" data-prevwidth='0' border=1>
+<br><br>
+The ATMEGA328P has an internal 8MHz RC oscillator that can be enabled with the proper fuse settings. While not as 
+accurate as a crystal or resonator, it is good enough for serial speed of 38400 baud. In order to change the clock frequency, the easiest approach is to install the Minicore 
+bootloader.
+<br>
+<h3 class=text3>Minicore Installation</h3>
+<a href=https://github.com/MCUdude/MiniCore>Minicore</a> from MCUdude is an Arduino core for the ATmega328, ATmega168, ATmega88, ATmega48 
+and ATmega8, running a custom version of Optiboot for increased functionality. This core gives you two extra IO pins, 
+PB6/PB7 mapped to Arduino pin 20/21 if you're using the internal oscillator, but the most useful feature is a variety of clock 
+frequencies to choose from.
+<br><br>
+To install it, use the Boards Manager Installation method. Basically in the IDE File -> Preferences -> Additional Boards Manager URLs,
+append the line:
+
+<p class=text2>https://mcudude.github.io/MiniCore/package_MCUdude_MiniCore_index.json</p>
+
+Once installed, select the options to burn the ATmega328 bootloader (8MHz internal clock) with a programmer like 
+<a href=https://alw1746.github.io/projects/usbtinyisp/index.html>DIY USBtinyISP-compatible AVR programmer</a>.
+<br><br>
+<img src="minicore.jpg" id='pic6' class="enlarge" width="40%">
+<br><br>
+Wire the programmer for 3.3V as shown and click Burn Bootloader.
+<br><br>
+<img src="burn.jpg" id='pic7' class="enlarge" onclick="clickZoom(event)" width="25%" data-prevwidth='0'>
+<br><br>
+The IDE console output should look like <a href=ide_log.txt>IDE_log.txt</a>. There are 2 steps to the burn:
+<ol>
+<li>Set Extended,High,Low fuses: -Uefuse:w:0b11111111:m -Uhfuse:w:0xd6:m -Ulfuse:w:0xe2:m</li>
+<li>Erase, write, read and verify chip.</li>
+</ol>
+To read the fuse settings (using command from the log):
+<pre class=text2>
+S:\SOE\arduino-1.8.8\portable\packages\arduino\tools\avrdude\6.3.0-arduino17/bin/avrdude 
+-CS:\SOE\arduino-1.8.8\portable\packages\MiniCore\hardware\avr\2.0.3/avrdude.conf 
+-v -patmega328p -cusbtiny 
+</pre>
+To interpret the fuses, plug the hex values into <a href="http://www.engbedded.com/fusecalc/">AVR fuse calculator</a>. You can also 
+enter new values and view the resulting device configuration.
+<br><br>
+Example of writing new CKOUT fuse to enable clock output on pin 8. Be absolutely sure of all settings as you cannot use a Dragon for HVPP rescue.
+Some required mcu pins are not broken out on the board. Beware of EHL versus LHE!
+<pre class=text2>
+S:\SOE\arduino-1.8.8\portable\packages\arduino\tools\avrdude\6.3.0-arduino17/bin/avrdude 
+-CS:\SOE\arduino-1.8.8\portable\packages\MiniCore\hardware\avr\2.0.3/avrdude.conf 
+-v -patmega328p -cusbtiny -U lfuse:w:0xa2:m -U hfuse:w:0xd6:m -U efuse:w:0xff:m
+</pre>
+<img src="8MHz.jpg" id='pic5' class="enlarge" onclick="clickZoom(event)" width="25%" data-prevwidth='0'>
+<br><br>
+Once the chip is programmed, disconnect the jumper wires, change the IDE Programmer back to AVRISP mkII, and connect the USB voltage 
+converter to the Nano. Upload a modified Blink sketch:
+<pre class=text2>
+void setup() {
+  pinMode(LED_BUILTIN, OUTPUT);
+  Serial.begin(38400);
+  Serial.print("F_CPU ");
+  Serial.println(F_CPU);
+}
+void loop() {
+  digitalWrite(LED_BUILTIN, HIGH);
+  delay(10);
+  digitalWrite(LED_BUILTIN, LOW);
+  delay(990);
+}
+</pre>
+In the Serial Monitor, the compiler flag for 8MHz CPU will be displayed as:
+<pre class=text2>
+F_CPU 8000000
+</pre>
+The onboard LED should also blink at 1Hz as a confirmation. A new bootloader(with different fuse settings) has to be burnt each time 
+the clock frequency is changed. Note that Upload Using Programmer does not affect the fuse settings ie, the bootloader will be erased
+but the fuse settings remain. The full 32KB of flash is available for the sketch.
+<br><br>
+A similar method can be applied to run an Arduino Pro Mini at 1MHz with 2 AA batteries for a low power outdoor weather sensor. 
+<br><br>
+</body>
+</html>
