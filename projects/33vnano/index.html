@@ -20,21 +20,42 @@ Convert a 5V Arduino Nano clone to run on 3.3V
  }
 
 </STYLE>
-<link rel=stylesheet type="text/css" href="../style.css">
 
 <script>
- 
+  var siwTimer;
+  
   function clickZoom(event) {
     var element=document.getElementById(event.currentTarget.id);
-    var width=element.style.width;
-    if (width != "100%") {
-      element.style.width = "100%";
-    }
+    var newWidth=parseInt(element.style.width.replace("%",""),10);
+    if (newWidth == "100")
+      newWidth = parseInt(element.dataset.prevwidth,10);
     else {
-      element.style.width = element.dataset.prevwidth;
-    }
-    element.dataset.prevwidth=width;
+      element.dataset.prevwidth=''+newWidth;
+      newWidth="100";
+    }    
+    siwTimer=setInterval(setImageWidth.bind(null,element,newWidth,2),10);   //exec func every 10 msec
   }
+  
+  function setImageWidth(element,newWidth,change) {
+    var chgWidth;
+    var curWidth=parseInt(element.style.width.replace("%",""),10);
+    if (curWidth == newWidth)
+      clearInterval(siwTimer);       //terminate func if width reached
+    else {
+      if (newWidth > curWidth) {     //grow
+        chgWidth=curWidth+change;
+        if (chgWidth > newWidth)
+          chgWidth = newWidth;
+      }
+      else {
+        chgWidth=curWidth-change;    //shrink
+        if (chgWidth < newWidth)
+          chgWidth = newWidth;
+      }
+      element.style.width = chgWidth + "%";
+    }
+  }
+
 </script>
 
 </head>
@@ -48,7 +69,7 @@ The standard Arduino Nano is a 5V 16MHz microcontroller board based on the ATmeg
 (of which 6 can be used as PWM outputs), 8 analog inputs, a 16 MHz resonator, a USB connection, an ICSP header, 
 onboard LED and a reset button.
 <br>
-<img src="nano.jpg" id='pic1' width="30%" border=0>
+<img src="nano.jpg" id='pic1' style="width:30%;">
 <br>
 To program the microcontroller, connect it to a computer with a USB cable and 5V is supplied by the USB Vbus. But
 there are good reasons to run it on 3.3V:
@@ -63,23 +84,23 @@ If you are starting a new project, it makes more economic sense to buy the 3.3V 
 on hand and you want easy interfacing, there are a number of ways to convert it. Typically it involves replacing the
 5V regulator with 3.3V, cut some tracks and solder extra wires.
 <br><br>
-<img src="rework.jpg" id='pic2' class="enlarge" onclick="clickZoom(event)" width="25%" data-clicks='0' border=0>
+<img src="rework.jpg" id='pic2' class="enlarge" onclick="clickZoom(event)" style="width:25%;" data-prevwidth='0'>
 <br><br>
 But here is a simple solution that does not require component change or soldering. If the USB 5V is converted to 3.3V
 before it reaches the socket on the Nano board, the Nano works fine without hardware modifications. The IDE recognises it like 
-a normal Nano and sketches will upload seamlessly. Very handy if you want to reuse the Nano with 5V for Vcc in future.
+a normal Nano and sketches will upload seamlessly. Very handy if you want to reuse 5V for Vcc in future.
 <br><br>
 This method has been tested on a
 <a href=schematic_clone.png>Nano clone</a> that uses the <a href=ch340g.pdf>CH340G</a> USB chip. The 
-real Nano uses an FTDI USB chip and has not been tested(though the <a href=schematic_nano.pdf>schematic</a> seem to
+<a href=schematic_nano.pdf>real Nano</a> uses an FTDI USB chip and has not been tested(though the schematic seem to
 indicate this would work too). The USB voltage converter circuit looks like this:
 <br><br>
-<img src="schematic.jpg" id='pic3' class="enlarge" onclick="clickZoom(event)" width="25%" data-prevwidth='0' border=1>
+<img src="schematic.jpg" id='pic3' class="enlarge" onclick="clickZoom(event)" style="width:25%;" data-prevwidth='0'>
 <br><br>
 The system clock frequency should be reduced from 16 to 8MHz according to Atmel ATMEGA328P datasheet even though many have reported
 no problems running 16MHz at 3.3V.
 <br><br>
-<img src="speed.jpg" id='pic4' width="40%" data-prevwidth='0' border=1>
+<img src="speed.jpg" id='pic4' style="width:40%;" border=1>
 <br><br>
 The ATMEGA328P has an internal 8MHz RC oscillator that can be enabled with the proper fuse settings. While not as 
 accurate as a crystal or resonator, it is good enough for serial speed of 38400 baud. In order to change the clock frequency, the easiest approach is to install the Minicore 
@@ -99,18 +120,11 @@ append the line:
 Once installed, select the options to burn the ATmega328 bootloader (8MHz internal clock) with a programmer like 
 <a href=https://alw1746.github.io/projects/usbtinyisp/index.html>DIY USBtinyISP-compatible AVR programmer</a>.
 <br><br>
-<img src="minicore.jpg" id='pic6' class="enlarge" width="40%">
+<img src="minicore.jpg" id='pic6' class="enlarge" style="width:40%;">
 <br><br>
-Wire the Nano-programmer via a level shifter as shown and click Burn Bootloader.
-<pre class=text2>
-D11 MOSI
-D12 MISO
-D13 SCK
-RST RESET
-5V  3.3V
-GND GND
-</pre>
-<img src="burn.jpg" id='pic7' class="enlarge" onclick="clickZoom(event)" width="25%" data-prevwidth='0'>
+Wire the programmer for 3.3V as shown and click Burn Bootloader.
+<br><br>
+<img src="burn.jpg" id='pic7' class="enlarge" onclick="clickZoom(event)" style="width:25%;" data-prevwidth='0'>
 <br><br>
 The IDE console output should look like <a href=ide_log.txt>IDE_log.txt</a>. There are 2 steps to the burn:
 <ol>
@@ -133,7 +147,7 @@ S:\SOE\arduino-1.8.8\portable\packages\arduino\tools\avrdude\6.3.0-arduino17/bin
 -CS:\SOE\arduino-1.8.8\portable\packages\MiniCore\hardware\avr\2.0.3/avrdude.conf 
 -v -patmega328p -cusbtiny -U lfuse:w:0xa2:m -U hfuse:w:0xd6:m -U efuse:w:0xff:m
 </pre>
-<img src="8MHz.jpg" id='pic5' class="enlarge" onclick="clickZoom(event)" width="25%" data-prevwidth='0'>
+<img src="8MHz.jpg" id='pic5' class="enlarge" onclick="clickZoom(event)" style="width:25%;" data-prevwidth='0'>
 <br><br>
 Once the chip is programmed, disconnect the jumper wires, change the IDE Programmer back to AVRISP mkII, and connect the USB voltage 
 converter to the Nano. Upload a modified Blink sketch:
@@ -161,5 +175,7 @@ but the fuse settings remain. The full 32KB of flash is available for the sketch
 <br><br>
 A similar method can be applied to run an Arduino Pro Mini at 1MHz with 2 AA batteries for a low power outdoor weather sensor. 
 <br><br>
+
+</div>
 </body>
 </html>
