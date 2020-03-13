@@ -14,7 +14,10 @@ Tooltips
    padding-left: 60pt;
    padding-right: 50pt;
    }
-.enlarge { cursor: -moz-zoom-in; cursor:-webkit-zoom-in; pointer: -moz-zoom-in; pointer: -webkit-zoom-in; }
+.enlarge {
+  cursor: -moz-zoom-in; cursor:-webkit-zoom-in; pointer: -moz-zoom-in; pointer: -webkit-zoom-in; 
+  box-shadow: 8px 8px 15px 2px #888888; border:0;
+}
 </STYLE>
 <link rel=stylesheet type="text/css" href="../style.css">
 
@@ -48,17 +51,17 @@ Tooltips
 <body bgcolor=white class=text4>
 
 <center><h3 class=text1>Tooltips</h3></center>
-<br>
+
 <div class="indented">
 
 Life wasn't meant to be easy...but shouldn't be that expensive either! This collection of tools and tips can ease the pain a little.
 <ol>
 
 <li>
-A simple jig to keep PCBs in place while soldering male header pins. Caters for single row header as well.
+An elevated blank PCB can hold header pins vertically when soldering a Nano onto them. Can handle single row header as well.
 <br><br>
-<img src="jig1.jpg" id='pic1' class="enlarge" onclick="clickZoom(event)" width="40%" data-clicks='0'>
-<img src="jig2.jpg" id='pic1' class="enlarge" onclick="clickZoom(event)" width="40%" data-clicks='0'>
+<img src="jig1.jpg" id='pic1' class="enlarge" onclick="clickZoom(event)" style="width:40%;" data-clicks='0'>
+<img src="jig2.jpg" id='pic1' class="enlarge" onclick="clickZoom(event)" style="width:40%;" data-clicks='0'>
 <br><br>
 </li>
 
@@ -66,11 +69,11 @@ A simple jig to keep PCBs in place while soldering male header pins. Caters for 
 Use stackable ice cube trays to hold resistors, transistors, diodes, etc. Much cheaper than storage drawer cabinets.
 Search for components in a spreadsheet to get the cube coordinates. You can get Excel for Android phone too.
 <br><br>
-<img src=resistor1.jpg id='pic2' class="enlarge" onclick="clickZoom(event)" width="40%" data-clicks='0' border=0>
-<img src=resistor2.jpg id='pic2' class="enlarge" onclick="clickZoom(event)" width="40%" data-clicks='0' border=0>
-<br>
-<img src=resistor3.jpg id='pic2' class="enlarge" onclick="clickZoom(event)" width="40%" data-clicks='0' border=0>
-<img src=resistor4.jpg id='pic2' class="enlarge" onclick="clickZoom(event)" data-clicks='0' border=0>
+<img src=resistor1.jpg id='pic2' class="enlarge" onclick="clickZoom(event)" style="width:40%;" data-clicks='0'>
+<img src=resistor2.jpg id='pic2' class="enlarge" onclick="clickZoom(event)" style="width:40%;" data-clicks='0'>
+<br><br>
+<img src=resistor3.jpg id='pic2' class="enlarge" onclick="clickZoom(event)" style="width:40%;" data-clicks='0'>
+<img src=resistor4.jpg id='pic2' class="enlarge" onclick="clickZoom(event)" style="width:45%;" data-clicks='0'>
 <br><br>
 </li>
 
@@ -78,13 +81,29 @@ Search for components in a spreadsheet to get the cube coordinates. You can get 
 Scavenge broken-down scanners or junk photocopiers for parts, especially the scanning lens. The magnification power is fantastic
 and most useful for checking solder joints.
 <br><br>
-<img src=lens1.jpg id='pic2' class="enlarge" onclick="clickZoom(event)" width="40%" data-clicks='0' border=0>
+<img src=lens1.jpg id='pic2' class="enlarge" onclick="clickZoom(event)" style="width:40%;" data-clicks='0'>
 <br><br>
 </li>
 
 <li>
+The ATTINY85 mini dev board has 3 breadboard-unfriendly header holes on the side. One workaround is to solder the header on
+top of the board. The other is to bend and solder 22AWG wires so that they jut out the side of the board to plug into breadboard.
+<br><br>
+<img src=attiny85.jpg id='pic2' class="enlarge" onclick="clickZoom(event)" style="width:80%;" data-clicks='0'>
+<br><br>
+</li>
+
+<li>
+Some boards like the cheap ebay <a href=pam8403.jpg>PAM8403 amplifier</a> have uncommon header pitch ie the width between pins is not 2.54mm(0.1 inch). 
+Fortunately 22AWG solid core wires fit exactly into the plastic spacer holes so you can make custom headers to fit rebel boards. 
+The wires are stiff enough to insert into breadboard like pins.
+<br><br>
+<img src=custheader.jpg id='pic2' class="enlarge" onclick="clickZoom(event)" style="width:40%;" data-clicks='0'>
+<br><br>
 </li>
 
 </ol>
+
+</div>
 </body>
 </html>
