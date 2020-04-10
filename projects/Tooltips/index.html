@@ -21,27 +21,38 @@ Tooltips
 </STYLE>
 
 <script>
- 
+  var siwTimer;
+  
   function clickZoom(event) {
-    return;    //disable this function
     var element=document.getElementById(event.currentTarget.id);
-    var clicks=element.dataset.clicks;
-    switch (++clicks) {
-      case 1:
-        element.style.width = "50%";
-        break;
-      case 2:
-        element.style.width = "75%";
-        break;
-      case 3:
-        element.style.width = "100%";
-        break;
-      default:
-        element.style.width = "25%";
-        clicks=0;
-        break;
+    var newWidth=parseInt(element.style.width.replace("%",""),10);
+    if (newWidth == "100")
+      newWidth = parseInt(element.dataset.prevwidth,10);
+    else {
+      element.dataset.prevwidth=''+newWidth;
+      newWidth="100";
+    }    
+    siwTimer=setInterval(setImageWidth.bind(null,element,newWidth,2),10);   //exec func every 10 msec
+  }
+  
+  function setImageWidth(element,newWidth,change) {
+    var chgWidth;
+    var curWidth=parseInt(element.style.width.replace("%",""),10);
+    if (curWidth == newWidth)
+      clearInterval(siwTimer);       //terminate func if width reached
+    else {
+      if (newWidth > curWidth) {     //grow
+        chgWidth=curWidth+change;
+        if (chgWidth > newWidth)
+          chgWidth = newWidth;
+      }
+      else {
+        chgWidth=curWidth-change;    //shrink
+        if (chgWidth < newWidth)
+          chgWidth = newWidth;
+      }
+      element.style.width = chgWidth + "%";
     }
-    element.dataset.clicks=clicks;
   }
 </script>
 
@@ -59,8 +70,8 @@ Life wasn't meant to be easy...but shouldn't be that expensive either! This coll
 <li>
 An elevated blank PCB can hold header pins vertically when soldering a Nano onto them. Can handle single row header as well.
 <br><br>
-<img src="jig1.jpg" id='pic1' class="enlarge" onclick="clickZoom(event)" style="width:40%;" data-clicks='0'>
-<img src="jig2.jpg" id='pic1' class="enlarge" onclick="clickZoom(event)" style="width:40%;" data-clicks='0'>
+<img src="jig1.jpg" id='pic1' class="enlarge" onclick="clickZoom(event)" style="width:40%;" data-prevwidth='0'>
+<img src="jig2.jpg" id='pic2' class="enlarge" onclick="clickZoom(event)" style="width:40%;" data-prevwidth='0'>
 <br><br>
 </li>
 
@@ -68,11 +79,14 @@ An elevated blank PCB can hold header pins vertically when soldering a Nano onto
 Use stackable ice cube trays to hold resistors, transistors, diodes, etc. Much cheaper than storage drawer cabinets.
 Search for components in a spreadsheet to get the cube coordinates. You can get Excel for Android phone too.
 <br><br>
-<img src=resistor1.jpg id='pic2' class="enlarge" onclick="clickZoom(event)" style="width:40%;" data-clicks='0'>
-<img src=resistor2.jpg id='pic2' class="enlarge" onclick="clickZoom(event)" style="width:40%;" data-clicks='0'>
+<img src=resistor1.jpg id='pic3' class="enlarge" onclick="clickZoom(event)" style="width:40%;" data-prevwidth='0'>
+<img src=resistor2.jpg id='pic4' class="enlarge" onclick="clickZoom(event)" style="width:40%;" data-prevwidth='0'>
 <br><br>
-<img src=resistor3.jpg id='pic2' class="enlarge" onclick="clickZoom(event)" style="width:40%;" data-clicks='0'>
-<img src=resistor4.jpg id='pic2' class="enlarge" onclick="clickZoom(event)" style="width:45%;" data-clicks='0'>
+<img src=resistor3.jpg id='pic5' class="enlarge" onclick="clickZoom(event)" style="width:40%;" data-prevwidth='0'>
+<img src=resistor4.jpg id='pic6' class="enlarge" onclick="" style="width:45%;" data-prevwidth='0'>
+<br><br>
+<img src=IC1.jpg id='pic7' class="enlarge" onclick="clickZoom(event)" style="width:40%;" data-prevwidth='0'>
+<img src=IC2.jpg id='pic8' class="enlarge" onclick="clickZoom(event)" style="width:40%;" data-prevwidth='0'>
 <br><br>
 </li>
 
@@ -80,7 +94,7 @@ Search for components in a spreadsheet to get the cube coordinates. You can get 
 Scavenge broken-down scanners or junk photocopiers for parts, especially the scanning lens. The magnification power is fantastic
 and most useful for checking solder joints.
 <br><br>
-<img src=lens1.jpg id='pic2' class="enlarge" onclick="clickZoom(event)" style="width:40%;" data-clicks='0'>
+<img src=lens1.jpg id='picx' class="enlarge" onclick="" style="width:40%;" data-clicks='0'>
 <br><br>
 </li>
 
@@ -88,7 +102,7 @@ and most useful for checking solder joints.
 The ATTINY85 mini dev board has 3 breadboard-unfriendly header holes on the side. One workaround is to solder the header on
 top of the board. The other is to bend and solder 22AWG wires so that they jut out the side of the board to plug into breadboard.
 <br><br>
-<img src=attiny85.jpg id='pic2' class="enlarge" onclick="clickZoom(event)" style="width:80%;" data-clicks='0'>
+<img src=attiny85.jpg id='picx' class="enlarge" onclick="" style="width:80%;" data-clicks='0'>
 <br><br>
 </li>
 
@@ -97,7 +111,15 @@ Some boards like the cheap ebay <a href=pam8403.jpg>PAM8403 amplifier</a> have u
 Fortunately 22AWG solid core wires fit exactly into the plastic spacer holes so you can make custom headers to fit rebel boards. 
 The wires are stiff enough to insert into breadboard like pins.
 <br><br>
-<img src=custheader.jpg id='pic2' class="enlarge" onclick="clickZoom(event)" style="width:40%;" data-clicks='0'>
+<img src=custheader.jpg id='picx' class="enlarge" onclick="" style="width:40%;" data-clicks='0'>
+<br><br>
+</li>
+
+<li>
+The best way to mount those $5-for-25 pushbutton switches to the side of a box is 3D-print a case for the body and drill a hole for the stem.
+View and download Fusion 360 and STL files <a href="https://a360.co/2UsyRIv">here</a>. 
+<br><br>
+<img src=switch.jpg id='picx' class="enlarge" onclick="" style="width:80%;" data-clicks='0'>
 <br><br>
 </li>
 
