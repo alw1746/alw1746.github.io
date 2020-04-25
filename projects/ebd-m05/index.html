@@ -1,1 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>
+EBD-M05 Mini Electronic Load Tester
+</title>
+<STYLE TYPE="text/css">
+.text1 { color:maroon;font-weight:bold;font-size:140%;font-family:Georgia;}
+.text2 { color:black;font-weight:normal;font-size:110%;font-family:courier;}
+.text3 { color:maroon;font-weight:bold;font-size:120%;font-family:Georgia;}
+.text4 { color:black;font-weight:normal;font-size:110%;font-family:Georgia;}
+.indented
+   {
+   padding-left: 60pt;
+   padding-right: 50pt;
+   }
+.enlarge {
+  cursor: -moz-zoom-in; cursor:-webkit-zoom-in; pointer: -moz-zoom-in; pointer: -webkit-zoom-in; 
+  box-shadow: 8px 8px 15px 2px #888888; border:0;
+}
+</STYLE>
 
+<script>
+  var siwTimer;
+  
+  function clickZoom(event) {
+    var element=document.getElementById(event.currentTarget.id);
+    var newWidth=parseInt(element.style.width.replace("%",""),10);
+    if (newWidth == "100")
+      newWidth = parseInt(element.dataset.prevwidth,10);
+    else {
+      element.dataset.prevwidth=''+newWidth;
+      newWidth="100";
+    }    
+    siwTimer=setInterval(setImageWidth.bind(null,element,newWidth,2),10);   //exec func every 10 msec
+  }
+  
+  function setImageWidth(element,newWidth,change) {
+    var chgWidth;
+    var curWidth=parseInt(element.style.width.replace("%",""),10);
+    if (curWidth == newWidth)
+      clearInterval(siwTimer);       //terminate func if width reached
+    else {
+      if (newWidth > curWidth) {     //grow
+        chgWidth=curWidth+change;
+        if (chgWidth > newWidth)
+          chgWidth = newWidth;
+      }
+      else {
+        chgWidth=curWidth-change;    //shrink
+        if (chgWidth < newWidth)
+          chgWidth = newWidth;
+      }
+      element.style.width = chgWidth + "%";
+    }
+  }
+</script>
+
+</head>
+
+<body bgcolor=white class=text4>
+
+<center><h3 class=text1>EBD-M05 Mini Electronic Load Tester</h3></center>
+<div class="indented">
+<img src="ebd-m05.jpg" id='picx' class="" onclick="" style="width:40%;" data-prevwidth='0'>
+<br>
+The Zketech EBD-M05 is a mini electronic load for testing the power capacity of batteries and powerbanks.
+You can download EB Tester Software to plot the discharge curve in realtime on a PC via a serial port. Data values
+can be saved into a CSV file.
+<br><br>
+Features:<br>
+Price: USD21<br>
+PC interface: MicroUSB<br>
+Cutoff Voltage setting: 0.1-19.5V, min step 10mV<br>
+Discharge current setting: 0.05-5.00A, min step 10mA(max power 30W)<br>
+Discharge mode: constant current<br>
+Monitor mode: voltage only<br>
+Voltage measurement: 0.00-19.5V, accurate to 0.005V, error &plusmn;0.5%<br>
+Current measurement: 0.05-5.00A, accurate to 0.005A, error &plusmn;0.5%<br>
+Capacity test: 0-10Ah: resolution 0.001Ah, 10Ah-100Ah: resolution 0.01Ah, 100Ah-: resolution 0.1Ah<br>
+Wiring method: four-wire measurement of voltage (V) and current (A)
+<h3 class=text3>Monitor discharge with EBD-M05</h3>
+<img src="discharge.jpg" id='picx' class="" onclick="" style="width:20%;" data-prevwidth='0'>
+<h3 class=text3>2400mah Li-Po Battery</h3>
+<img src="discharge_2000mah.jpg" id='pic4' class="enlarge" onclick="clickZoom(event)" style="width:40%;" data-prevwidth='0'>
+<br>
+<h3 class=text3>Ikea 2450mah Nimh Battery</h3>
+<img src="discharge_Ikea_2450mah.jpg" id='pic5' class="enlarge" onclick="clickZoom(event)" style="width:40%;" data-prevwidth='0'>
+<br><br>
+When testing discharge, the device charts both voltage and current on the gui. But in
+Monitor mode (for use during charging) only voltage plotting is available, current is not measured :(
+<br><br>
+However another tester called EBD-M03 shown below has an additional terminal point M+ which enables it 
+to measure voltage and current making it a more useful datalogger. But that costs USD56 which is rather annoying 
+if you have already bought the M05.
+<br><br>
+<img src="ebd-m03-top.jpg" id='pic6' class="enlarge" onclick="clickZoom(event)" style="width:40%;" data-prevwidth='0'>
+<h3 class=text3>Monitor charging with EBD-M03</h3>
+<img src="charge.jpg" id='picx' class="" onclick="" style="width:30%;" data-prevwidth='0'>
+
+<h3 class=text3>So hack the M05!</h3>
+From examining a picture of the bottom of EBD-M03,
+<br><br>
+<img src="ebd-m03-bot.jpg" id='pic7' class="enlarge" onclick="clickZoom(event)" style="width:40%;" data-prevwidth='0'>
+<br><br>
+the M+ screw terminal is connected to the IRL540Z MOSFET source pin. Hence to be able to measure current,
+all that's needed is an additional screw terminal soldered to the same MOSFET pin on the EBD-M05 like this:
+<br><br>
+<img src="ebd-m05-hack.jpg" id='pic8' class="enlarge" onclick="clickZoom(event)" style="width:40%;" data-prevwidth='0'>
+<br><br>
+Fortunately the software permits current measurement functionality without a device id check.
+With this easy hack, you can now plot voltage and current in Monitor mode during battery charging.
+<h3 class=text3>1000mah Li-Po charge termination</h3>
+<img src="charge_1000mah.jpg" id='pic9' class="enlarge" onclick="clickZoom(event)" style="width:40%;" data-prevwidth='0'>
+<br><br>
+
+
+
+
+</div>
+</body>
+</html>
