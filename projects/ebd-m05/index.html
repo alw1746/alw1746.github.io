@@ -111,13 +111,13 @@ all that's needed is an additional screw terminal soldered to the same MOSFET pi
 Fortunately the software permits current measurement functionality without a device id check.
 With this easy hack, you can now plot voltage and current in Monitor mode during battery charging.
 <h3 class=text3>1000mah Li-Po charging with TP4056</h3>
-The TP4056 default charge current of 1A is set by the Rprog resistor at 1.2K. Charge terminates when current drops
+The TP4056 default charge current of 1A is set by the Rprog 1.2K resistor. Charging terminates when current drops
 to 10% of the default ie 100ma. The charge led will then change from red to blue. The TP4056 is sensitive to wiring
 issues eg occasionally the led does not turn blue until the wires are shaken.
 <br><br>
 <img src="charge_1000mah.jpg" id='pic9' class="enlarge" onclick="clickZoom(event)" style="width:40%;" data-prevwidth='0'>
 <h3 class=text3>Firmware Bug?</h3>
-To monitor a device or circuit power consumption connect it to the EBD-M05 like below:
+To monitor a device or circuit power consumption, connect the EBD-M05 like this:
 <br><br>
 <img src="testcircuit.jpg" id='picx' class="" onclick="" style="width:30%;" data-prevwidth='0'>
 <br><br>
