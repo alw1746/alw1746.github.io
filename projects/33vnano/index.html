@@ -174,6 +174,19 @@ the clock frequency is changed. Note that Upload Using Programmer does not affec
 but the fuse settings remain. The full 32KB of flash is available for the sketch.
 <br><br>
 A similar method can be applied to run an Arduino Pro Mini at 1MHz with 2 AA batteries for a low power outdoor weather sensor. 
+
+<h3 class=text3>Latest Update</h3>
+An alternative to the USB cable breakout is to intercept the 5V input on the board where the schottky diode is. Desolder
+the diode and solder a short wire to it.
+<br><br>
+<img src="nanowire.jpg" id='pic8' class="enlarge" onclick="clickZoom(event)" style="width:25%;" data-prevwidth='0'>
+<br><br>
+This wire carries the 5V which is stepped down by an off-board 3.3V converter and fed back to 5V (Vcc) pin of the Nano.
+<br><br>
+<img src="nano33v.jpg" id='pic9' class="enlarge" onclick="clickZoom(event)" style="width:25%;" data-prevwidth='0'>
+<br><br>
+Note: you cannot use Vin at the same time as the onboard regulator will convert the raw input to 5V. This feeds into Vcc which will
+then ruin any 3.3V devices connected to the Nano. You can replace the regulator with 3.3V but desoldering it is awkward.
 <br><br>
 
 </div>
