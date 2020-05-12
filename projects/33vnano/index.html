@@ -189,7 +189,9 @@ This wire carries the 5V which is stepped down by an off-board 3.3V converter an
 Note: you cannot use Vin at the same time as the onboard regulator will convert the raw input to 5V. This feeds into Vcc which will
 then ruin any 3.3V devices connected to the Nano. You can replace the regulator with 3.3V but desoldering it is awkward.
 <br><br>
-
+Also, do not connect to the Nano's 3V3 pin. It is a low-power 3.3V source supplied by the CH340G chip and is not part of the Vcc 
+circuit.
+<br><br>
 </div>
 </body>
 </html>
