@@ -140,6 +140,18 @@ View and download Fusion 360 and STL files <a href="https://a360.co/2UsyRIv">her
  </a>. There are workarounds available but the general consensus is use an external ADC chip like ADS1115.
  <br><br>
 </li>
+<li>To write code that runs on different hardware platforms, use the compiler architecture flags eg:
+<pre>
+#if defined(ARDUINO_ARCH_ESP32)
+  #define LED4 34
+#elif defined(ARDUINO_ARCH_STM32)
+  #define LED4 PB6
+#elif defined(ARDUINO_ARCH_AVR)
+  #define LED4 10
+#endif
+</pre>
+<br>
+</li>
 </ol>
 
 </div>
