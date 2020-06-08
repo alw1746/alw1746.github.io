@@ -1,1 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>
+STM32 development boards revisited
+</title>
+<STYLE TYPE="text/css">
+.text1 { color:maroon;font-weight:bold;font-size:140%;font-family:Georgia;}
+.text2 { color:black;font-weight:normal;font-size:110%;font-family:courier;}
+.text3 { color:maroon;font-weight:bold;font-size:120%;font-family:Georgia;}
+.text4 { color:black;font-weight:normal;font-size:110%;font-family:Georgia;}
+.indented
+   {
+   padding-left: 60pt;
+   padding-right: 50pt;
+   }
+.enlarge {
+  cursor: -moz-zoom-in; cursor:-webkit-zoom-in; pointer: -moz-zoom-in; pointer: -webkit-zoom-in; 
+  box-shadow: 8px 8px 15px 2px #888888; border:0;
+}
+</STYLE>
 
+<script>
+  var siwTimer;
+  
+  function clickZoom(event) {
+    var element=document.getElementById(event.currentTarget.id);
+    var newWidth=parseInt(element.style.width.replace("%",""),10);
+    if (newWidth == "100")
+      newWidth = parseInt(element.dataset.prevwidth,10);
+    else {
+      element.dataset.prevwidth=''+newWidth;
+      newWidth="100";
+    }    
+    siwTimer=setInterval(setImageWidth.bind(null,element,newWidth,2),10);   //exec func every 10 msec
+  }
+  
+  function setImageWidth(element,newWidth,change) {
+    var chgWidth;
+    var curWidth=parseInt(element.style.width.replace("%",""),10);
+    if (curWidth == newWidth)
+      clearInterval(siwTimer);       //terminate func if width reached
+    else {
+      if (newWidth > curWidth) {     //grow
+        chgWidth=curWidth+change;
+        if (chgWidth > newWidth)
+          chgWidth = newWidth;
+      }
+      else {
+        chgWidth=curWidth-change;    //shrink
+        if (chgWidth < newWidth)
+          chgWidth = newWidth;
+      }
+      element.style.width = chgWidth + "%";
+    }
+  }
+</script>
+
+</head>
+
+<body bgcolor=white class=text4>
+
+<center><h3 class=text1>STM32 development boards revisited</h3></center>
+<div class="indented">
+Years ago, I took the blue pill and woke up from the matrix. After battling the deadly 
+bootloading bots, I plugged myself back into the matrix. It became too hard
+to ignore the sensuous siren call of the ATMEGA328P libraries. Time passed and ST officially took
+over the <a href=https://github.com/stm32duino/Arduino_Core_STM32>Arduino Core development</a> from
+Roger Clark so I decided to see if the bootloading bots are still present in the new core with my
+STM32 boards.
+<br><br>
+<img src="stm32s.jpg" id='pic1' class="enlarge" onclick="clickZoom(event)" style="width:40%;" data-prevwidth='0'>
+<h3 class=text3>Installation</h3>
+Start Arduino IDE and edit Preferences:
+<br><br>
+File -> Preferences : Additional Boards Managers URLs:
+<br><br>
+https://github.com/stm32duino/BoardManagerFiles/raw/master/STM32/package_stm_index.json
+<br><br>
+Tools -> Board -> Boards Manager
+<br><br>
+<img src="stm32brdmgr.jpg" id='pic2' class="enlarge" onclick="clickZoom(event)" style="width:40%;" data-prevwidth='0'>
+<br><br>
+Once installed, the STM32 board configurations will be available in the IDE eg:
+<br><br>
+<img src="hid3.jpg" id='pic3' class="enlarge" onclick="clickZoom(event)" style="width:40%;" data-prevwidth='0'>
+<br><br>
+You will also need to install STM32CubeProgrammer(which needs Java 8) from ST. In addition, purchase a
+<a href=https://www.digikey.com.au/product-detail/en/stmicroelectronics/STLINK-V3MINI/497-19530-ND/10266291>
+ST-Link V3 Mini programmer</a>. In order to install a HID bootloader into the board, use the 
+ST-Link programmer to burn it. I managed to program the bootloader into the Maple Mini and Blue 
+Pill after a lot of fiddling around but the Mini STM32 V3 did not work. The steps are:
+<br><br>
+<img src="stm32stlink.jpg" id='pic5' class="enlarge" onclick="clickZoom(event)" style="width:40%;" data-prevwidth='0'>
+<ul>
+<li>Download HID bootloaders from <a href=https://github.com/Serasidis/STM32_HID_Bootloader
+>here</a>.</li>
+<li>run STM32CubeProgrammer<br>
+Connect to ST-Link V3 programmer<br>
+Perform Full chip erase<br>
+Select an appropriate HID bootloader and program the chip.
+</li>
+<li>Power cycle the STM32 board. The builtin LED should start blinking rapidly. This indicates the
+bootloader is waiting to accept a sketch <i>for the first time</i>.
+<li>Upload the Blink sketch.</li>
+<pre>
+> Trying to open the [COM19]...
+> Unable to open the [COM19]
+> Searching for [1209:BEBA] device...
+#
+> [1209:BEBA] device is found !
+> Sending <reset pages> command...
+> Flashing firmware...
+.
+</pre>
+<li>If it hangs at this point, upload again.
+</li>
+<li>If it succeeds, the output looks like:
+<pre>
+> Trying to open the [COM19]...
+> Toggling DTR...
+> Searching for [1209:BEBA] device...
+##
+> [1209:BEBA] device is found !
+> Sending <reset pages> command...
+> Flashing firmware...
+. 1024 Bytes
+. 2048 Bytes
+. 3072 Bytes
+. 4096 Bytes
+. 5120 Bytes
+. 6144 Bytes
+. 7168 Bytes
+. 8192 Bytes
+. 9216 Bytes
+. 10240 Bytes
+. 11264 Bytes
+. 12288 Bytes
+. 13312 Bytes
+. 14336 Bytes
+. 15360 Bytes
+. 16384 Bytes
+. 17408 Bytes
+. 18432 Bytes
+. 19456 Bytes
+. 20480 Bytes
+
+> Done!
+> Sending <reboot mcu> command...
+> Error while sending <reboot mcu> command.
+> Searching for [COM19] ...
+> [COM19] is found !
+> Finish
+</pre>
+</li>
+<li>Once the first sketch uploads successfully, a virtual COM port will be created for the
+bootloader. Select this port in the Tools menu. From now on, sketches will upload
+as per normal.</li>
+</ul>
+Be prepared to have multiple tries at programming the bootloader before it works. You may
+also need to uninstall old unused COM ports from Windows as the bootloader may mistakenly
+associate it as its virtual serial port. This was where I previously gave up went back into the matrix again.
+<br><br>
+Instead of the HID bootloader, you can upload using the ST-Link programmer which always works. You need to connect to
+SWDIO, SWDCLK, GND on the board and use the SWD upload method. 
+<br><br>
+<img src="hid4.jpg" id='pic7' class="enlarge" onclick="clickZoom(event)" style="width:40%;" data-prevwidth='0'>
+<br><br>
+The STM32 boards are much faster, have more GPIOs and are cheaper than the Atmel ATMEGA328P boards
+but API libraries may not be available. Check before committing to the STM32 for your project. 
+You can always port or suggest the API author port it to the STM32 platform though.
+<br><br>
+</div>
+</body>
+</html>
