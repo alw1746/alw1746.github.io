@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>
+Sound Effects
+</title>
+<STYLE TYPE="text/css">
+.text1 { color:maroon;font-weight:bold;font-size:140%;font-family:Georgia;}
+.text2 { color:black;font-weight:normal;font-size:110%;font-family:courier;}
+.text3 { color:maroon;font-weight:bold;font-size:120%;font-family:Georgia;}
+.text4 { color:black;font-weight:normal;font-size:110%;font-family:Georgia;}
+.indented
+   {
+   padding-left: 60pt;
+   padding-right: 50pt;
+   }
+.enlarge {
+  cursor: -moz-zoom-in; cursor:-webkit-zoom-in; pointer: -moz-zoom-in; pointer: -webkit-zoom-in; 
+  box-shadow: 8px 8px 15px 2px #888888; border:0;
+}
+</STYLE>
+
+<script>
+  var siwTimer;
+  
+  function clickZoom(event) {
+    var element=document.getElementById(event.currentTarget.id);
+    var newWidth=parseInt(element.style.width.replace("%",""),10);
+    if (newWidth == "100")
+      newWidth = parseInt(element.dataset.prevwidth,10);
+    else {
+      element.dataset.prevwidth=''+newWidth;
+      newWidth="100";
+    }    
+    siwTimer=setInterval(setImageWidth.bind(null,element,newWidth,2),10);   //exec func every 10 msec
+  }
+  
+  function setImageWidth(element,newWidth,change) {
+    var chgWidth;
+    var curWidth=parseInt(element.style.width.replace("%",""),10);
+    if (curWidth == newWidth)
+      clearInterval(siwTimer);       //terminate func if width reached
+    else {
+      if (newWidth > curWidth) {     //grow
+        chgWidth=curWidth+change;
+        if (chgWidth > newWidth)
+          chgWidth = newWidth;
+      }
+      else {
+        chgWidth=curWidth-change;    //shrink
+        if (chgWidth < newWidth)
+          chgWidth = newWidth;
+      }
+      element.style.width = chgWidth + "%";
+    }
+  }
+</script>
+
+</head>
+
+<body bgcolor=white class=text4>
+
+<center><h3 class=text1>Sound Effects</h3></center>
+<div class="indented">
+Scifi door swoosh
+<br>
+<audio controls>
+  <source src="door1.mp3" type="audio/mp3">
+Your browser does not support the audio element.
+</audio>
+<br><br>
+
+<br><br>
+</div>
+</body>
+</html>
