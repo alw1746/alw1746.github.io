@@ -1,1 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>
+Simple USB sound system for PC
+</title>
+<STYLE TYPE="text/css">
+.text1 { color:maroon;font-weight:bold;font-size:140%;font-family:Georgia;}
+.text2 { color:black;font-weight:normal;font-size:110%;font-family:courier;}
+.text3 { color:maroon;font-weight:bold;font-size:120%;font-family:Georgia;}
+.text4 { color:black;font-weight:normal;font-size:110%;font-family:Georgia;}
+.indented
+   {
+   padding-left: 60pt;
+   padding-right: 50pt;
+   }
+.enlarge {
+  cursor: -moz-zoom-in; cursor:-webkit-zoom-in; pointer: -moz-zoom-in; pointer: -webkit-zoom-in; 
+  box-shadow: 8px 8px 15px 2px #888888; border:0;
+}
+</STYLE>
 
+<script>
+  var siwTimer;
+  
+  function clickZoom(event) {
+    var element=document.getElementById(event.currentTarget.id);
+    var newWidth=parseInt(element.style.width.replace("%",""),10);
+    if (newWidth == "100")
+      newWidth = parseInt(element.dataset.prevwidth,10);
+    else {
+      element.dataset.prevwidth=''+newWidth;
+      newWidth="100";
+    }    
+    siwTimer=setInterval(setImageWidth.bind(null,element,newWidth,2),10);   //exec func every 10 msec
+  }
+  
+  function setImageWidth(element,newWidth,change) {
+    var chgWidth;
+    var curWidth=parseInt(element.style.width.replace("%",""),10);
+    if (curWidth == newWidth)
+      clearInterval(siwTimer);       //terminate func if width reached
+    else {
+      if (newWidth > curWidth) {     //grow
+        chgWidth=curWidth+change;
+        if (chgWidth > newWidth)
+          chgWidth = newWidth;
+      }
+      else {
+        chgWidth=curWidth-change;    //shrink
+        if (chgWidth < newWidth)
+          chgWidth = newWidth;
+      }
+      element.style.width = chgWidth + "%";
+    }
+  }
+</script>
+
+</head>
+
+<body bgcolor=white class=text4>
+
+<center><h3 class=text1>Simple USB sound system for PC</h3></center>
+<div class="indented">
+Here's a simple sound system for my PC that did not cost a cent since I already have all the parts. The aim is to
+play sound from the PC without having to use a power adapter for the amplifier. To do that, 3 components
+are required:
+<ul>
+<li>3D USB sound card (AU$6 ebay).
+<li>5V PAM8403 sound module (AU$1 ebay).
+<li>2 speakers
+</ul>
+
+<img src="3dsoundamp.jpg" id='pic1' class="enlarge" onclick="clickZoom(event)" style="width:40%;" data-prevwidth='0'>
+<br><br>
+The PAM8403 amplifier is required as the stereo output from the sound card can only drive headphones,
+not speakers. The steps to put the whole thing together are:
+<ol>
+<li>Solder male header pins onto the speaker pads on the PAM8403 sound module.
+<li>Strip the plastic shell from the sound card and solder wires from the stereo output socket pads to 
+the L-Gnd-R input pads of the PAM8403.
+<li>Solder wires from the USB 5V and Gnd pads on the sound card to the 5V-Gnd pads on the PAM8403. 
+<li>Insert a piece of double-sided tape between the sound card and PAM8304 to hold them together.
+</ol>
+The end result looks like this:
+<br><br>
+<img src="usbamp.jpg" id='pic2' class="enlarge" onclick="clickZoom(event)" style="width:40%;" data-prevwidth='0'>
+<br><br>
+With diy speakers attached:
+<br><br>
+<img src="diysound.jpg" id='pic3' class="enlarge" onclick="clickZoom(event)" style="width:40%;" data-prevwidth='0'>
+<br><br>
+What Dire Straits' Sultans of Swing sound like with this system:
+<br><br>
+<audio controls>
+  <source src="sos.mp3" type="audio/mp3">
+Your browser does not support the audio element.
+</audio>
+
+<br><br>
+</div>
+</body>
+</html>
