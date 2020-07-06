@@ -63,13 +63,10 @@ ul,ol {
 .divTableRow {
 	display: table-row;
 }
-.divTableCell, .divTableHead {
+.divTableCell {
 	border: 0px solid #999999;
 	display: table-cell;
 	padding-right: 20px;
-}
-.divTableBody {
-	display: table-row-group;
 }
 
 </STYLE>
@@ -163,29 +160,27 @@ The end result looks like this:
 <br><br>
 
 <div class="divTable">
-	<div class="divTableBody">
-		<div class="divTableRow">
-			<div class="divTableCell">
-        My original Sony speakers sounded like:
-        <br><br>
-        <img src="sony.jpg" id='pic3' class="enlarge" onclick="" style="width:100%;" data-prevwidth='0'>
-        <br><br>
-        <audio controls>
-          <source src="sosony.mp3" type="audio/mp3">
-          Your browser does not support the audio element.
-        </audio>
-      </div>
-			<div class="divTableCell">
-        The DIY pair sounds just as good <span onclick="resetbg()">&#128578;</span>
-        <br><br>
-        <img src="diysound.jpg" id='pic4' class="enlarge" onclick="" style="width:100%;" data-prevwidth='0'>
-        <br><br>
-        <audio controls>
-          <source src="sos.mp3" type="audio/mp3">
-          Your browser does not support the audio element.
-        </audio>
-      </div>
-		</div>
+  <div class="divTableRow">
+    <div class="divTableCell">
+      My original Sony speakers sounded like:
+      <br><br>
+      <img src="sony.jpg" id='pic3' class="enlarge" onclick="" style="width:100%;" data-prevwidth='0'>
+      <br><br>
+      <audio controls>
+        <source src="sosony.mp3" type="audio/mp3">
+        Your browser does not support the audio element.
+      </audio>
+    </div>
+    <div class="divTableCell">
+      The DIY pair sounds just as good <span onclick="resetbg()">&#128578;</span>
+      <br><br>
+      <img src="diysound.jpg" id='pic4' class="enlarge" onclick="" style="width:100%;" data-prevwidth='0'>
+      <br><br>
+      <audio controls>
+        <source src="sos.mp3" type="audio/mp3">
+        Your browser does not support the audio element.
+      </audio>
+    </div>
 	</div>
 </div>
 
