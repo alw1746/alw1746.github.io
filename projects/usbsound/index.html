@@ -18,7 +18,74 @@ Simple USB sound system for PC
   cursor: -moz-zoom-in; cursor:-webkit-zoom-in; pointer: -moz-zoom-in; pointer: -webkit-zoom-in; 
   box-shadow: 8px 8px 15px 2px #888888; border:0;
 }
+
+body {
+    margin: 0px;
+    padding: 0px;
+    background-repeat: repeat;
+    font-weight:normal;font-size:100%;font-family:Georgia;
+}
+
+.main {
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+
+    width: 80%;
+    background-color: #f3f3f3;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top:     15px;
+    margin-bottom:  15px;
+    padding-left:   20px;
+    padding-right:  20px;
+    padding-bottom:  3px;
+    padding-top:     3px;
+}
+
+h1 {
+    text-align: center;
+}
+
+p {
+    margin-left: 12px;
+    margin-right: 12px;
+}
+
+ul,ol {
+    margin-left: 20px;
+}
+
+.divTable{
+	display: table;
+	width: 100%;
+}
+.divTableRow {
+	display: table-row;
+}
+.divTableCell, .divTableHead {
+	border: 0px solid #999999;
+	display: table-cell;
+	padding-right: 20px;
+}
+.divTableBody {
+	display: table-row-group;
+}
+
 </STYLE>
+
+<!--
+Run patternget.js to get top 50 pattern urls from colourlovers.com. Copy-paste output to patterns.js.
+Caching pattern urls locally is much quicker than generating it dynamically.
+2 global variables are declared in patterns.js:
+  var str1="http://static.colourlovers.com/images/patterns/";
+  var str2 = [
+  "4370/4370608.png",
+     :
+str1 is a string holding a url prefix for the image.
+str2 is an array of image names to be appended to str1 when required.
+-->
+<script src="include/patterns.js"></script>
 
 <script>
   var siwTimer;
@@ -54,15 +121,23 @@ Simple USB sound system for PC
       element.style.width = chgWidth + "%";
     }
   }
+  
+  function resetbg() {
+    localStorage.setItem('patidx',0);
+    document.body.style.backgroundImage = "url('include/pat0.png')";
+  }
 </script>
-
 </head>
 
-<body bgcolor=white class=text4>
-
-<center><h3 class=text1>Simple USB sound system for PC</h3></center>
-<div class="indented">
-Here's a simple sound system for my PC that did not cost a cent since I already have all the parts. The aim is to
+<body>
+<br><br>
+<div class=main id=main>
+<h1>Simple USB sound system for PC
+  <form>
+    <input type="range" name="bgopacity" id="bgopacity" min="0" max="100" step="1" onchange="">
+  </form>
+</h1>
+Here's a simple sound system for my PC that did not cost me a cent since I already have all the parts. The aim is to
 play sound on the PC without having to use a power adapter for the amplifier. To do this, 3 components
 are required:
 <ul>
@@ -86,18 +161,91 @@ The end result looks like this:
 <br><br>
 <img src="usbamp.jpg" id='pic2' class="enlarge" onclick="clickZoom(event)" style="width:40%;" data-prevwidth='0'>
 <br><br>
-With diy speakers attached:
-<br><br>
-<img src="diysound.jpg" id='pic3' class="enlarge" onclick="clickZoom(event)" style="width:40%;" data-prevwidth='0'>
-<br><br>
-What playing Dire Straits' Sultans of Swing sounds like (recorded on Android phone):
-<br><br>
-<audio controls>
-  <source src="sos.mp3" type="audio/mp3">
-Your browser does not support the audio element.
-</audio>
 
-<br><br>
+<div class="divTable">
+	<div class="divTableBody">
+		<div class="divTableRow">
+			<div class="divTableCell">
+        My original Sony speakers sounded like:
+        <br><br>
+        <img src="sony.jpg" id='pic3' class="enlarge" onclick="" style="width:100%;" data-prevwidth='0'>
+        <br><br>
+        <audio controls>
+          <source src="sosony.mp3" type="audio/mp3">
+          Your browser does not support the audio element.
+        </audio>
+      </div>
+			<div class="divTableCell">
+        The DIY pair sounds just as good <span onclick="resetbg()">&#128578;</span>
+        <br><br>
+        <img src="diysound.jpg" id='pic4' class="enlarge" onclick="" style="width:100%;" data-prevwidth='0'>
+        <br><br>
+        <audio controls>
+          <source src="sos.mp3" type="audio/mp3">
+          Your browser does not support the audio element.
+        </audio>
+      </div>
+		</div>
+	</div>
 </div>
+
+<br>
+</div>
+<br><br>
+
+<script> 
+  var slider = document.getElementById('bgopacity');
+  var maindiv = document.getElementById('main');
+  //toggles visibility on main div when body is clicked(outside of the div).
+  document.addEventListener("click",function (event) {
+    slider.value=100;
+    slider.dispatchEvent(new Event('input', { bubbles: true }));
+  }, false);
+  
+  //disable event propagation so that click inside main div does not toggle visibility.
+  maindiv.addEventListener("click", function (event) {
+    event.stopPropagation(); 
+  }, false);
+  
+  slider.addEventListener("input", function (event) {
+    localStorage.setItem('sliderval', slider.value);
+    maindiv.style.opacity = slider.value * 0.01;
+  }, false);
+
+  var patidx = localStorage.getItem('patidx');    //get pattern index into str2 array.
+  if (patidx == null) {
+    localStorage.setItem('patidx', 0);            //create persistent pattern index in localstorage.
+    patidx=0;
+    console.log("Init pattern index storage to 0.");
+  }
+  else {
+    patidx++;
+    if (patidx >= 50) {
+      patidx=0;
+      console.log("Reset pattern index storage to 0.");
+    }
+    localStorage.setItem('patidx', patidx);      //persist pattern index across page reloads.
+  }
+
+  var sliderval = localStorage.getItem('sliderval');    //get pattern index into str2 array.
+  if (sliderval == null) {
+    slider.value=100;
+  }
+  else {
+    slider.value = sliderval;
+  }
+  slider.dispatchEvent(new Event('input', { bubbles: true }));
+
+  //var imgurl = str1+str2[Math.floor(Math.random()*50)];
+  var imgurl = str1+str2[patidx];                //form url of background image
+  //console.log("imgurl "+imgurl);
+  //document.body.style.backgroundImage = "url(5440905.png)";
+  if (patidx >= 0 && patidx <= 9)
+    document.body.style.backgroundImage = "url('include/pat"+ patidx +".png')";   //pat0-pat9.png are specials.
+  else
+    document.body.style.backgroundImage = "url("+ imgurl +")";   //set background image to url.
+
+</script>
+
 </body>
 </html>
