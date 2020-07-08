@@ -24,8 +24,12 @@ body {
     padding: 0px;
     background-repeat: repeat;
     font-weight:normal;font-size:100%;font-family:Georgia;
+    transition: 0.8s;
 }
-
+body.fade {
+    opacity: 0;
+    transition: none;
+}
 .main {
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
@@ -41,6 +45,7 @@ body {
     padding-right:  20px;
     padding-bottom:  3px;
     padding-top:     3px;
+    opacity: 0.9;
 }
 
 h1 {
@@ -119,14 +124,13 @@ str2 is an array of image names to be appended to str1 when required.
     }
   }
   
-  function resetbg() {
-    localStorage.setItem('patidx',0);
-    document.body.style.backgroundImage = "url('include/pat0.png')";
-  }
 </script>
 </head>
 
 <body>
+<script>
+  document.body.classList.add('fade');
+</script>
 <br><br>
 <div class=main id=main>
 <h1>Simple USB sound system for PC
@@ -162,7 +166,7 @@ The end result looks like this:
 <div class="divTable">
   <div class="divTableRow">
     <div class="divTableCell">
-      My original Sony speakers sounded like:
+      My original Sony speakers sounded like this. <span id=mouseid onclick="mouseDot(0)">🖱️</span>
       <br><br>
       <img src="sony.jpg" id='pic3' class="enlarge" onclick="" style="width:100%;" data-prevwidth='0'>
       <br><br>
@@ -172,7 +176,7 @@ The end result looks like this:
       </audio>
     </div>
     <div class="divTableCell">
-      The DIY pair sounds just as good <span onclick="resetbg()">&#128578;</span>
+      The DIY pair sounds just as good. <span onclick="resetbg()">&#128578;</span>
       <br><br>
       <img src="diysound.jpg" id='pic4' class="enlarge" onclick="" style="width:100%;" data-prevwidth='0'>
       <br><br>
@@ -187,25 +191,66 @@ The end result looks like this:
 <br>
 </div>
 <br><br>
-
+<script>
+  document.addEventListener("DOMContentLoaded", function(e) {
+    document.body.classList.remove('fade');
+  });
+</script>
 <script> 
   var slider = document.getElementById('bgopacity');
   var maindiv = document.getElementById('main');
+  var mouseid=document.getElementById('mouseid');
+
+  function resetbg() {
+    localStorage.setItem('patidx',0);
+    document.body.style.backgroundImage = "url('include/pat0.png')";
+  }
+
+  function mouseDot(reset) {
+    if (mouseid.textContent == "🖲️" || reset) {
+      mouseid.textContent="🖱️";   //plain mouse
+    }
+    else {
+      mouseid.textContent="🖲️";   //has a red dot as an indicator.
+    }
+  }
+
   //toggles visibility on main div when body is clicked(outside of the div).
-  document.addEventListener("click",function (event) {
+  document.onclick = (event) => {
+    mouseDot(1);        //reset mouseid mode
     slider.value=100;
     slider.dispatchEvent(new Event('input', { bubbles: true }));
-  }, false);
-  
+  };
+
   //disable event propagation so that click inside main div does not toggle visibility.
-  maindiv.addEventListener("click", function (event) {
+  maindiv.onclick = (event) => {
     event.stopPropagation(); 
-  }, false);
+  };
+
+  //if mouseid clicked, mouse wheel is used to vary opacity instead of range slider.
+  //The mouseid emoji is changed on click to one with red dot.
+  maindiv.onwheel = (event) => {
+    if (mouseid.textContent == "🖲️") {
+      event.preventDefault();
+      var sliderval=parseInt(slider.value);
+      if (event.deltaY > 0)
+        sliderval += 1;
+      else
+        sliderval -= 1;
+      if (sliderval > 100)
+        sliderval=100;
+      else if (sliderval < 0)
+        sliderval=0;
+      //console.log(sliderval+" "+event.deltaY);
+      slider.value=sliderval;
+      slider.dispatchEvent(new Event('input', { bubbles: true }));
+    }
+  };
   
-  slider.addEventListener("input", function (event) {
+  slider.oninput = (event) => {
     localStorage.setItem('sliderval', slider.value);
     maindiv.style.opacity = slider.value * 0.01;
-  }, false);
+  };
 
   var patidx = localStorage.getItem('patidx');    //get pattern index into str2 array.
   if (patidx == null) {
@@ -234,7 +279,6 @@ The end result looks like this:
   //var imgurl = str1+str2[Math.floor(Math.random()*50)];
   var imgurl = str1+str2[patidx];                //form url of background image
   //console.log("imgurl "+imgurl);
-  //document.body.style.backgroundImage = "url(5440905.png)";
   if (patidx >= 0 && patidx <= 9)
     document.body.style.backgroundImage = "url('include/pat"+ patidx +".png')";   //pat0-pat9.png are specials.
   else
