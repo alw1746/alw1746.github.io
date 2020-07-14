@@ -149,6 +149,15 @@ View and download Fusion 360 and STL files <a href="https://a360.co/2UsyRIv">her
 #elif defined(ARDUINO_ARCH_AVR)
   #define LED4 10
 #endif
+
+Microprocessors using the ATmega328p (like the Uno), define __AVR_ATmega328__.
+Microprocessors using the ATmega32u4 (like Leonardo), define __AVR_ATmega32U4__
+Microprocessors using the ATtiny85 chip (Trinket, Gemma, Digispark), define __AVR_ATtiny85__
+Microprocessors using the ATmega2560 chip (Mega), define __AVR_ATmega2560__
+Due and DigiX define: __SAM3X8E__, and __arm__
+Teensy 3.0 defines: __MK20DX128__, __arm__, and CORE_TEENSY
+Teensy 3.1 defines: __MK20DX256__, __arm__, and CORE_TEENSY
+
 </pre>
 <br>
 </li>
