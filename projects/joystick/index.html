@@ -1,1 +1,262 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>
+Video game thumb joystick
+</title>
+<STYLE TYPE="text/css">
+.text1 { color:maroon;font-weight:bold;font-size:140%;font-family:Georgia;}
+.text2 { color:black;font-weight:normal;font-size:110%;font-family:courier;}
+.text3 { color:maroon;font-weight:bold;font-size:120%;font-family:Georgia;}
+.text4 { color:black;font-weight:normal;font-size:110%;font-family:Georgia;}
+.indented
+   {
+   padding-left: 60pt;
+   padding-right: 50pt;
+   }
+.enlarge {
+  cursor: -moz-zoom-in; cursor:-webkit-zoom-in; pointer: -moz-zoom-in; pointer: -webkit-zoom-in; 
+  box-shadow: 8px 8px 15px 2px #888888; border:0;
+}
 
+body {
+    margin: 0px;
+    padding: 0px;
+    background-repeat: repeat;
+    font-weight:normal;font-size:100%;font-family:Georgia;
+    transition: 0.8s;
+}
+body.fade {
+    opacity: 0;
+    transition: none;
+}
+.main {
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+
+    width: 80%;
+    background-color: #f3f3f3;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top:     15px;
+    margin-bottom:  15px;
+    padding-left:   20px;
+    padding-right:  20px;
+    padding-bottom:  3px;
+    padding-top:     3px;
+    opacity: 0.9;
+}
+
+h1 {
+    text-align: center;
+}
+
+p {
+    margin-left: 12px;
+    margin-right: 12px;
+}
+
+ul,ol {
+    margin-left: 20px;
+}
+
+.divTable{
+	display: table;
+	width: 100%;
+}
+.divTableRow {
+	display: table-row;
+}
+.divTableCell {
+	border: 0px solid #999999;
+	display: table-cell;
+	padding-right: 20px;
+}
+
+</STYLE>
+
+<script>
+  var siwTimer;
+  
+  function clickZoom(event) {
+    var element=document.getElementById(event.currentTarget.id);
+    var newWidth=parseInt(element.style.width.replace("%",""),10);
+    if (newWidth == "100")
+      newWidth = parseInt(element.dataset.prevwidth,10);
+    else {
+      element.dataset.prevwidth=''+newWidth;
+      newWidth="100";
+    }    
+    siwTimer=setInterval(setImageWidth.bind(null,element,newWidth,2),10);   //exec func every 10 msec
+  }
+  
+  function setImageWidth(element,newWidth,change) {
+    var chgWidth;
+    var curWidth=parseInt(element.style.width.replace("%",""),10);
+    if (curWidth == newWidth)
+      clearInterval(siwTimer);       //terminate func if width reached
+    else {
+      if (newWidth > curWidth) {     //grow
+        chgWidth=curWidth+change;
+        if (chgWidth > newWidth)
+          chgWidth = newWidth;
+      }
+      else {
+        chgWidth=curWidth-change;    //shrink
+        if (chgWidth < newWidth)
+          chgWidth = newWidth;
+      }
+      element.style.width = chgWidth + "%";
+    }
+  }
+  
+</script>
+</head>
+
+<body>
+<script>
+  document.body.classList.add('fade');
+</script>
+<br><br>
+<div class=main id=main>
+<h1>Control video game camera movement with thumb joystick
+  <form>
+    <label id=mouseid onclick="mouseDot(0)">🖱️</label>
+    <input type="range" name="bgopacity" id="bgopacity" min="0" max="100" step="1" onchange="">
+  </form>
+</h1>
+<img src="vidcam.jpg" id='picx' class="enlarge" onclick="" style="width:80%;" data-prevwidth='0'>
+<br><br>
+Video games typically use the WSAD keys to control an 'invisible' overhead camera which represents a player's 
+overview of the battlefield. For casual gamers who have not developed the finger memory to move the camera 
+effortlessly, a joystick is a more intuitive option.
+<br><br>
+A Jaycar thumb joystick together with an Arduino Pro
+Micro is perfect for the job. The Arduino Pro Micro emulates a HID keyboard which sends the WSAD keypresses to the PC in response to joystick movements.
+<br><br>
+<img src="joy1.jpg" id='pic2' class="enlarge" onclick="clickZoom(event)" style="width:40%;" data-prevwidth='0'> &emsp;
+<img src="joy2.jpg" id='pic3' class="enlarge" onclick="clickZoom(event)" style="width:40%;" data-prevwidth='0'>
+<br><br>
+The Arduino Pro Micro was mounted onto female headers instead of being soldered to the board to allow a different
+microcontroller with USB to be used in future. The STM32F103 blue pill is an ideal candidate but the HID library currently
+does not work.
+<h3 class=text3>Schematic</h3>
+<img src=schematic.jpg id='pic4' class="enlarge" onclick="clickZoom(event)" style="width:40%;" data-prevwidth='0'>
+
+<h3 class=text3>Code</h3>
+The Arduino Pro Micro sketch is found in my <a href="https://github.com/alw1746/project-website-resources/blob/master/files/joystick/USBKeyboard.ino">Github</a> repository.
+
+<h3 class=text3>Usage</h3>
+My main reason for this project was to improve my playing of an oldie-but-goodie RTT game called 
+<a href=https://en.wikipedia.org/wiki/World_in_Conflict>World In Conflict</a>.
+This was a best-seller among computer games in 2007 and the graphics are still pretty impressive even by
+today's standards. Plenty of videos on youtube showing how to micromanage your units in battle and make tactical
+command decisions.
+<br><br>
+<img src="wic.jpg" id='picx' class="enlarge" onclick="" style="width:25%;" data-prevwidth='0'>
+<br><br>
+Video of thumb joystick in action moving the camera during a game. The smooth movements are comparable to using the
+WSAD keys on the keyboard. In addition to WSAD movements the joystick has a built-in switch which goes to the drop zone when clicked. 
+
+<br><br>
+<a href="https://youtu.be/C1L8mQAoIc4"><image src=youtube.jpg id='picx' class="enlarge" ></a>
+<br><br>
+
+</div>
+
+<br><br>
+<script>
+  document.addEventListener("DOMContentLoaded", function(e) {
+    document.body.classList.remove('fade');
+  });
+</script>
+<script> 
+  var slider = document.getElementById('bgopacity');
+  var maindiv = document.getElementById('main');
+  var mouseid=document.getElementById('mouseid');
+
+  function resetbg() {
+    localStorage.setItem('patidx',0);
+    document.body.style.backgroundImage = "url('include/pat0.png')";
+  }
+
+  <!-- https://emojiguide.org/computer-mouse &#128433;&#65039; -->
+  <!-- https://emojiguide.org/trackball &#128434;&#65039; -->
+
+  function mouseDot(reset) {
+    if (mouseid.textContent == "🖲️" || reset) {
+      mouseid.textContent="🖱️";   //computer mouse
+    }
+    else {
+      mouseid.textContent="🖲️";   //trackball
+    }
+  }
+
+  //toggles visibility on main div when body is clicked(outside of the div).
+  document.onclick = (event) => {
+    mouseDot(1);        //reset mouseid mode
+    slider.value=100;
+    slider.dispatchEvent(new Event('input', { bubbles: true }));
+  };
+
+  //disable event propagation so that click inside main div does not toggle visibility.
+  maindiv.onclick = (event) => {
+    event.stopPropagation(); 
+  };
+
+  //if mouseid clicked, mouse wheel is used to vary opacity instead of range slider.
+  //The mouseid emoji is changed on click to one with red dot.
+  maindiv.onwheel = (event) => {
+    if (mouseid.textContent == "🖲️") {
+      event.preventDefault();
+      var sliderval=parseInt(slider.value);
+      if (event.deltaY > 0)
+        sliderval += 1;
+      else
+        sliderval -= 1;
+      if (sliderval > 100)
+        sliderval=100;
+      else if (sliderval < 0)
+        sliderval=0;
+      //console.log(sliderval+" "+event.deltaY);
+      slider.value=sliderval;
+      slider.dispatchEvent(new Event('input', { bubbles: true }));
+    }
+  };
+  
+  slider.oninput = (event) => {
+    localStorage.setItem('sliderval', slider.value);
+    maindiv.style.opacity = slider.value * 0.01;
+  };
+
+  var patidx = localStorage.getItem('patidx');    //get pattern index into str2 array.
+  if (patidx == null) {
+    localStorage.setItem('patidx', 0);            //create persistent pattern index in localstorage.
+    patidx=0;
+    console.log("Init pattern index storage to 0.");
+  }
+  else {
+    patidx++;
+    if (patidx > 9) {
+      patidx=0;
+      console.log("Reset pattern index storage to 0.");
+    }
+    localStorage.setItem('patidx', patidx);      //persist pattern index across page reloads.
+  }
+
+  var sliderval = localStorage.getItem('sliderval');    //get pattern index into str2 array.
+  if (sliderval == null) {
+    slider.value=100;
+  }
+  else {
+    slider.value = sliderval;
+  }
+  slider.dispatchEvent(new Event('input', { bubbles: true }));
+
+  document.body.style.backgroundImage = "url('include/pat"+ patidx +".png')";   //pat0-pat9.png are specials.
+
+</script>
+
+</body>
+</html>
