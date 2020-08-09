@@ -1,1 +1,261 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>
+LED Flip Switch powered from USB
+</title>
+<STYLE TYPE="text/css">
+.text1 { color:maroon;font-weight:bold;font-size:140%;font-family:Georgia;}
+.text2 { color:black;font-weight:normal;font-size:110%;font-family:courier;}
+.text3 { color:maroon;font-weight:bold;font-size:120%;font-family:Georgia;}
+.text4 { color:black;font-weight:normal;font-size:110%;font-family:Georgia;}
+.indented
+   {
+   padding-left: 60pt;
+   padding-right: 50pt;
+   }
+.enlarge {
+  cursor: -moz-zoom-in; cursor:-webkit-zoom-in; pointer: -moz-zoom-in; pointer: -webkit-zoom-in; 
+  box-shadow: 8px 8px 15px 2px #888888; border:0;
+}
 
+body {
+    margin: 0px;
+    padding: 0px;
+    background-repeat: repeat;
+    font-weight:normal;font-size:100%;font-family:Georgia;
+    transition: 0.8s;
+}
+body.fade {
+    opacity: 0;
+    transition: none;
+}
+.main {
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+
+    width: 80%;
+    background-color: #f3f3f3;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top:     15px;
+    margin-bottom:  15px;
+    padding-left:   20px;
+    padding-right:  20px;
+    padding-bottom:  3px;
+    padding-top:     3px;
+    opacity: 0.9;
+}
+
+h1 {
+    text-align: center;
+}
+
+p {
+    margin-left: 12px;
+    margin-right: 12px;
+}
+
+ul,ol {
+    margin-left: 20px;
+}
+
+.divTable{
+	display: table;
+	width: 100%;
+}
+.divTableRow {
+	display: table-row;
+}
+.divTableCell {
+	border: 0px solid #999999;
+	display: table-cell;
+	padding-right: 20px;
+}
+
+</STYLE>
+
+<script>
+  var siwTimer;
+  
+  function clickZoom(event) {
+    var element=document.getElementById(event.currentTarget.id);
+    var newWidth=parseInt(element.style.width.replace("%",""),10);
+    if (newWidth == "100")
+      newWidth = parseInt(element.dataset.prevwidth,10);
+    else {
+      element.dataset.prevwidth=''+newWidth;
+      newWidth="100";
+    }    
+    siwTimer=setInterval(setImageWidth.bind(null,element,newWidth,2),10);   //exec func every 10 msec
+  }
+  
+  function setImageWidth(element,newWidth,change) {
+    var chgWidth;
+    var curWidth=parseInt(element.style.width.replace("%",""),10);
+    if (curWidth == newWidth)
+      clearInterval(siwTimer);       //terminate func if width reached
+    else {
+      if (newWidth > curWidth) {     //grow
+        chgWidth=curWidth+change;
+        if (chgWidth > newWidth)
+          chgWidth = newWidth;
+      }
+      else {
+        chgWidth=curWidth-change;    //shrink
+        if (chgWidth < newWidth)
+          chgWidth = newWidth;
+      }
+      element.style.width = chgWidth + "%";
+    }
+  }
+  
+</script>
+</head>
+
+<body>
+<script>
+  document.body.classList.add('fade');
+</script>
+<br><br>
+<div class=main id=main>
+<h1>LED Flip Switch powered from USB
+  <form>
+    <label id=mouseid onclick="mouseDot(0)">🖱️</label>
+    <input type="range" name="bgopacity" id="bgopacity" min="0" max="100" step="1" onchange="">
+  </form>
+</h1>
+<img src="flip1.jpg" id='pic1' class="enlarge" onclick="clickZoom(event)" style="width:40%;" data-prevwidth='0'>
+<br><br>
+Bunnings sells a battery-powered <a href=https://www.bunnings.com.au/lytworx-led-flip-switch_p0013960>LED Flip Switch</a> that is very useful and bright. 
+It has 2 <a href=https://enkonn-solar.com/cob-led-smd-led/>COB LED</a> strips with
+the following specifications:
+<ul>
+<li>Material: aluminum alloy plate + LED COB</li>
+<li>Power: 1W</li>
+<li>Input Voltage ac / DC 2-2.6 (red) 3V-4V (others)</li>
+<li>Maximum current: 300mA (1W) / 1000mA (3W)</li>
+<li>Luminous flux: 100 lm / W</li>
+<li>Lamp Color: cold white (6000-6500K), warm white (2700K-3200K), red (620-630nm), blue (450-460nm)</li>
+<li>Size: 60mm * 8mm</li>
+<li>Lighting area: 50mm * 7mm</li>
+<li>Low attenuation, 1000h attenuation <1%</li>
+</ul>
+The light uses 3 AAA batteries for 4.5V and the 2 strips draw combined 600mA which means the batteries will be 
+flattened in around 4 hours(assuming 800 maH per AAA). So why not drive it with 5V from a USB socket?
+I wired a simple power cable, plugged it into my laptop USB 3.0 socket, measured the current with USB Doctor
+and found it was drawing 1A.
+<br><br>
+Well, continuous 1A from a USB 3 socket can't be good in the long run. The light has a current
+limiting resistor of 0.5 ohm which suited the 3 AAA batteries but obviously was not enough for USB 3.
+<a href=http://ledcalc.com>ledcalc.com</a> indicated a 3.9 ohm 1W resistor would be more appropriate but 
+not having one on hand, I paralled 4 x 15 ohm 0.25W resistors to form 3.75 ohm approx 1W as a test.
+<br><br>
+<img src="flip2.jpg" id='pic2' class="enlarge" onclick="clickZoom(event)" style="width:40%;" data-prevwidth='0'>
+<br><br>
+This brought the current consumption down to 0.46A which was more acceptable.
+<br><br>
+<img src="flip3.jpg" id='pic3' class="enlarge" onclick="clickZoom(event)" style="width:40%;" data-prevwidth='0'>
+<br><br>
+Update: just bought 3.9 ohm 1W resistors from Jaycar for a more permanent solution. 
+<br><br>
+<img src="flip4.jpg" id='pic4' class="enlarge" onclick="clickZoom(event)" style="width:40%;" data-prevwidth='0'>
+<br><br>
+</div>
+
+<br><br>
+<script>
+  document.addEventListener("DOMContentLoaded", function(e) {
+    document.body.classList.remove('fade');
+  });
+</script>
+<script> 
+  var slider = document.getElementById('bgopacity');
+  var maindiv = document.getElementById('main');
+  var mouseid=document.getElementById('mouseid');
+
+  function resetbg() {
+    localStorage.setItem('patidx',0);
+    document.body.style.backgroundImage = "url('include/pat0.png')";
+  }
+
+  <!-- https://emojiguide.org/computer-mouse &#128433;&#65039; -->
+  <!-- https://emojiguide.org/trackball &#128434;&#65039; -->
+
+  function mouseDot(reset) {
+    if (mouseid.textContent == "🖲️" || reset) {
+      mouseid.textContent="🖱️";   //computer mouse
+    }
+    else {
+      mouseid.textContent="🖲️";   //trackball
+    }
+  }
+
+  //toggles visibility on main div when body is clicked(outside of the div).
+  document.onclick = (event) => {
+    mouseDot(1);        //reset mouseid mode
+    slider.value=100;
+    slider.dispatchEvent(new Event('input', { bubbles: true }));
+  };
+
+  //disable event propagation so that click inside main div does not toggle visibility.
+  maindiv.onclick = (event) => {
+    event.stopPropagation(); 
+  };
+
+  //if mouseid clicked, mouse wheel is used to vary opacity instead of range slider.
+  //The mouseid emoji is changed on click to one with red dot.
+  maindiv.onwheel = (event) => {
+    if (mouseid.textContent == "🖲️") {
+      event.preventDefault();
+      var sliderval=parseInt(slider.value);
+      if (event.deltaY > 0)
+        sliderval += 1;
+      else
+        sliderval -= 1;
+      if (sliderval > 100)
+        sliderval=100;
+      else if (sliderval < 0)
+        sliderval=0;
+      //console.log(sliderval+" "+event.deltaY);
+      slider.value=sliderval;
+      slider.dispatchEvent(new Event('input', { bubbles: true }));
+    }
+  };
+  
+  slider.oninput = (event) => {
+    localStorage.setItem('sliderval', slider.value);
+    maindiv.style.opacity = slider.value * 0.01;
+  };
+
+  var patidx = localStorage.getItem('patidx');    //get pattern index into str2 array.
+  if (patidx == null) {
+    localStorage.setItem('patidx', 0);            //create persistent pattern index in localstorage.
+    patidx=0;
+    console.log("Init pattern index storage to 0.");
+  }
+  else {
+    patidx++;
+    if (patidx > 9) {
+      patidx=0;
+      console.log("Reset pattern index storage to 0.");
+    }
+    localStorage.setItem('patidx', patidx);      //persist pattern index across page reloads.
+  }
+
+  var sliderval = localStorage.getItem('sliderval');    //get pattern index into str2 array.
+  if (sliderval == null) {
+    slider.value=100;
+  }
+  else {
+    slider.value = sliderval;
+  }
+  slider.dispatchEvent(new Event('input', { bubbles: true }));
+
+  document.body.style.backgroundImage = "url('include/pat"+ patidx +".png')";   //pat0-pat9.png are specials.
+
+</script>
+
+</body>
+</html>
