@@ -130,10 +130,10 @@ ul,ol {
 <br><br>
 Video games typically use the WSAD keys to control an 'invisible' overhead camera which represents a player's 
 overview of the battlefield. For casual gamers who have not developed the finger memory to move the camera 
-effortlessly, a joystick is a more intuitive option.
+effortlessly, a joystick is more intuitive.
 <br><br>
 A Jaycar thumb joystick together with an Arduino Pro
-Micro is perfect for the job. The Arduino Pro Micro emulates a HID keyboard which sends the WSAD keypresses to the PC in response to joystick movements.
+Micro is perfect for the job. The Arduino Pro Micro emulates a HID keyboard which sends the WSAD keypresses to the PC in response to joystick positions.
 <br><br>
 <img src="joy1.jpg" id='pic2' class="enlarge" onclick="clickZoom(event)" style="width:40%;" data-prevwidth='0'> &emsp;
 <img src="joy2.jpg" id='pic3' class="enlarge" onclick="clickZoom(event)" style="width:40%;" data-prevwidth='0'>
@@ -142,19 +142,21 @@ The Arduino Pro Micro was mounted onto female headers instead of being soldered 
 microcontroller with USB to be used in future. The STM32F103 blue pill is an ideal candidate but the HID library currently
 does not work.
 <h3 class=text3>Schematic</h3>
-<img src=schematic.jpg id='pic4' class="enlarge" onclick="clickZoom(event)" style="width:40%;" data-prevwidth='0'>
+<img src=schematic.jpg id='picx' class="enlarge" onclick="" style="width:60%;" data-prevwidth='0'>
 
 <h3 class=text3>Code</h3>
 The Arduino Pro Micro sketch is found in my <a href="https://github.com/alw1746/project-website-resources/blob/master/files/joystick/USBKeyboard.ino">Github</a> repository.
-
+The joystick is physically attached to a piece of MDF board with the pins pointing to the right. This works well for controlling the joystick with left hand while
+using the mouse with right. The placement is important as the ADC values returned by the analog X/Y potentiometers depend on the orientation of the joystick.
+To change the placement, you must obtain the ADC values of the various positions (N,S,E,W,NE,SE,SW,NW) before modifying the code accordingly.
 <h3 class=text3>Usage</h3>
-My main reason for this project was to improve my playing of an oldie-but-goodie RTT game called 
+The main reason for this project was to improve my playing of an oldie-but-goodie RTT game called 
 <a href=https://en.wikipedia.org/wiki/World_in_Conflict>World In Conflict</a>.
 This was a best-seller among computer games in 2007 and the graphics are still pretty impressive even by
 today's standards. Plenty of videos on youtube showing how to micromanage your units in battle and make tactical
 command decisions.
 <br><br>
-<img src="wic.jpg" id='picx' class="enlarge" onclick="" style="width:25%;" data-prevwidth='0'>
+<a href="https://youtu.be/JH7hr3N_9FM?list=PL32tYHO8EqiR1Y96hYBFtz4Z06ESNEG04&t=667"><img src="wic.jpg" id='picx' class="enlarge" onclick="" style="width:25%;" data-prevwidth='0'></a>
 <br><br>
 Video of thumb joystick in action moving the camera during a game. The smooth movements are comparable to using the
 WSAD keys on the keyboard. In addition to WSAD movements the joystick has a built-in switch which goes to the drop zone when clicked. 
