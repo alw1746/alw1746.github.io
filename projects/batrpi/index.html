@@ -1,1 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>
+Battery-powered Raspberry Pi with pan/tilt camera
+</title>
+<STYLE TYPE="text/css">
+.text1 { color:maroon;font-weight:bold;font-size:140%;font-family:Georgia;}
+.text2 { color:black;font-weight:normal;font-size:110%;font-family:courier;}
+.text3 { color:maroon;font-weight:bold;font-size:120%;font-family:Georgia;}
+.text4 { color:black;font-weight:normal;font-size:110%;font-family:Georgia;}
+.indented
+   {
+   padding-left: 60pt;
+   padding-right: 50pt;
+   }
+.enlarge {
+  cursor: -moz-zoom-in; cursor:-webkit-zoom-in; pointer: -moz-zoom-in; pointer: -webkit-zoom-in; 
+  box-shadow: 8px 8px 15px 2px #888888; border:0;
+}
 
+</STYLE>
+
+<script>
+  var siwTimer;
+  
+  function clickZoom(event) {
+    var element=document.getElementById(event.currentTarget.id);
+    var newWidth=parseInt(element.style.width.replace("%",""),10);
+    if (newWidth == "100")
+      newWidth = parseInt(element.dataset.prevwidth,10);
+    else {
+      element.dataset.prevwidth=''+newWidth;
+      newWidth="100";
+    }    
+    siwTimer=setInterval(setImageWidth.bind(null,element,newWidth,2),10);   //exec func every 10 msec
+  }
+  
+  function setImageWidth(element,newWidth,change) {
+    var chgWidth;
+    var curWidth=parseInt(element.style.width.replace("%",""),10);
+    if (curWidth == newWidth)
+      clearInterval(siwTimer);       //terminate func if width reached
+    else {
+      if (newWidth > curWidth) {     //grow
+        chgWidth=curWidth+change;
+        if (chgWidth > newWidth)
+          chgWidth = newWidth;
+      }
+      else {
+        chgWidth=curWidth-change;    //shrink
+        if (chgWidth < newWidth)
+          chgWidth = newWidth;
+      }
+      element.style.width = chgWidth + "%";
+    }
+  }
+  
+</script>
+</head>
+
+<body bgcolor=white class=text4>
+
+<center><h3 class=text1>Battery-powered Raspberry Pi with pan/tilt camera</h3></center>
+<div class="indented">
+<img src=pic5.jpg id='pic5' style="width:100%;" data-prevwidth='0'>
+<br><br>
+
+A portable Raspberry Pi 3B+ with a camera mount that can pan or tilt. The camera is mounted on a non-conductive board as the screw holes actually
+provide +5V and Gnd for an add-on IR light board. A cheap digital voltmeter is used as a fuel gauge for the battery pack. Rechargeable AA Nimh batteries are used
+mainly because they are low-cost, available everywhere, and no-hassles with check-in luggage. The 6 x 2450mah IKEA LADDA batteries are excellent value and last
+6-7 hours with USB devices, camera and wifi usage. When the fuel gauge shows 6.6V, it's time to recharge. The DC-DC step down converter has the following specs:
+<ul>
+<li>XL4015 180 KHz fixed frequency PWM buck converter</li>
+<li>Input voltage 8V to 32V</li>
+<li>Adjustable output voltage from 1.25V to 32V</li>
+<li>5A Constant Output Current Capability</li>
+<li>Conversion efficiency up to 96%</li>
+<li>Thermal protection and short circuit protection</li>
+</ul>
+<img src=psu.jpg id='pic8' class="enlarge" onclick="clickZoom(event)" style="width:40%;" data-prevwidth='0'>
+<br><br>
+Disable the raspbian VNC and install tightvncserver and xrdp instead. Then use Windows Remote Desktop to connect to the Raspberry Pi for a better desktop experience.
+The Raspberry Pi is configured to boot from a USB flash drive instead of the microSD card for reliability and speed. See link below for more details:
+<br><br>
+<a href="https://www.raspberrypi.org/documentation/hardware/raspberrypi/bootmodes/msd.md">USB mass storage boot</a>
+<br><br>
+You can toggle the Pi to startup or shutdown by wiring a momentary switch between GPIO3(pin 5) and Ground(pin 6). Add the following line to /boot/config.txt:
+<pre>
+#toggle switch across pins 5-6 for Pi shutdown/startup.
+dtoverlay=gpio-shutdown,gpio_pin=3,active_low=1,gpio_pull=up,debounce=1000
+</pre>
+ssh to the Pi and take snapshots with the camera using the command:
+<pre>
+raspistill -vf -hf -o snap.jpg
+</pre>
+Stream video to a vlc client running on a PC or Android phone.
+<pre>
+raspivid -vf -hf -t 0 -l -o tcp://0.0.0.0:3333      #listen/stream on port 3333
+vlc tcp/h264://192.168.1.100:3333                   #open network stream in vlc
+</pre>
+
+<img src=pic1.jpg id='pic1' class="enlarge" onclick="clickZoom(event)" style="width:40%;" data-prevwidth='0'>
+<br><br>
+<img src=pic2.jpg id='pic2' class="enlarge" onclick="clickZoom(event)" style="width:40%;" data-prevwidth='0'>
+<br><br>
+<img src=pic3.jpg id='pic3' class="enlarge" onclick="clickZoom(event)" style="width:40%;" data-prevwidth='0'>
+<br><br>
+<img src=pic4.jpg id='pic4' class="enlarge" onclick="clickZoom(event)" style="width:40%;" data-prevwidth='0'>
+<br><br>
+<img src=pic6.jpg id='pic6' class="enlarge" onclick="clickZoom(event)" style="width:40%;" data-prevwidth='0'>
+<br><br>
+<img src=pic7.jpg id='pic7' class="enlarge" onclick="clickZoom(event)" style="width:40%;" data-prevwidth='0'>
+<br><br>
+<img src=dva.jpg id='pic9' class="enlarge" onclick="clickZoom(event)" style="width:40%;" data-prevwidth='0'>
+
+</div>
+</body>
+</html>
