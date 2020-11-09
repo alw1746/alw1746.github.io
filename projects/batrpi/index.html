@@ -19,6 +19,24 @@ Battery-powered Raspberry Pi with pan/tilt camera
   box-shadow: 8px 8px 15px 2px #888888; border:0;
 }
 
+.main {
+    padding-left: 60pt;
+    padding-right: 50pt;
+    background-color: white;
+    font-weight:normal;
+    font-size:100%;
+    font-family:Georgia;
+}
+
+h1 {
+    text-align: center;
+}
+
+div.slider
+{
+    display: block;
+    text-align: center;
+}
 </STYLE>
 
 <script>
@@ -59,14 +77,20 @@ Battery-powered Raspberry Pi with pan/tilt camera
 </script>
 </head>
 
-<body bgcolor=white class=text4>
+<body>
+<div class='slider'>
+  <form>
+    <input type="range" name="fontslider" id="fontslider" min="0" max="32" step="1" onchange="" value="16">
+    <label for="fontslider" id="fontval" onClick="setSlider(16)"></label>
+  </form>
+</div>
 
-<center><h3 class=text1>Battery-powered Raspberry Pi with pan/tilt camera</h3></center>
-<div class="indented">
+<div id="main">
+<h1>Battery-powered Raspberry Pi with pan/tilt camera
+</h1>
 <img src=pic5.jpg id='pic5' style="width:100%;" data-prevwidth='0'>
 <br><br>
-
-A portable Raspberry Pi 3B+ with a camera mount that can pan or tilt by hand. The camera is mounted on a non-conductive board as the screw holes actually
+A portable Raspberry Pi 3B+ with a camera mount that can pan or tilt. The camera is mounted on a non-conductive board as the screw holes actually
 provide +5V and Gnd for an add-on IR light board. A cheap digital voltmeter is used as a fuel gauge for the battery pack. Rechargeable AA Nimh batteries are used
 mainly because they are low-cost, available everywhere, and no-hassles with check-in luggage. The 6 x 2450mah IKEA LADDA batteries are excellent value and last
 6-7 hours with USB devices, camera and wifi usage. When the fuel gauge shows 6.6V, it's time to recharge. The DC-DC step down converter has the following specs:
@@ -113,7 +137,36 @@ vlc tcp/h264://192.168.1.100:3333                   #open network stream in vlc
 <img src=pic7.jpg id='pic7' class="enlarge" onclick="clickZoom(event)" style="width:40%;" data-prevwidth='0'>
 <br><br>
 <img src=dva.jpg id='pic9' class="enlarge" onclick="clickZoom(event)" style="width:40%;" data-prevwidth='0'>
-
 </div>
+
+<script> 
+  var slider = document.getElementById('fontslider');
+  var fontval = document.getElementById('fontval');
+  var main = document.getElementById('main');
+  //var dfontsz=window.getComputedStyle(main, null).fontSize;
+  //dfontsz=parseInt(dfontsz.replace('px','  '));
+
+  function setSlider(sldval) {
+    slider.value = sldval;
+    slider.dispatchEvent(new Event('input', { bubbles: true }));
+  }
+    
+  slider.oninput = (event) => {
+    localStorage.setItem('sliderval', slider.value);
+    main.style.fontSize = slider.value + 'px';
+    fontval.innerHTML=slider.value;
+  };
+
+  var sliderval = localStorage.getItem('sliderval');    //get pattern index into str2 array.
+  if (sliderval == null) {
+    setSlider(16);
+  }
+  else {
+    setSlider(sliderval);
+  }
+
+</script>
+
+
 </body>
 </html>
