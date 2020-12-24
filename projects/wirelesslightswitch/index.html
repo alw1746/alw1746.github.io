@@ -1,1 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>
+Ceiling lamp holder with remote control
+</title>
+<STYLE TYPE="text/css">
+.text1 { color:maroon;font-weight:bold;font-size:140%;font-family:Georgia;}
+.text2 { color:black;font-weight:normal;font-size:110%;font-family:courier;}
+.text3 { color:maroon;font-weight:bold;font-size:120%;font-family:Georgia;}
+.text4 { color:black;font-weight:normal;font-size:110%;font-family:Georgia;}
+.indented
+   {
+   padding-left: 60pt;
+   padding-right: 50pt;
+   }
+.enlarge {
+  cursor: -moz-zoom-in; cursor:-webkit-zoom-in; pointer: -moz-zoom-in; pointer: -webkit-zoom-in; 
+  box-shadow: 8px 8px 15px 2px #888888; border:0;
+}
 
+.main {
+    padding-left: 60pt;
+    padding-right: 50pt;
+    background-color: white;
+    font-weight:normal;
+    font-size:100%;
+    font-family:Georgia;
+}
+
+h1 {
+    text-align: center;
+}
+
+div.slider
+{
+    display: block;
+    text-align: center;
+}
+</STYLE>
+
+<script>
+  var siwTimer;
+  
+  function clickZoom(event) {
+    var element=document.getElementById(event.currentTarget.id);
+    var newWidth=parseInt(element.style.width.replace("%",""),10);
+    if (newWidth == "100")
+      newWidth = parseInt(element.dataset.prevwidth,10);
+    else {
+      element.dataset.prevwidth=''+newWidth;
+      newWidth="100";
+    }    
+    siwTimer=setInterval(setImageWidth.bind(null,element,newWidth,2),10);   //exec func every 10 msec
+  }
+  
+  function setImageWidth(element,newWidth,change) {
+    var chgWidth;
+    var curWidth=parseInt(element.style.width.replace("%",""),10);
+    if (curWidth == newWidth)
+      clearInterval(siwTimer);       //terminate func if width reached
+    else {
+      if (newWidth > curWidth) {     //grow
+        chgWidth=curWidth+change;
+        if (chgWidth > newWidth)
+          chgWidth = newWidth;
+      }
+      else {
+        chgWidth=curWidth-change;    //shrink
+        if (chgWidth < newWidth)
+          chgWidth = newWidth;
+      }
+      element.style.width = chgWidth + "%";
+    }
+  }
+  
+</script>
+</head>
+
+<body>
+<div class='slider'>
+  <form>
+    <input type="range" name="fontslider" id="fontslider" min="0" max="32" step="1" onchange="" value="16">
+    <label for="fontslider" id="fontval" onClick="setSlider(16)"></label>
+  </form>
+</div>
+
+<div id="main">
+<h1>Ceiling lamp holder with remote control
+</h1>
+<img src=door.jpg id='' class="enlarge" onclick="" style="width:80%;" data-prevwidth='0'>
+<br><br>
+The light switch inside the bedroom is installed on the right side(on entry) which forced the door to be hung on
+the left thus blocking a direct path into the room. This constant delicate manoeuvering annoyed me to the extent I re-hung the
+door on the right as shown in picture above. So now the light switch is conveniently hidden behind the door when it is opened.
+To solve this dilemma without re-routing the switch I purchased a 
+<a href="https://www.ebay.com.au/itm/Adjustable-E27-LED-Light-Base-Extension-Socket-Remote-Control-Bulb-Lamp-Holder/363079785939">
+E27 Remote Control Lamp Holder</a> from ebay for AUD13.
+<br><br>
+<img src=ebay.jpg id='' class="enlarge" style="width:40%;" data-prevwidth='0'>
+<img src=sw1.jpg id='' class="enlarge" style="width:40%;" data-prevwidth='0'>
+<br><br>
+This lamp holder is designed for tabletop use so the socket does not have an outside thread to mount a lamp shade. Rather ugly when mounted
+on the ceiling with a naked bulb. Inside the lamp holder is a 433Mhz wireless receiver with an electronic switch or relay and 
+connecting wires to 240V and the globe. Note only 1 screw on the PCB even though there are 2 mounting posts. Very shonky.
+<br><br>
+<img src=lightbase.jpg id='pic1' class="enlarge" onclick="clickZoom(event)" style="width:40%;" data-prevwidth='0'>
+<br><br>
+To use it with a nice lamp shade, I placed the wireless receiver PCB inside a <a href=https://www.bunnings.com.au/holman-90mm-push-on-pvc-storm-cap_p4750196>
+Holman 90mm PVC storm cap</a> from Bunnings and mounted it under a standard batten holder. The mounting screws had to be longer in 
+order to accommodate the thickness of the cap.
+<br><br>
+<img src=holmancap.jpg id='pic2' class="enlarge" onclick="" style="width:40%;" data-prevwidth='0'>
+<img src=sw4.jpg id='pic3' class="enlarge" onclick="" style="width:48%;" data-prevwidth='0'>
+<br>
+<img src=sw5.jpg id='pic4' class="enlarge" onclick="" style="width:30%;" data-prevwidth='0'>
+<img src=ceiling.jpg id='pic5' class="enlarge" onclick="" style="width:53%;" data-prevwidth='0'>
+<br><br>
+The holder for the remote control switch was designed with Autodesk Fusion 360 and 3D-printed at Jaycar's Maker Hub in Broadway
+for AUD11. You can view the holder interactively <a href=https://a360.co/3pnPi6I>here</a> and 
+download the design/STL files from this <a href=Fusion360Holder.zip>link</a>. The holder is mounted on the wall with double-sided tape.
+<br><br>
+<img src=remote.jpg id='pic7' class="enlarge" onclick="clickZoom(event)" style="width:40%;" data-prevwidth='0'>
+<img src=lighton.jpg id='pic8' class="enlarge" onclick="clickZoom(event)" style="width:40%;" data-prevwidth='0'>
+<br><br>
+</div>
+
+<script> 
+  var slider = document.getElementById('fontslider');
+  var fontval = document.getElementById('fontval');
+  var main = document.getElementById('main');
+  //var dfontsz=window.getComputedStyle(main, null).fontSize;
+  //dfontsz=parseInt(dfontsz.replace('px','  '));
+
+  function setSlider(sldval) {
+    slider.value = sldval;
+    slider.dispatchEvent(new Event('input', { bubbles: true }));
+  }
+    
+  slider.oninput = (event) => {
+    localStorage.setItem('sliderval', slider.value);
+    main.style.fontSize = slider.value + 'px';
+    fontval.innerHTML=slider.value;
+  };
+
+  var sliderval = localStorage.getItem('sliderval');    //get pattern index into str2 array.
+  if (sliderval == null) {
+    setSlider(16);
+  }
+  else {
+    setSlider(sliderval);
+  }
+
+</script>
+
+
+</body>
+</html>
