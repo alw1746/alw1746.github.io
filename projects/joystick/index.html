@@ -119,7 +119,7 @@ ul,ol {
   document.body.classList.add('fade');
 </script -->
 <br><br>
-<div class=main id=main>
+<div class=main-dummy id=main>
 <h1>Control video game camera movement with thumb joystick
   <!-- form>
     <label id=mouseid onclick="mouseDot(0)">🖱️</label>
@@ -172,8 +172,7 @@ WSAD keys on the keyboard. In addition to WSAD movements the joystick has a buil
   document.addEventListener("DOMContentLoaded", function(e) {
     document.body.classList.remove('fade');
   });
-</script>
-<script> 
+
   var slider = document.getElementById('bgopacity');
   var maindiv = document.getElementById('main');
   var mouseid=document.getElementById('mouseid');
