@@ -178,12 +178,12 @@ earns its keep.
 <h3 id="LatestUpdate" class=text3>Latest Update</h3>
 Instead of using a logic level shifter, step the USB 5V down to 3.3V using a regulator and connect it to the 5V input pin of the ATTiny85 board.
 The data lines D+/D- are connected to the ATTiny85 from a female micro USB breakout board. You can switch between 5V and 3.3V supply using a header shunt thus enabling 5V or 3.3V devices to be programmed directly.
-I have decided to upload with USBtinyISP for all ATTINY85 devices to conserve flash and ram usage. So my controllers have the RSTDISBL fuse cleared(enabling PB5 for
+I have decided to upload ATTINY85 sketches using USBtinyISP to conserve flash and ram usage. All my devices have the RSTDISBL fuse cleared(enabling PB5 for
 RESET and not GPIO) using HVSP on my AVR Dragon.
    <br><br>
-   <img src="Schematic3.jpg" border=1>&nbsp;
-   <img src="usb3v.jpg"  id='pic8' class="enlarge" onclick="clickZoom(event)" width="25%" data-clicks='0'>&nbsp;
-   <img src="attiny85pins.jpg"  id='pic9' class="enlarge" onclick="clickZoom(event)" width="25%" data-clicks='0'>&nbsp;
+   <img src="Schematic3.jpg" border=1>&nbsp;<br>
+   <img src="usb3v.jpg">&nbsp;<br>
+   <img src="attiny85pins.jpg">&nbsp;
    </div>
    <br>
    <br>
