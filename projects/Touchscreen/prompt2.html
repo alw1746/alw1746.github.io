@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>prompt2</title>
+	<style>
+		/* Basic styles for readability */
+		body {
+			font-family: sans-serif;
+			max-width: 800px;
+			margin: 2em auto;
+			padding: 0 1em;
+			line-height: 1.6;
+		}
+		img { max-width: 100%; height: auto; }
+		pre { background-color: #f4f4f4; padding: 1em; overflow-x: auto; }
+		code { font-family: monospace; }
+	</style>
+</head>
+<body>
+	<h1>Environment:</h1>
+<h2>I am a software developer with the following setup.</h2>
+<ul>
+<li>a Raspberry Pi 5 computer with a 1024x600 touchscreen display, keyboard,mouse.</li>
+<li>the computer runs bookworm OS with the latest updates applied.</li>
+<li>a directory named “media” which has 4 subdirectories:
+<ul>
+<li>Cars</li>
+<li>Motorcycles</li>
+<li>Planes</li>
+<li>Ships</li>
+</ul>
+</li>
+<li>the subdirectories contain a number of image files for each category of vehicle.</li>
+</ul>
+<h1>Task:</h1>
+<h2>Write a Python application using kivy GUI framework to display images of vehicles based on their category.</h2>
+<ul>
+<li>Use swipe gestures or mouse on the touchscreen for navigation.</li>
+<li>image files are located under the media directory.</li>
+</ul>
+<h1>Context:</h1>
+<h2>The program logic is as follows.</h2>
+<ul>
+<li>create a main window with title “Transport Vehicles”.</li>
+<li>add label “Main Menu” centered at the top of window.</li>
+<li>arrange 4 buttons labelled as “Cars”,“Motorcycles”,“Planes”,“Ships” in a square grid layout,minimum spacing 20px.</li>
+<li>for each subdirectory under “media”, get all file names and store them in a list named after its category. Sort the list in alphbatical order .</li>
+<li>on button click of a vehicle category, display a new window with 2 vertical panes:
+<ul>
+<li>Display pane
+<ul>
+<li>90% of window height for displaying images.</li>
+</ul>
+</li>
+<li>Instruction pane
+<ul>
+<li>10% of window height for displaying user navigation.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>display the first image of the selected list in the display pane. Scroll through the list using the following gestures:
+<ul>
+<li>swipe or mouse-drag left to display next image in list.</li>
+<li>swipe or mouse-drag right to display previous image in list.</li>
+<li>swipe or mouse-drag up to return to “Main Menu”.</li>
+</ul>
+</li>
+<li>the instruction pane contain the following:
+<ul>
+<li>on the left side, a clickable left arrow image to display previous image in list</li>
+<li>on right side, a clickable right arrow image to display next image in list.</li>
+<li>at the center, a clickable up arrow image to return to “Main Menu”.</li>
+</ul>
+</li>
+<li>the instruction pane is fixed and does not scroll.</li>
+</ul>
+<hr>
+<h2>prompt2.md</h2>
+<pre>
+# Environment:
+
+## I am a software developer with the following setup.
+
+- a Raspberry Pi 5 computer with a 1024x600 touchscreen display, keyboard,mouse.
+- the computer runs bookworm OS with the latest updates applied.
+- a directory named "media" which has 4 subdirectories:
+  * Cars
+  * Motorcycles
+  * Planes
+  * Ships
+- the subdirectories contain a number of image files for each category of vehicle.
+
+# Task:
+
+## Write a Python application using kivy GUI framework to display images of vehicles based on their category.
+- Use swipe gestures or mouse on the touchscreen for navigation.
+- image files are located under the media directory.
+
+# Context:
+## The program logic is as follows.
+
+- create a main window with title "Transport Vehicles".
+- add label "Main Menu" centered at the top of window.
+- arrange 4 buttons labelled as "Cars","Motorcycles","Planes","Ships" in a square grid layout,minimum spacing 20px.
+- for each subdirectory under "media", get all file names and store them in a list named after its category. Sort the list in alphbatical order .
+- on button click of a vehicle category, display a new window with 2 vertical panes:
+  * Display pane
+    - 90% of window height for displaying images.
+  * Instruction pane
+    - 10% of window height for displaying user navigation.
+- display the first image of the selected list in the display pane. Scroll through the list using the following gestures:
+  - swipe or mouse-drag left to display next image in list.
+  - swipe or mouse-drag right to display previous image in list.
+  - swipe or mouse-drag up to return to "Main Menu".
+- the instruction pane contain the following:
+  * on the left side, a clickable left arrow image to display previous image in list
+  * on right side, a clickable right arrow image to display next image in list.
+  * at the center, a clickable up arrow image to return to "Main Menu".
+- the instruction pane is fixed and does not scroll.
+</pre>
+</body>
+</html>
